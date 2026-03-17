@@ -35,7 +35,6 @@
         .game-setup, .game-area, .results { display: none; }
         .active { display: block; }
 
-        /* Color Display */
         .color-boxes {
             display: flex; gap: 1px; justify-content: center; margin: 0 0 3rem 0;
             background: var(--border); padding: 1px; border-radius: 4px; overflow: hidden;
@@ -45,13 +44,11 @@
         .color-box { width: 100%; aspect-ratio: 1.2/1; transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
         .color-box-label { display: block; padding: 10px 0; font-size: 0.65rem; font-weight: 600; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.1em; }
 
-        /* Cheater Canvas */
         #spectrum-map {
             width: 100%; height: 180px; border: 1px solid var(--border);
-            cursor: crosshair; border-radius: 2px; margin-bottom: 1rem;
+            cursor: crosshair; border-radius: 2px; margin-bottom: 1rem; display: block;
         }
 
-        /* Controls */
         .slider-group { margin-bottom: 2rem; }
         .slider-header { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 0.7rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; }
         .label-r { color: var(--r-channel); }
@@ -66,7 +63,6 @@
         #green-slider { background: linear-gradient(90deg, #051a0a, #22c55e33); }
         #blue-slider { background: linear-gradient(90deg, #050a1a, #3b82f633); }
         
-        /* Toggle */
         .mode-toggle { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 2rem; cursor: pointer; }
         .toggle-switch { width: 32px; height: 16px; background: var(--border); position: relative; }
         .toggle-switch::after { content: ''; position: absolute; width: 8px; height: 8px; background: var(--text-muted); top: 4px; left: 4px; transition: 0.2s; }
@@ -77,7 +73,7 @@
         button { width: 100%; padding: 16px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.2em; background: none; color: var(--text-main); border: 1px solid var(--border); cursor: pointer; transition: 0.3s; }
         button:hover { background: var(--text-main); color: var(--bg); }
 
-        select { background: var(--bg); color: var(--text-main); border: 1px solid var(--border); padding: 12px; width: 100%; font-size: 0.75rem; margin-bottom: 1rem; appearance: none; text-align: center; border-radius: 0; }
+        select { background: var(--bg); color: var(--text-main); border: 1px solid var(--border); padding: 12px; width: 100%; font-size: 0.75rem; margin-bottom: 1rem; appearance: none; text-align: center; border-radius: 0; outline: none; }
         .timer { font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin-bottom: 2rem; letter-spacing: 0.1em; }
         .match-percentage { font-size: 5rem; font-weight: 200; color: var(--text-main); margin: 1rem 0; letter-spacing: -0.05em; }
         .status-text { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--text-muted); margin-bottom: 3rem; }
@@ -119,7 +115,7 @@
             <div class="controls">
                 <div id="cheater-controls" style="display: none;">
                     <canvas id="spectrum-map"></canvas>
-                    <p class="color-box-label" style="margin-bottom:2rem; opacity:0.5">Select Point on Map</p>
+                    <p class="color-box-label" style="margin-bottom:2rem; opacity:0.5">Spectral Field Mapping</p>
                 </div>
                 
                 <div id="standard-controls">
@@ -148,21 +144,25 @@
 
     <script>
         let targetColor = { r: 0, g: 0, b: 0 };
+        let currentRGB = { r: 128, g: 128, b: 128 };
         let timeLimit = 10;
         let isCheaterMode = false;
-        let currentRGB = { r: 128, g: 128, b: 128 };
+        let gameTimer;
 
         function drawSpectrum() {
             const canvas = document.getElementById('spectrum-map');
             const ctx = canvas.getContext('2d');
-            canvas.width = canvas.offsetWidth;
-            canvas.height = canvas.offsetHeight;
+            
+            // Set internal resolution to match displayed size
+            canvas.width = canvas.clientWidth;
+            canvas.height = canvas.clientHeight;
 
             for (let x = 0; x < canvas.width; x++) {
                 const hue = (x / canvas.width) * 360;
+                // Create a vertical gradient for each column
                 const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-                gradient.addColorStop(0, `hsl(${hue}, 100%, 50%)`); // Brightness top
-                gradient.addColorStop(1, '#000'); // Black bottom
+                gradient.addColorStop(0, `hsl(${hue}, 100%, 50%)`); // Full Color
+                gradient.addColorStop(1, '#000'); // Pure Black
                 ctx.fillStyle = gradient;
                 ctx.fillRect(x, 0, 1, canvas.height);
             }
@@ -170,40 +170,60 @@
 
         function startGame() {
             isCheaterMode = document.getElementById('cheater-checkbox').checked;
-            document.getElementById('standard-controls').style.display = isCheaterMode ? 'none' : 'block';
-            document.getElementById('cheater-controls').style.display = isCheaterMode ? 'block' : 'none';
-
-            if (isCheaterMode) drawSpectrum();
-
-            targetColor = { r: Math.floor(Math.random()*256), g: Math.floor(Math.random()*256), b: Math.floor(Math.random()*256) };
-            timeLimit = parseInt(document.getElementById('timer-select').value);
             
             document.querySelector('.game-setup').classList.remove('active');
             document.querySelector('.game-area').classList.add('active');
             document.querySelector('.results').classList.remove('active');
+
+            // Handle UI switching
+            document.getElementById('standard-controls').style.display = isCheaterMode ? 'none' : 'block';
+            document.getElementById('cheater-controls').style.display = isCheaterMode ? 'block' : 'none';
+
+            if (isCheaterMode) {
+                // Must draw AFTER the container is visible
+                drawSpectrum(); 
+            }
+
+            targetColor = { 
+                r: Math.floor(Math.random()*256), 
+                g: Math.floor(Math.random()*256), 
+                b: Math.floor(Math.random()*256) 
+            };
+            
+            timeLimit = parseInt(document.getElementById('timer-select').value);
             document.getElementById('target-color').style.backgroundColor = `rgb(${targetColor.r},${targetColor.g},${targetColor.b})`;
             
+            // Reset state
+            currentRGB = { r: 128, g: 128, b: 128 };
             updateColor();
             startTimer();
         }
 
-        // Handle Map Click
-        document.getElementById('spectrum-map').addEventListener('mousedown', function(e) {
-            const rect = this.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            const ctx = this.getContext('2d');
+        function handleCanvasClick(e) {
+            const canvas = document.getElementById('spectrum-map');
+            const rect = canvas.getBoundingClientRect();
+            const x = Math.floor(e.clientX - rect.left);
+            const y = Math.floor(e.clientY - rect.top);
+            
+            const ctx = canvas.getContext('2d');
             const data = ctx.getImageData(x, y, 1, 1).data;
             
             currentRGB = { r: data[0], g: data[1], b: data[2] };
             document.getElementById('user-color').style.backgroundColor = `rgb(${data[0]}, ${data[1]}, ${data[2]})`;
+        }
+
+        // Attach mouse events to the spectrum map
+        const spectrumMap = document.getElementById('spectrum-map');
+        spectrumMap.addEventListener('mousedown', handleCanvasClick);
+        spectrumMap.addEventListener('mousemove', (e) => {
+            if (e.buttons === 1) handleCanvasClick(e);
         });
 
         function updateColor() {
             if (!isCheaterMode) {
-                currentRGB.r = document.getElementById('red-slider').value;
-                currentRGB.g = document.getElementById('green-slider').value;
-                currentRGB.b = document.getElementById('blue-slider').value;
+                currentRGB.r = parseInt(document.getElementById('red-slider').value);
+                currentRGB.g = parseInt(document.getElementById('green-slider').value);
+                currentRGB.b = parseInt(document.getElementById('blue-slider').value);
                 document.getElementById('r-value').textContent = currentRGB.r.toString().padStart(3, '0');
                 document.getElementById('g-value').textContent = currentRGB.g.toString().padStart(3, '0');
                 document.getElementById('b-value').textContent = currentRGB.b.toString().padStart(3, '0');
@@ -214,15 +234,23 @@
         function startTimer() {
             let remaining = timeLimit;
             document.getElementById('timer').textContent = remaining.toString().padStart(2, '0');
-            const interval = setInterval(() => {
+            if (gameTimer) clearInterval(gameTimer);
+            
+            gameTimer = setInterval(() => {
                 remaining--;
                 document.getElementById('timer').textContent = remaining.toString().padStart(2, '0');
-                if (remaining <= 0) { clearInterval(interval); endGame(); }
+                if (remaining <= 0) { 
+                    clearInterval(gameTimer); 
+                    endGame(); 
+                }
             }, 1000);
         }
 
         function endGame() {
-            const dr = targetColor.r - currentRGB.r, dg = targetColor.g - currentRGB.g, db = targetColor.b - currentRGB.b;
+            const dr = targetColor.r - currentRGB.r;
+            const dg = targetColor.g - currentRGB.g;
+            const db = targetColor.b - currentRGB.b;
+            
             const distance = Math.sqrt(2*dr*dr + 4*dg*dg + 3*db*db);
             const percentage = Math.max(0, Math.round((1 - distance / 765) * 100));
             
@@ -230,12 +258,18 @@
             document.querySelector('.results').classList.add('active');
             document.getElementById('match-percentage').textContent = percentage + '%';
             
-            let status = percentage >= 98 ? 'Absolute Precision' : percentage >= 90 ? 'High Accuracy' : percentage >= 70 ? 'Standard Deviation' : 'Tolerance Failure';
+            let status = percentage >= 98 ? 'Absolute Precision' : 
+                         percentage >= 90 ? 'High Accuracy' : 
+                         percentage >= 70 ? 'Standard Deviation' : 'Tolerance Failure';
+            
             if (isCheaterMode) status += ' (Assisted)';
             document.getElementById('status-text').textContent = status;
         }
 
         function resetGame() {
+            document.getElementById('red-slider').value = 128;
+            document.getElementById('green-slider').value = 128;
+            document.getElementById('blue-slider').value = 128;
             document.querySelector('.game-setup').classList.add('active');
             document.querySelector('.game-area').classList.remove('active');
             document.querySelector('.results').classList.remove('active');
