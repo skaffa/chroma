@@ -17,178 +17,67 @@
             --b-channel: #3b82f6;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            user-select: none;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
         body {
             font-family: 'Inter', -apple-system, system-ui, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background-color: var(--bg);
-            color: var(--text-main);
+            display: flex; justify-content: center; align-items: center;
+            min-height: 100vh; background-color: var(--bg); color: var(--text-main);
         }
 
         .container {
-            background: var(--card);
-            padding: 3.5rem;
-            border-radius: 2px;
-            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.8);
-            text-align: center;
-            max-width: 440px;
-            width: 90%;
-            border: 1px solid var(--border);
+            background: var(--card); padding: 3.5rem; border-radius: 2px;
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.8); text-align: center;
+            max-width: 440px; width: 90%; border: 1px solid var(--border);
         }
 
-        h1 {
-            font-size: 0.75rem;
-            font-weight: 400;
-            margin-bottom: 3rem;
-            text-transform: uppercase;
-            letter-spacing: 0.4em;
-            color: var(--text-muted);
-        }
+        h1 { font-size: 0.75rem; font-weight: 400; margin-bottom: 3rem; text-transform: uppercase; letter-spacing: 0.4em; color: var(--text-muted); }
 
         .game-setup, .game-area, .results { display: none; }
         .active { display: block; }
 
         /* Color Display */
         .color-boxes {
-            display: flex;
-            gap: 1px;
-            justify-content: center;
-            margin: 0 0 3rem 0;
-            background: var(--border);
-            padding: 1px;
-            border-radius: 4px;
-            overflow: hidden;
+            display: flex; gap: 1px; justify-content: center; margin: 0 0 3rem 0;
+            background: var(--border); padding: 1px; border-radius: 4px; overflow: hidden;
         }
 
         .color-box-container { flex: 1; background: var(--card); }
-        .color-box {
-            width: 100%;
-            aspect-ratio: 1.2/1;
-            transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+        .color-box { width: 100%; aspect-ratio: 1.2/1; transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
+        .color-box-label { display: block; padding: 10px 0; font-size: 0.65rem; font-weight: 600; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.1em; }
 
-        .color-box-label {
-            display: block;
-            padding: 10px 0;
-            font-size: 0.65rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            color: var(--text-muted);
-            letter-spacing: 0.1em;
+        /* Cheater Canvas */
+        #spectrum-map {
+            width: 100%; height: 180px; border: 1px solid var(--border);
+            cursor: crosshair; border-radius: 2px; margin-bottom: 1rem;
         }
 
         /* Controls */
         .slider-group { margin-bottom: 2rem; }
-        .slider-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 12px;
-            font-size: 0.7rem;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
+        .slider-header { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 0.7rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; }
         .label-r { color: var(--r-channel); }
         .label-g { color: var(--g-channel); }
         .label-b { color: var(--b-channel); }
         .slider-value { font-family: monospace; color: var(--text-main); }
 
-        input[type="range"] {
-            -webkit-appearance: none;
-            width: 100%;
-            height: 2px;
-            background: var(--border);
-            outline: none;
-        }
-
-        input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 2px;
-            height: 16px;
-            background: var(--accent);
-            cursor: pointer;
-        }
+        input[type="range"] { -webkit-appearance: none; width: 100%; height: 2px; background: var(--border); outline: none; }
+        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 2px; height: 16px; background: var(--accent); cursor: pointer; }
 
         #red-slider { background: linear-gradient(90deg, #1a0505, #ef444433); }
         #green-slider { background: linear-gradient(90deg, #051a0a, #22c55e33); }
         #blue-slider { background: linear-gradient(90deg, #050a1a, #3b82f633); }
         
-        #hue-slider {
-            background: linear-gradient(to right, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00) !important;
-            height: 4px !important;
-        }
-
-        /* Mode Toggle Styling */
-        .mode-toggle {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            margin-bottom: 2rem;
-            cursor: pointer;
-        }
-
-        .toggle-switch {
-            width: 32px;
-            height: 16px;
-            background: var(--border);
-            position: relative;
-        }
-
-        .toggle-switch::after {
-            content: '';
-            position: absolute;
-            width: 8px;
-            height: 8px;
-            background: var(--text-muted);
-            top: 4px;
-            left: 4px;
-            transition: 0.2s;
-        }
-
+        /* Toggle */
+        .mode-toggle { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 2rem; cursor: pointer; }
+        .toggle-switch { width: 32px; height: 16px; background: var(--border); position: relative; }
+        .toggle-switch::after { content: ''; position: absolute; width: 8px; height: 8px; background: var(--text-muted); top: 4px; left: 4px; transition: 0.2s; }
         #cheater-checkbox:checked + .toggle-switch { background: var(--text-muted); }
         #cheater-checkbox:checked + .toggle-switch::after { left: 20px; background: var(--accent); }
         #cheater-checkbox { display: none; }
 
-        /* General UI */
-        button {
-            width: 100%;
-            padding: 16px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            background: none;
-            color: var(--text-main);
-            border: 1px solid var(--border);
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
+        button { width: 100%; padding: 16px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.2em; background: none; color: var(--text-main); border: 1px solid var(--border); cursor: pointer; transition: 0.3s; }
         button:hover { background: var(--text-main); color: var(--bg); }
 
-        select {
-            background: var(--bg);
-            color: var(--text-main);
-            border: 1px solid var(--border);
-            padding: 12px;
-            width: 100%;
-            font-size: 0.75rem;
-            margin-bottom: 1rem;
-            appearance: none;
-            text-align: center;
-        }
-
+        select { background: var(--bg); color: var(--text-main); border: 1px solid var(--border); padding: 12px; width: 100%; font-size: 0.75rem; margin-bottom: 1rem; appearance: none; text-align: center; border-radius: 0; }
         .timer { font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin-bottom: 2rem; letter-spacing: 0.1em; }
         .match-percentage { font-size: 5rem; font-weight: 200; color: var(--text-main); margin: 1rem 0; letter-spacing: -0.05em; }
         .status-text { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--text-muted); margin-bottom: 3rem; }
@@ -229,10 +118,8 @@
 
             <div class="controls">
                 <div id="cheater-controls" style="display: none;">
-                    <div class="slider-group">
-                        <div class="slider-header"><span class="label-g" style="color:var(--accent)">Hue Spectrum</span></div>
-                        <input type="range" id="hue-slider" min="0" max="360" value="180" oninput="updateFromHue()">
-                    </div>
+                    <canvas id="spectrum-map"></canvas>
+                    <p class="color-box-label" style="margin-bottom:2rem; opacity:0.5">Select Point on Map</p>
                 </div>
                 
                 <div id="standard-controls">
@@ -263,11 +150,30 @@
         let targetColor = { r: 0, g: 0, b: 0 };
         let timeLimit = 10;
         let isCheaterMode = false;
+        let currentRGB = { r: 128, g: 128, b: 128 };
+
+        function drawSpectrum() {
+            const canvas = document.getElementById('spectrum-map');
+            const ctx = canvas.getContext('2d');
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+
+            for (let x = 0; x < canvas.width; x++) {
+                const hue = (x / canvas.width) * 360;
+                const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+                gradient.addColorStop(0, `hsl(${hue}, 100%, 50%)`); // Brightness top
+                gradient.addColorStop(1, '#000'); // Black bottom
+                ctx.fillStyle = gradient;
+                ctx.fillRect(x, 0, 1, canvas.height);
+            }
+        }
 
         function startGame() {
             isCheaterMode = document.getElementById('cheater-checkbox').checked;
             document.getElementById('standard-controls').style.display = isCheaterMode ? 'none' : 'block';
             document.getElementById('cheater-controls').style.display = isCheaterMode ? 'block' : 'none';
+
+            if (isCheaterMode) drawSpectrum();
 
             targetColor = { r: Math.floor(Math.random()*256), g: Math.floor(Math.random()*256), b: Math.floor(Math.random()*256) };
             timeLimit = parseInt(document.getElementById('timer-select').value);
@@ -277,44 +183,32 @@
             document.querySelector('.results').classList.remove('active');
             document.getElementById('target-color').style.backgroundColor = `rgb(${targetColor.r},${targetColor.g},${targetColor.b})`;
             
-            if(isCheaterMode) updateFromHue();
-            else updateColor();
-            
+            updateColor();
             startTimer();
         }
 
+        // Handle Map Click
+        document.getElementById('spectrum-map').addEventListener('mousedown', function(e) {
+            const rect = this.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const ctx = this.getContext('2d');
+            const data = ctx.getImageData(x, y, 1, 1).data;
+            
+            currentRGB = { r: data[0], g: data[1], b: data[2] };
+            document.getElementById('user-color').style.backgroundColor = `rgb(${data[0]}, ${data[1]}, ${data[2]})`;
+        });
+
         function updateColor() {
-            const r = document.getElementById('red-slider').value;
-            const g = document.getElementById('green-slider').value;
-            const b = document.getElementById('blue-slider').value;
-            document.getElementById('r-value').textContent = r.padStart(3, '0');
-            document.getElementById('g-value').textContent = g.padStart(3, '0');
-            document.getElementById('b-value').textContent = b.padStart(3, '0');
-            document.getElementById('user-color').style.backgroundColor = `rgb(${r},${g},${b})`;
-        }
-
-        function updateFromHue() {
-            const h = document.getElementById('hue-slider').value / 360;
-            const rgb = hslToRgb(h, 1, 0.5);
-            document.getElementById('red-slider').value = rgb.r;
-            document.getElementById('green-slider').value = rgb.g;
-            document.getElementById('blue-slider').value = rgb.b;
-            document.getElementById('user-color').style.backgroundColor = `rgb(${rgb.r},${rgb.g},${rgb.b})`;
-        }
-
-        function hslToRgb(h, s, l) {
-            let r, g, b;
-            const hue2rgb = (p, q, t) => {
-                if (t < 0) t += 1; if (t > 1) t -= 1;
-                if (t < 1/6) return p + (q - p) * 6 * t;
-                if (t < 1/2) return q;
-                if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
-                return p;
-            };
-            const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-            const p = 2 * l - q;
-            r = hue2rgb(p, q, h + 1/3); g = hue2rgb(p, q, h); b = hue2rgb(p, q, h - 1/3);
-            return { r: Math.round(r * 255), g: Math.round(g * 255), b: Math.round(b * 255) };
+            if (!isCheaterMode) {
+                currentRGB.r = document.getElementById('red-slider').value;
+                currentRGB.g = document.getElementById('green-slider').value;
+                currentRGB.b = document.getElementById('blue-slider').value;
+                document.getElementById('r-value').textContent = currentRGB.r.toString().padStart(3, '0');
+                document.getElementById('g-value').textContent = currentRGB.g.toString().padStart(3, '0');
+                document.getElementById('b-value').textContent = currentRGB.b.toString().padStart(3, '0');
+            }
+            document.getElementById('user-color').style.backgroundColor = `rgb(${currentRGB.r},${currentRGB.g},${currentRGB.b})`;
         }
 
         function startTimer() {
@@ -328,10 +222,7 @@
         }
 
         function endGame() {
-            const r = parseInt(document.getElementById('red-slider').value);
-            const g = parseInt(document.getElementById('green-slider').value);
-            const b = parseInt(document.getElementById('blue-slider').value);
-            const dr = targetColor.r - r, dg = targetColor.g - g, db = targetColor.b - b;
+            const dr = targetColor.r - currentRGB.r, dg = targetColor.g - currentRGB.g, db = targetColor.b - currentRGB.b;
             const distance = Math.sqrt(2*dr*dr + 4*dg*dg + 3*db*db);
             const percentage = Math.max(0, Math.round((1 - distance / 765) * 100));
             
@@ -340,14 +231,11 @@
             document.getElementById('match-percentage').textContent = percentage + '%';
             
             let status = percentage >= 98 ? 'Absolute Precision' : percentage >= 90 ? 'High Accuracy' : percentage >= 70 ? 'Standard Deviation' : 'Tolerance Failure';
-            if (isCheaterMode && percentage > 90) status += ' (Assisted)';
+            if (isCheaterMode) status += ' (Assisted)';
             document.getElementById('status-text').textContent = status;
         }
 
         function resetGame() {
-            document.getElementById('red-slider').value = 128;
-            document.getElementById('green-slider').value = 128;
-            document.getElementById('blue-slider').value = 128;
             document.querySelector('.game-setup').classList.add('active');
             document.querySelector('.game-area').classList.remove('active');
             document.querySelector('.results').classList.remove('active');
