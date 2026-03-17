@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chroma | Precision Matching</title>
+    <style>
+        :root {
+            --bg: #0a0a0c;
+            --card: #141417;
+            --accent: #ffffff;
+            --text-main: #e4e4e7;
+            --text-muted: #71717a;
+            --border: #27272a;
+            /* Channel Colors */
+            --r-channel: #ef4444;
+            --g-channel: #22c55e;
+            --b-channel: #3b82f6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, system-ui, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: var(--bg);
+            color: var(--text-main);
+            transition: background 0.5s ease;
+        }
+
+        .container {
+            background: var(--card);
+            padding: 3.5rem;
+            border-radius: 2px; /* Sharp, professional corners */
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.8);
+            text-align: center;
+            max-width: 440px;
+            width: 90%;
+            border: 1px solid var(--border);
+        }
+
+        h1 {
+            font-size: 0.75rem;
+            font-weight: 400;
+            margin-bottom: 3rem;
+            text-transform: uppercase;
+            letter-spacing: 0.4em;
+            color: var(--text-muted);
+        }
+
+        /* Visibility States */
+        .game-setup, .game-area, .results { display: none; }
+        .active { display: block; }
+
+        /* Color Display */
+        .color-boxes {
+            display: flex;
+            gap: 1px; /* Minimalist seam */
+            justify-content: center;
+            margin: 0 0 3rem 0;
+            background: var(--border);
+            padding: 1px;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .color-box-container {
+            flex: 1;
+            background: var(--card);
+        }
+
+        .color-box {
+            width: 100%;
+            aspect-ratio: 1.2/1;
+            transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .color-box-label {
+            display: block;
+            padding: 10px 0;
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            letter-spacing: 0.1em;
+            background: var(--card);
+        }
+
+        /* Stylized Sliders */
+        .controls {
+            margin-top: 1rem;
+        }
+
+        .slider-group {
+            margin-bottom: 2rem;
+        }
+
+        .slider-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .label-r { color: var(--r-channel); }
+        .label-g { color: var(--g-channel); }
+        .label-b { color: var(--b-channel); }
+
+        .slider-value {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text-main);
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 2px;
+            background: var(--border);
+            outline: none;
+        }
+
+        /* Slider Thumbs */
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 2px;
+            height: 16px;
+            background: var(--accent);
+            cursor: pointer;
+            transition: height 0.2s;
+        }
+
+        input[type="range"]:active::-webkit-slider-thumb {
+            height: 24px;
+        }
+
+        /* Target Channel Backgrounds */
+        #red-slider { background: linear-gradient(90deg, #1a0505, #ef444433); }
+        #green-slider { background: linear-gradient(90deg, #051a0a, #22c55e33); }
+        #blue-slider { background: linear-gradient(90deg, #050a1a, #3b82f633); }
+
+        /* Buttons */
+        button {
+            width: 100%;
+            padding: 16px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            background: none;
+            color: var(--text-main);
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background: var(--text-main);
+            color: var(--bg);
+        }
+
+        .timer {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            letter-spacing: 0.1em;
+        }
+
+        .match-percentage {
+            font-size: 5rem;
+            font-weight: 200;
+            color: var(--text-main);
+            margin: 1rem 0;
+            letter-spacing: -0.05em;
+        }
+
+        .status-text {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--text-muted);
+            margin-bottom: 3rem;
+        }
+
+        select {
+            background: var(--bg);
+            color: var(--text-main);
+            border: 1px solid var(--border);
+            padding: 12px;
+            width: 100%;
+            font-size: 0.75rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0;
+            outline: none;
+            appearance: none;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Chroma</h1>
+        
+        <div class="game-setup active">
+            <select id="timer-select">
+                <option value="5">05 SECONDS</option>
+                <option value="10" selected>10 SECONDS</option>
+                <option value="20">20 SECONDS</option>
+            </select>
+            <button onclick="startGame()">Begin Session</button>
+        </div>
+
+        <div class="game-area">
+            <div class="timer" id="timer">00</div>
+            
+            <div class="color-boxes">
+                <div class="color-box-container">
+                    <div class="color-box" id="target-color"></div>
+                    <span class="color-box-label">Reference</span>
+                </div>
+                <div class="color-box-container">
+                    <div class="color-box" id="user-color"></div>
+                    <span class="color-box-label">Output</span>
+                </div>
+            </div>
+
+            <div class="controls">
+                <div class="slider-group">
+                    <div class="slider-header">
+                        <span class="label-r">Channel R</span>
+                        <span class="slider-value" id="r-value">128</span>
+                    </div>
+                    <input type="range" id="red-slider" min="0" max="255" value="128" oninput="updateColor()">
+                </div>
+                <div class="slider-group">
+                    <div class="slider-header">
+                        <span class="label-g">Channel G</span>
+                        <span class="slider-value" id="g-value">128</span>
+                    </div>
+                    <input type="range" id="green-slider" min="0" max="255" value="128" oninput="updateColor()">
+                </div>
+                <div class="slider-group">
+                    <div class="slider-header">
+                        <span class="label-b">Channel B</span>
+                        <span class="slider-value" id="b-value">128</span>
+                    </div>
+                    <input type="range" id="blue-slider" min="0" max="255" value="128" oninput="updateColor()">
+                </div>
+            </div>
+        </div>
+
+        <div class="results">
+            <div class="match-percentage" id="match-percentage">0%</div>
+            <p class="status-text" id="status-text"></p>
+            <button onclick="resetGame()">Retry</button>
+        </div>
+    </div>
+
+    <script>
+        let targetColor = { r: 0, g: 0, b: 0 };
+        let timeLimit = 10;
+
+        function startGame() {
+            targetColor = {
+                r: Math.floor(Math.random() * 256),
+                g: Math.floor(Math.random() * 256),
+                b: Math.floor(Math.random() * 256)
+            };
+            
+            timeLimit = parseInt(document.getElementById('timer-select').value);
+            document.querySelector('.game-setup').classList.remove('active');
+            document.querySelector('.game-area').classList.add('active');
+            document.querySelector('.results').classList.remove('active');
+            
+            document.getElementById('target-color').style.backgroundColor = 
+                `rgb(${targetColor.r}, ${targetColor.g}, ${targetColor.b})`;
+            
+            startTimer();
+        }
+
+        function updateColor() {
+            const r = document.getElementById('red-slider').value;
+            const g = document.getElementById('green-slider').value;
+            const b = document.getElementById('blue-slider').value;
+            
+            document.getElementById('r-value').textContent = r.padStart(3, '0');
+            document.getElementById('g-value').textContent = g.padStart(3, '0');
+            document.getElementById('b-value').textContent = b.padStart(3, '0');
+            
+            document.getElementById('user-color').style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+        }
+
+        function startTimer() {
+            let remaining = timeLimit;
+            document.getElementById('timer').textContent = remaining.toString().padStart(2, '0');
+            
+            const interval = setInterval(() => {
+                remaining--;
+                document.getElementById('timer').textContent = remaining.toString().padStart(2, '0');
+                
+                if (remaining <= 0) {
+                    clearInterval(interval);
+                    endGame();
+                }
+            }, 1000);
+        }
+
+        function calculateMatch(r, g, b) {
+            const dr = targetColor.r - r;
+            const dg = targetColor.g - g;
+            const db = targetColor.b - b;
+            
+            // Perceptual Weighted Euclidean Distance
+            const distance = Math.sqrt(2 * dr * dr + 4 * dg * dg + 3 * db * db);
+            const maxDistance = 765; 
+            
+            return Math.max(0, Math.round((1 - distance / maxDistance) * 100));
+        }
+
+        function endGame() {
+            const r = parseInt(document.getElementById('red-slider').value);
+            const g = parseInt(document.getElementById('green-slider').value);
+            const b = parseInt(document.getElementById('blue-slider').value);
+            
+            const percentage = calculateMatch(r, g, b);
+            
+            document.querySelector('.game-area').classList.remove('active');
+            document.querySelector('.results').classList.add('active');
+            
+            document.getElementById('match-percentage').textContent = percentage + '%';
+            
+            let status = '';
+            if (percentage >= 98) status = 'Absolute Precision';
+            else if (percentage >= 90) status = 'High Accuracy';
+            else if (percentage >= 70) status = 'Standard Deviation';
+            else status = 'Tolerance Failure';
+            
+            document.getElementById('status-text').textContent = status;
+        }
+
+        function resetGame() {
+            document.getElementById('red-slider').value = 128;
+            document.getElementById('green-slider').value = 128;
+            document.getElementById('blue-slider').value = 128;
+            updateColor();
+            
+            document.querySelector('.game-setup').classList.add('active');
+            document.querySelector('.game-area').classList.remove('active');
+            document.querySelector('.results').classList.remove('active');
+        }
+
+        updateColor();
+    </script>
+</body>
+</html>
