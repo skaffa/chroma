@@ -12,7 +12,6 @@
             --text-main: #e4e4e7;
             --text-muted: #71717a;
             --border: #27272a;
-            /* Channel Colors */
             --r-channel: #ef4444;
             --g-channel: #22c55e;
             --b-channel: #3b82f6;
@@ -33,13 +32,12 @@
             min-height: 100vh;
             background-color: var(--bg);
             color: var(--text-main);
-            transition: background 0.5s ease;
         }
 
         .container {
             background: var(--card);
             padding: 3.5rem;
-            border-radius: 2px; /* Sharp, professional corners */
+            border-radius: 2px;
             box-shadow: 0 40px 100px rgba(0, 0, 0, 0.8);
             text-align: center;
             max-width: 440px;
@@ -56,14 +54,13 @@
             color: var(--text-muted);
         }
 
-        /* Visibility States */
         .game-setup, .game-area, .results { display: none; }
         .active { display: block; }
 
         /* Color Display */
         .color-boxes {
             display: flex;
-            gap: 1px; /* Minimalist seam */
+            gap: 1px;
             justify-content: center;
             margin: 0 0 3rem 0;
             background: var(--border);
@@ -72,11 +69,7 @@
             overflow: hidden;
         }
 
-        .color-box-container {
-            flex: 1;
-            background: var(--card);
-        }
-
+        .color-box-container { flex: 1; background: var(--card); }
         .color-box {
             width: 100%;
             aspect-ratio: 1.2/1;
@@ -91,18 +84,10 @@
             text-transform: uppercase;
             color: var(--text-muted);
             letter-spacing: 0.1em;
-            background: var(--card);
         }
 
-        /* Stylized Sliders */
-        .controls {
-            margin-top: 1rem;
-        }
-
-        .slider-group {
-            margin-bottom: 2rem;
-        }
-
+        /* Controls */
+        .slider-group { margin-bottom: 2rem; }
         .slider-header {
             display: flex;
             justify-content: space-between;
@@ -116,11 +101,7 @@
         .label-r { color: var(--r-channel); }
         .label-g { color: var(--g-channel); }
         .label-b { color: var(--b-channel); }
-
-        .slider-value {
-            font-family: 'JetBrains Mono', monospace;
-            color: var(--text-main);
-        }
+        .slider-value { font-family: monospace; color: var(--text-main); }
 
         input[type="range"] {
             -webkit-appearance: none;
@@ -130,26 +111,56 @@
             outline: none;
         }
 
-        /* Slider Thumbs */
         input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
             width: 2px;
             height: 16px;
             background: var(--accent);
             cursor: pointer;
-            transition: height 0.2s;
         }
 
-        input[type="range"]:active::-webkit-slider-thumb {
-            height: 24px;
-        }
-
-        /* Target Channel Backgrounds */
         #red-slider { background: linear-gradient(90deg, #1a0505, #ef444433); }
         #green-slider { background: linear-gradient(90deg, #051a0a, #22c55e33); }
         #blue-slider { background: linear-gradient(90deg, #050a1a, #3b82f633); }
+        
+        #hue-slider {
+            background: linear-gradient(to right, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00) !important;
+            height: 4px !important;
+        }
 
-        /* Buttons */
+        /* Mode Toggle Styling */
+        .mode-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 2rem;
+            cursor: pointer;
+        }
+
+        .toggle-switch {
+            width: 32px;
+            height: 16px;
+            background: var(--border);
+            position: relative;
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: var(--text-muted);
+            top: 4px;
+            left: 4px;
+            transition: 0.2s;
+        }
+
+        #cheater-checkbox:checked + .toggle-switch { background: var(--text-muted); }
+        #cheater-checkbox:checked + .toggle-switch::after { left: 20px; background: var(--accent); }
+        #cheater-checkbox { display: none; }
+
+        /* General UI */
         button {
             width: 100%;
             padding: 16px;
@@ -161,37 +172,10 @@
             color: var(--text-main);
             border: 1px solid var(--border);
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: 0.3s;
         }
 
-        button:hover {
-            background: var(--text-main);
-            color: var(--bg);
-        }
-
-        .timer {
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--text-muted);
-            margin-bottom: 2rem;
-            letter-spacing: 0.1em;
-        }
-
-        .match-percentage {
-            font-size: 5rem;
-            font-weight: 200;
-            color: var(--text-main);
-            margin: 1rem 0;
-            letter-spacing: -0.05em;
-        }
-
-        .status-text {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            color: var(--text-muted);
-            margin-bottom: 3rem;
-        }
+        button:hover { background: var(--text-main); color: var(--bg); }
 
         select {
             background: var(--bg);
@@ -200,12 +184,14 @@
             padding: 12px;
             width: 100%;
             font-size: 0.75rem;
-            margin-bottom: 1.5rem;
-            border-radius: 0;
-            outline: none;
+            margin-bottom: 1rem;
             appearance: none;
             text-align: center;
         }
+
+        .timer { font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin-bottom: 2rem; letter-spacing: 0.1em; }
+        .match-percentage { font-size: 5rem; font-weight: 200; color: var(--text-main); margin: 1rem 0; letter-spacing: -0.05em; }
+        .status-text { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--text-muted); margin-bottom: 3rem; }
     </style>
 </head>
 <body>
@@ -218,12 +204,18 @@
                 <option value="10" selected>10 SECONDS</option>
                 <option value="20">20 SECONDS</option>
             </select>
+            
+            <label class="mode-toggle">
+                <input type="checkbox" id="cheater-checkbox">
+                <div class="toggle-switch"></div>
+                <span class="color-box-label" style="margin:0">Assisted Spectrum</span>
+            </label>
+
             <button onclick="startGame()">Begin Session</button>
         </div>
 
         <div class="game-area">
             <div class="timer" id="timer">00</div>
-            
             <div class="color-boxes">
                 <div class="color-box-container">
                     <div class="color-box" id="target-color"></div>
@@ -236,26 +228,26 @@
             </div>
 
             <div class="controls">
-                <div class="slider-group">
-                    <div class="slider-header">
-                        <span class="label-r">Channel R</span>
-                        <span class="slider-value" id="r-value">128</span>
+                <div id="cheater-controls" style="display: none;">
+                    <div class="slider-group">
+                        <div class="slider-header"><span class="label-g" style="color:var(--accent)">Hue Spectrum</span></div>
+                        <input type="range" id="hue-slider" min="0" max="360" value="180" oninput="updateFromHue()">
                     </div>
-                    <input type="range" id="red-slider" min="0" max="255" value="128" oninput="updateColor()">
                 </div>
-                <div class="slider-group">
-                    <div class="slider-header">
-                        <span class="label-g">Channel G</span>
-                        <span class="slider-value" id="g-value">128</span>
+                
+                <div id="standard-controls">
+                    <div class="slider-group">
+                        <div class="slider-header"><span class="label-r">Channel R</span><span class="slider-value" id="r-value">128</span></div>
+                        <input type="range" id="red-slider" min="0" max="255" value="128" oninput="updateColor()">
                     </div>
-                    <input type="range" id="green-slider" min="0" max="255" value="128" oninput="updateColor()">
-                </div>
-                <div class="slider-group">
-                    <div class="slider-header">
-                        <span class="label-b">Channel B</span>
-                        <span class="slider-value" id="b-value">128</span>
+                    <div class="slider-group">
+                        <div class="slider-header"><span class="label-g">Channel G</span><span class="slider-value" id="g-value">128</span></div>
+                        <input type="range" id="green-slider" min="0" max="255" value="128" oninput="updateColor()">
                     </div>
-                    <input type="range" id="blue-slider" min="0" max="255" value="128" oninput="updateColor()">
+                    <div class="slider-group">
+                        <div class="slider-header"><span class="label-b">Channel B</span><span class="slider-value" id="b-value">128</span></div>
+                        <input type="range" id="blue-slider" min="0" max="255" value="128" oninput="updateColor()">
+                    </div>
                 </div>
             </div>
         </div>
@@ -270,21 +262,23 @@
     <script>
         let targetColor = { r: 0, g: 0, b: 0 };
         let timeLimit = 10;
+        let isCheaterMode = false;
 
         function startGame() {
-            targetColor = {
-                r: Math.floor(Math.random() * 256),
-                g: Math.floor(Math.random() * 256),
-                b: Math.floor(Math.random() * 256)
-            };
-            
+            isCheaterMode = document.getElementById('cheater-checkbox').checked;
+            document.getElementById('standard-controls').style.display = isCheaterMode ? 'none' : 'block';
+            document.getElementById('cheater-controls').style.display = isCheaterMode ? 'block' : 'none';
+
+            targetColor = { r: Math.floor(Math.random()*256), g: Math.floor(Math.random()*256), b: Math.floor(Math.random()*256) };
             timeLimit = parseInt(document.getElementById('timer-select').value);
+            
             document.querySelector('.game-setup').classList.remove('active');
             document.querySelector('.game-area').classList.add('active');
             document.querySelector('.results').classList.remove('active');
+            document.getElementById('target-color').style.backgroundColor = `rgb(${targetColor.r},${targetColor.g},${targetColor.b})`;
             
-            document.getElementById('target-color').style.backgroundColor = 
-                `rgb(${targetColor.r}, ${targetColor.g}, ${targetColor.b})`;
+            if(isCheaterMode) updateFromHue();
+            else updateColor();
             
             startTimer();
         }
@@ -293,59 +287,60 @@
             const r = document.getElementById('red-slider').value;
             const g = document.getElementById('green-slider').value;
             const b = document.getElementById('blue-slider').value;
-            
             document.getElementById('r-value').textContent = r.padStart(3, '0');
             document.getElementById('g-value').textContent = g.padStart(3, '0');
             document.getElementById('b-value').textContent = b.padStart(3, '0');
-            
-            document.getElementById('user-color').style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+            document.getElementById('user-color').style.backgroundColor = `rgb(${r},${g},${b})`;
+        }
+
+        function updateFromHue() {
+            const h = document.getElementById('hue-slider').value / 360;
+            const rgb = hslToRgb(h, 1, 0.5);
+            document.getElementById('red-slider').value = rgb.r;
+            document.getElementById('green-slider').value = rgb.g;
+            document.getElementById('blue-slider').value = rgb.b;
+            document.getElementById('user-color').style.backgroundColor = `rgb(${rgb.r},${rgb.g},${rgb.b})`;
+        }
+
+        function hslToRgb(h, s, l) {
+            let r, g, b;
+            const hue2rgb = (p, q, t) => {
+                if (t < 0) t += 1; if (t > 1) t -= 1;
+                if (t < 1/6) return p + (q - p) * 6 * t;
+                if (t < 1/2) return q;
+                if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+                return p;
+            };
+            const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+            const p = 2 * l - q;
+            r = hue2rgb(p, q, h + 1/3); g = hue2rgb(p, q, h); b = hue2rgb(p, q, h - 1/3);
+            return { r: Math.round(r * 255), g: Math.round(g * 255), b: Math.round(b * 255) };
         }
 
         function startTimer() {
             let remaining = timeLimit;
             document.getElementById('timer').textContent = remaining.toString().padStart(2, '0');
-            
             const interval = setInterval(() => {
                 remaining--;
                 document.getElementById('timer').textContent = remaining.toString().padStart(2, '0');
-                
-                if (remaining <= 0) {
-                    clearInterval(interval);
-                    endGame();
-                }
+                if (remaining <= 0) { clearInterval(interval); endGame(); }
             }, 1000);
-        }
-
-        function calculateMatch(r, g, b) {
-            const dr = targetColor.r - r;
-            const dg = targetColor.g - g;
-            const db = targetColor.b - b;
-            
-            // Perceptual Weighted Euclidean Distance
-            const distance = Math.sqrt(2 * dr * dr + 4 * dg * dg + 3 * db * db);
-            const maxDistance = 765; 
-            
-            return Math.max(0, Math.round((1 - distance / maxDistance) * 100));
         }
 
         function endGame() {
             const r = parseInt(document.getElementById('red-slider').value);
             const g = parseInt(document.getElementById('green-slider').value);
             const b = parseInt(document.getElementById('blue-slider').value);
-            
-            const percentage = calculateMatch(r, g, b);
+            const dr = targetColor.r - r, dg = targetColor.g - g, db = targetColor.b - b;
+            const distance = Math.sqrt(2*dr*dr + 4*dg*dg + 3*db*db);
+            const percentage = Math.max(0, Math.round((1 - distance / 765) * 100));
             
             document.querySelector('.game-area').classList.remove('active');
             document.querySelector('.results').classList.add('active');
-            
             document.getElementById('match-percentage').textContent = percentage + '%';
             
-            let status = '';
-            if (percentage >= 98) status = 'Absolute Precision';
-            else if (percentage >= 90) status = 'High Accuracy';
-            else if (percentage >= 70) status = 'Standard Deviation';
-            else status = 'Tolerance Failure';
-            
+            let status = percentage >= 98 ? 'Absolute Precision' : percentage >= 90 ? 'High Accuracy' : percentage >= 70 ? 'Standard Deviation' : 'Tolerance Failure';
+            if (isCheaterMode && percentage > 90) status += ' (Assisted)';
             document.getElementById('status-text').textContent = status;
         }
 
@@ -353,14 +348,10 @@
             document.getElementById('red-slider').value = 128;
             document.getElementById('green-slider').value = 128;
             document.getElementById('blue-slider').value = 128;
-            updateColor();
-            
             document.querySelector('.game-setup').classList.add('active');
             document.querySelector('.game-area').classList.remove('active');
             document.querySelector('.results').classList.remove('active');
         }
-
-        updateColor();
     </script>
 </body>
 </html>
