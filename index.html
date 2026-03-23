@@ -3,225 +3,277 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chroma | Multi-Space Engine</title>
+    <title>Chroma | Master Edition</title>
     <style>
         :root {
-            --bg: #0a0a0c;
-            --card: #141417;
-            --accent: #ffffff;
-            --text-main: #e4e4e7;
-            --text-muted: #71717a;
-            --border: #27272a;
+            --bg: #0a0a0c; --card: #141417; --accent: #ffffff;
+            --text-main: #e4e4e7; --text-muted: #71717a; --border: #27272a;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
-        body {
-            font-family: 'Inter', -apple-system, system-ui, sans-serif;
-            display: flex; justify-content: center; align-items: center;
-            min-height: 100vh; background-color: var(--bg); color: var(--text-main);
-        }
+        body { font-family: 'Inter', -apple-system, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; background-color: var(--bg); color: var(--text-main); }
+        
+        .container { background: var(--card); padding: 3rem; border-radius: 2px; box-shadow: 0 40px 100px rgba(0,0,0,0.8); text-align: center; max-width: 460px; width: 95%; border: 1px solid var(--border); position: relative; }
+        
+        h1 { font-size: 0.85rem; font-weight: 400; margin-bottom: 2rem; text-transform: uppercase; letter-spacing: 0.5em; color: var(--text-muted); display: flex; justify-content: center; align-items: center; gap: 10px; }
+        
+        /* SVG Icon Utilities */
+        .icon { width: 14px; height: 14px; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; fill: none; }
+        .icon-sm { width: 12px; height: 12px; }
+        
+        .info-btn { flex: none; width: 24px; height: 24px; padding: 0; border: 1px solid var(--border); border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--text-muted); transition: 0.2s; background: none; }
+        .info-btn:hover { color: var(--bg); background: var(--text-muted); }
 
-        .container {
-            background: var(--card); padding: 3.5rem; border-radius: 2px;
-            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.8); text-align: center;
-            max-width: 440px; width: 90%; border: 1px solid var(--border);
-        }
-
-        h1 { font-size: 0.75rem; font-weight: 400; margin-bottom: 3rem; text-transform: uppercase; letter-spacing: 0.4em; color: var(--text-muted); }
-
-        .game-setup, .game-area, .results { display: none; }
+        .game-setup, .daily-menu, .game-area, .results, .info-modal { display: none; }
         .active { display: block; }
 
-        /* Color Boxes (Now shared between game and results) */
-        .color-boxes {
-            display: flex; gap: 1px; justify-content: center; margin: 0 0 2rem 0;
-            background: var(--border); padding: 1px; border-radius: 4px; overflow: hidden;
+        /* Floating Shared Config Banner */
+        .shared-banner { 
+            position: absolute; top: calc(100% + 15px); left: 0; width: 100%;
+            background: var(--card); border: 1px solid #3b82f6; padding: 16px; 
+            border-radius: 4px; text-align: left; box-shadow: 0 20px 50px rgba(0,0,0,0.5);
         }
+        .shared-banner-title { font-size: 0.65rem; font-weight: 700; color: #3b82f6; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
+        .shared-banner-text { font-size: 0.7rem; color: var(--text-main); margin-bottom: 12px; line-height: 1.4; }
+        .shared-banner-btns { display: flex; gap: 8px; }
+        .shared-banner-btns button { padding: 10px; font-size: 0.6rem; }
+        .btn-save { border-color: #3b82f6; color: #3b82f6; }
+        .btn-save:hover { background: #3b82f6; color: var(--bg); }
 
-        .color-box-container { flex: 1; background: var(--card); }
-        .color-box { width: 100%; aspect-ratio: 1.2/1; transition: background-color 0.1s; }
-        .color-box-label { display: block; padding: 10px 0; font-size: 0.65rem; font-weight: 600; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.1em; }
+        /* Modal */
+        .info-modal { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--card); z-index: 100; padding: 2rem; text-align: left; overflow-y: auto; border: 1px solid var(--border); }
+        .info-modal h2 { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1rem; color: var(--accent); }
+        .info-modal p { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.8rem; line-height: 1.5; }
+        .info-modal b { color: var(--text-main); }
+        
+        /* Daily Challenges Menu */
+        .daily-card { border: 1px solid var(--border); padding: 16px; border-radius: 4px; cursor: pointer; text-align: left; transition: 0.2s; background: var(--bg); margin-bottom: 10px; display: flex; flex-direction: column; gap: 8px; }
+        .daily-card:hover { border-color: #3b82f6; background: rgba(59, 130, 246, 0.05); }
+        .daily-card-title { font-size: 0.7rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.1em; display: flex; justify-content: space-between; align-items: center; }
+        .daily-card-desc { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+        .diff-badge { padding: 3px 6px; border-radius: 3px; font-size: 0.55rem; font-weight: 800; letter-spacing: 0.15em; border: 1px solid; }
 
-        /* Hardcore Text Styling */
-        #target-color {
-            display: flex; align-items: center; justify-content: center;
-            font-family: monospace; font-size: 0.85rem; font-weight: 600;
-            color: var(--text-main); text-align: center; letter-spacing: 0.05em;
-        }
+        /* Gameplay Area UI */
+        .game-objective { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); margin-bottom: 1rem; }
+        .timer { font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin-bottom: 1.5rem; letter-spacing: 0.1em; }
+        
+        /* Color Boxes */
+        .color-boxes { display: flex; gap: 2px; justify-content: center; margin: 0 0 2rem 0; }
+        .illusion-frame { flex: 1; padding: 1px; background: var(--border); border-radius: 4px; transition: padding 0.3s, background-color 0.3s; }
+        .illusion-frame.active-illusion { padding: 16px; }
+        .color-box { width: 100%; aspect-ratio: 1.2/1; transition: background-color 0.1s; display: flex; align-items: center; justify-content: center; font-family: monospace; font-size: 0.7rem; font-weight: 600; text-align: center; letter-spacing: 0.05em; color: var(--text-main); }
+        .color-box-label { display: block; padding: 10px 0; font-size: 0.65rem; font-weight: 600; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.1em; text-align: center; }
 
         /* Canvas Mapping */
-        .canvas-wrapper { position: relative; width: 100%; height: 180px; margin-bottom: 1rem; }
-        #spectrum-map { width: 100%; height: 100%; border: 1px solid var(--border); cursor: crosshair; border-radius: 2px; display: block; }
-        #selector-dot {
-            position: absolute; width: 14px; height: 14px; 
-            border: 2px solid white; border-radius: 50%; 
-            transform: translate(-50%, -50%); pointer-events: none;
-            box-shadow: 0 0 0 1px black; display: none; z-index: 10;
-        }
+        .canvas-wrapper { position: relative; width: 100%; height: 160px; margin-bottom: 1rem; }
+        #spectrum-map { width: 100%; height: 100%; border: 1px solid var(--border); cursor: crosshair; display: block; }
+        #selector-dot { position: absolute; width: 14px; height: 14px; border: 2px solid white; border-radius: 50%; transform: translate(-50%, -50%); pointer-events: none; box-shadow: 0 0 0 1px black; display: none; z-index: 10; }
 
-        /* Radio Group */
-        .space-selector {
-            display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 2rem;
-            transition: opacity 0.3s ease;
-        }
-        .radio-label {
-            display: inline-block; 
-            font-size: 0.6rem; text-transform: uppercase; font-weight: 600; letter-spacing: 0.1em;
-            padding: 8px 12px; border: 1px solid var(--border); border-radius: 2px; cursor: pointer;
-            color: var(--text-muted); transition: 0.2s; background: var(--bg);
-        }
+        /* Setup Grid */
+        .space-selector { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 1.5rem; transition: opacity 0.3s; }
+        .radio-label { display: inline-block; font-size: 0.6rem; text-transform: uppercase; font-weight: 600; letter-spacing: 0.1em; padding: 8px 12px; border: 1px solid var(--border); border-radius: 2px; cursor: pointer; color: var(--text-muted); transition: 0.2s; background: var(--bg); }
         .space-selector input[type="radio"] { display: none; }
-        .space-selector input[type="radio"]:checked + .radio-label {
-            background: var(--text-main); color: var(--bg); border-color: var(--text-main);
-        }
+        .space-selector input[type="radio"]:checked + .radio-label { background: var(--text-main); color: var(--bg); border-color: var(--text-main); }
 
-        /* Sliders */
-        .slider-group { margin-bottom: 2rem; }
-        .slider-header { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 0.7rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-main); }
-        .slider-value { font-family: monospace; color: var(--text-muted); }
+        .config-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1.5rem; }
+        select { background: var(--bg); color: var(--text-main); border: 1px solid var(--border); padding: 10px; font-size: 0.7rem; appearance: none; text-align: center; outline: none; text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; }
 
-        input[type="range"] { -webkit-appearance: none; width: 100%; height: 2px; background: var(--border); outline: none; }
-        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 4px; height: 16px; background: var(--accent); cursor: pointer; }
-
-        .toggles-container { display: flex; justify-content: center; gap: 24px; margin-bottom: 2rem; }
-        .mode-toggle { display: flex; align-items: center; gap: 10px; cursor: pointer; transition: opacity 0.3s; }
+        .toggles-container { display: flex; flex-direction: column; gap: 12px; margin-bottom: 2rem; align-items: flex-start; padding-left: 10%; }
+        .mode-toggle { display: flex; align-items: center; gap: 10px; cursor: pointer; transition: 0.3s; }
         .toggle-switch { width: 32px; height: 16px; background: var(--border); position: relative; border-radius: 2px; }
         .toggle-switch::after { content: ''; position: absolute; width: 8px; height: 8px; background: var(--text-muted); top: 4px; left: 4px; transition: 0.2s; border-radius: 1px; }
-        
         input[type="checkbox"]:checked + .toggle-switch { background: var(--text-muted); }
         input[type="checkbox"]:checked + .toggle-switch::after { left: 20px; background: var(--accent); }
         input[type="checkbox"] { display: none; }
 
-        button { width: 100%; padding: 16px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.2em; background: none; color: var(--text-main); border: 1px solid var(--border); cursor: pointer; transition: 0.3s; }
-        button:hover { background: var(--text-main); color: var(--bg); }
+        /* Sliders */
+        .slider-group { margin-bottom: 1.5rem; }
+        .slider-header { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.7rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-main); }
+        .slider-value { font-family: monospace; color: var(--text-muted); }
+        input[type="range"] { -webkit-appearance: none; width: 100%; height: 2px; background: var(--border); outline: none; }
+        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 4px; height: 16px; background: var(--accent); cursor: pointer; }
 
-        select { background: var(--bg); color: var(--text-main); border: 1px solid var(--border); padding: 12px; width: 100%; font-size: 0.75rem; margin-bottom: 1.5rem; appearance: none; text-align: center; border-radius: 0; outline: none; }
-        .timer { font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin-bottom: 2rem; letter-spacing: 0.1em; }
+        /* Buttons */
+        .btn-group { display: flex; gap: 10px; margin-bottom: 10px; }
+        button { flex: 1; padding: 16px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.2em; background: none; color: var(--text-main); border: 1px solid var(--border); cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; }
+        button:hover { background: var(--text-main); color: var(--bg); }
+        .btn-daily { border-color: #3b82f6; color: #3b82f6; }
+        .btn-daily:hover { background: #3b82f6; color: var(--bg); }
+        .btn-share { border-color: #22c55e; color: #22c55e; }
+        .btn-share:hover { background: #22c55e; color: var(--bg); }
+        .btn-copy-config { border-color: var(--text-muted); color: var(--text-muted); }
+        .btn-copy-config:hover { background: var(--text-muted); color: var(--bg); }
+
         .match-percentage { font-size: 5rem; font-weight: 200; color: var(--text-main); margin: 1rem 0; letter-spacing: -0.05em; }
-        .status-text { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--text-muted); margin-bottom: 3rem; }
+        
+        .status-text { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--text-muted); margin-bottom: 3rem; }
+        .flag-item { display: inline-flex; align-items: center; gap: 4px; }
+        .flag-sep { opacity: 0.3; }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Chroma</h1>
+        <h1>Chroma 
+            <button class="info-btn" onclick="toggleInfo(true)">
+                <svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+            </button>
+        </h1>
         
-        <div class="game-setup active">
+        <div id="shared-banner" class="shared-banner" style="display: none;">
+            <div class="shared-banner-title">Shared Configuration Loaded</div>
+            <div class="shared-banner-text">You are previewing a shared rule set. Would you like to save it as your new default?</div>
+            <div class="shared-banner-btns">
+                <button class="btn-save" onclick="acceptSharedConfig()">Save Config</button>
+                <button onclick="discardSharedConfig()">Discard</button>
+            </div>
+        </div>
+
+        <div class="info-modal" id="info-modal">
+            <h2>Game Modes</h2>
+            <p><b>Visual Map:</b> Select from an assisted 2D spectrum. Guarantees 100% physically possible colors.</p>
+            <p><b>Blind Hardcore:</b> No visual reference. You must match the color using purely the text code.</p>
+            <p><b>Optical Illusion:</b> Wraps colors in violently contrasting frames to trigger the Albers Effect. Your eyes will lie to you.</p>
+            <p><b>Complementary Mode:</b> Given a base color, find its exact mathematical complement (opposite) in the chosen space.</p>
+            <p><b>Daily:</b> 3 globally synced target configurations of varying difficulty that reset at midnight. Prove your worth and share your grid.</p>
+            <button onclick="toggleInfo(false)" style="margin-top: 20px;">Close</button>
+        </div>
+
+        <div class="game-setup active" id="setup-screen">
+            
             <div class="space-selector" id="space-selector">
-                <label><input type="radio" name="colorSpace" value="rgb" checked onchange="changeColorSpace()"><span class="radio-label">RGB (HEX)</span></label>
+                <label><input type="radio" name="colorSpace" value="rgb" checked onchange="changeColorSpace()"><span class="radio-label">RGB</span></label>
                 <label><input type="radio" name="colorSpace" value="hsl" onchange="changeColorSpace()"><span class="radio-label">HSL</span></label>
                 <label><input type="radio" name="colorSpace" value="oklab" onchange="changeColorSpace()"><span class="radio-label">OKLAB</span></label>
                 <label><input type="radio" name="colorSpace" value="oklch" onchange="changeColorSpace()"><span class="radio-label">OKLCH</span></label>
             </div>
 
-            <select id="timer-select">
-                <option value="10">10 SECONDS</option>
-                <option value="20" selected>20 SECONDS</option>
-                <option value="45">45 SECONDS</option>
-            </select>
+            <div class="config-grid">
+                <select id="timer-select">
+                    <option value="15">15 SEC</option>
+                    <option value="30" selected>30 SEC</option>
+                    <option value="60">60 SEC</option>
+                </select>
+                <select id="objective-select">
+                    <option value="match" selected>Match Color</option>
+                    <option value="complementary">Complementary</option>
+                </select>
+            </div>
             
             <div class="toggles-container">
-                <label class="mode-toggle" id="label-cheater">
-                    <input type="checkbox" id="cheater-checkbox">
+                <label class="mode-toggle" id="lbl-map">
+                    <input type="checkbox" id="map-checkbox">
                     <div class="toggle-switch"></div>
-                    <span class="color-box-label" style="margin:0; padding:0;">Visual Map</span>
+                    <span class="color-box-label" style="padding:0;">Visual Map</span>
                 </label>
-                <label class="mode-toggle" id="label-hardcore">
+                <label class="mode-toggle" id="lbl-hardcore">
                     <input type="checkbox" id="hardcore-checkbox">
                     <div class="toggle-switch"></div>
-                    <span class="color-box-label" style="margin:0; padding:0;">Blind Hardcore</span>
+                    <span class="color-box-label" style="padding:0;">Blind Hardcore</span>
+                </label>
+                <label class="mode-toggle">
+                    <input type="checkbox" id="illusion-checkbox">
+                    <div class="toggle-switch"></div>
+                    <span class="color-box-label" style="padding:0;">Illusion Framing</span>
                 </label>
             </div>
 
-            <button onclick="startGame()">Begin Session</button>
+            <div class="btn-group">
+                <button onclick="startFreeplay()">Free Play</button>
+                <button class="btn-daily" onclick="toggleDailyMenu(true)">Play Daily</button>
+            </div>
+            <button class="btn-copy-config" id="btn-copy-config" onclick="copyConfigUrl()">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                <span>Copy Config Link</span>
+            </button>
+        </div>
+
+        <div class="daily-menu" id="daily-screen">
+            <h2 style="font-size:0.7rem; text-transform:uppercase; color:var(--text-muted); margin-bottom:1.5rem; letter-spacing:0.2em;">Global Daily Challenges</h2>
+            <div id="daily-challenges-list" style="margin-bottom: 2rem;"></div>
+            <button onclick="toggleDailyMenu(false)">Back to Menu</button>
         </div>
 
         <div class="color-boxes" id="main-color-boxes" style="display: none;">
-            <div class="color-box-container">
+            <div class="illusion-frame" id="frame-target">
                 <div class="color-box" id="target-color"></div>
                 <span class="color-box-label" id="target-label">Reference</span>
             </div>
-            <div class="color-box-container">
+            <div class="illusion-frame" id="frame-user">
                 <div class="color-box" id="user-color"></div>
                 <span class="color-box-label">Output</span>
             </div>
         </div>
 
-        <div class="game-area">
+        <div class="game-area" id="game-area">
+            <div class="game-objective" id="game-objective">Match the Color</div>
             <div class="timer" id="timer">00</div>
             
             <div class="controls">
                 <div id="cheater-controls" style="display: none;">
-                    <div class="canvas-wrapper">
-                        <canvas id="spectrum-map"></canvas>
-                        <div id="selector-dot"></div>
-                    </div>
-                    <p class="color-box-label" style="margin-bottom:2rem; opacity:0.5">Gray (Left) | Colors (Right)</p>
+                    <div class="canvas-wrapper"><canvas id="spectrum-map"></canvas><div id="selector-dot"></div></div>
                 </div>
-                
                 <div id="standard-controls">
                     <div class="slider-group">
-                        <div class="slider-header"><span id="lbl-s1">Channel R</span><span class="slider-value" id="val-s1">128</span></div>
+                        <div class="slider-header"><span id="lbl-s1">CH 1</span><span class="slider-value" id="val-s1">0</span></div>
                         <input type="range" id="slider-1" oninput="updateColor()">
                     </div>
                     <div class="slider-group">
-                        <div class="slider-header"><span id="lbl-s2">Channel G</span><span class="slider-value" id="val-s2">128</span></div>
+                        <div class="slider-header"><span id="lbl-s2">CH 2</span><span class="slider-value" id="val-s2">0</span></div>
                         <input type="range" id="slider-2" oninput="updateColor()">
                     </div>
                     <div class="slider-group">
-                        <div class="slider-header"><span id="lbl-s3">Channel B</span><span class="slider-value" id="val-s3">128</span></div>
+                        <div class="slider-header"><span id="lbl-s3">CH 3</span><span class="slider-value" id="val-s3">0</span></div>
                         <input type="range" id="slider-3" oninput="updateColor()">
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="results">
+        <div class="results" id="results-screen">
             <div class="match-percentage" id="match-percentage">0%</div>
-            <p class="status-text" id="status-text"></p>
-            <button onclick="resetGame()">Retry</button>
+            <div class="status-text" id="status-text"></div>
+            
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                <button class="btn-share" id="btn-share" onclick="shareScore()">
+                    <svg class="icon" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                    <span>Share Result</span>
+                </button>
+                <button onclick="resetGame()">Menu</button>
+            </div>
         </div>
     </div>
 
     <script>
-        const spaces = {
-            rgb: {
-                s1: { lbl: 'R', min: 0, max: 255, val: 128 },
-                s2: { lbl: 'G', min: 0, max: 255, val: 128 },
-                s3: { lbl: 'B', min: 0, max: 255, val: 128 },
-                fmt: (v) => `#${v[0].toString(16).padStart(2,'0')}${v[1].toString(16).padStart(2,'0')}${v[2].toString(16).padStart(2,'0')}`.toUpperCase()
-            },
-            hsl: {
-                s1: { lbl: 'H', min: 0, max: 360, val: 180 },
-                s2: { lbl: 'S', min: 0, max: 100, val: 50 },
-                s3: { lbl: 'L', min: 0, max: 100, val: 50 },
-                fmt: (v) => `hsl(${v[0]}, ${v[1]}%, ${v[2]}%)`
-            },
-            oklab: {
-                s1: { lbl: 'L', min: 0, max: 100, val: 50 },
-                s2: { lbl: 'A', min: -100, max: 100, val: 0 },
-                s3: { lbl: 'B', min: -100, max: 100, val: 0 },
-                fmt: (v) => `oklab(${v[0]}% ${v[1]/100*0.4} ${v[2]/100*0.4})`
-            },
-            oklch: {
-                s1: { lbl: 'L', min: 0, max: 100, val: 50 },
-                s2: { lbl: 'C', min: 0, max: 100, val: 50 },
-                s3: { lbl: 'H', min: 0, max: 360, val: 180 },
-                fmt: (v) => `oklch(${v[0]}% ${v[1]/100*0.4} ${v[2]})`
-            }
+        // --- SVG ASSETS ---
+        const svgs = {
+            complementary: `<svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="8" cy="12" r="5"/><circle cx="16" cy="12" r="5"/></svg>`,
+            blind: `<svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`,
+            map: `<svg class="icon icon-sm" viewBox="0 0 24 24"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>`,
+            illusion: `<svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20Z"/><path d="M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12Z"/><path d="M12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/></svg>`
         };
 
-        let targetColor = { r: 0, g: 0, b: 0 };
-        let currentRGB = { r: 128, g: 128, b: 128 };
-        let timeLimit = 10;
-        let isCheaterMode = false;
-        let isHardcoreMode = false;
-        let currentSpaceId = 'rgb';
-        let gameTimer;
+        // --- 1. CORE DATA & CONFIG ---
+        const spaces = {
+            rgb: { s1: { lbl: 'R', min: 0, max: 255, val: 128 }, s2: { lbl: 'G', min: 0, max: 255, val: 128 }, s3: { lbl: 'B', min: 0, max: 255, val: 128 }, fmt: (v) => `#${v[0].toString(16).padStart(2,'0')}${v[1].toString(16).padStart(2,'0')}${v[2].toString(16).padStart(2,'0')}`.toUpperCase() },
+            hsl: { s1: { lbl: 'H', min: 0, max: 360, val: 180 }, s2: { lbl: 'S', min: 0, max: 100, val: 50 }, s3: { lbl: 'L', min: 0, max: 100, val: 50 }, fmt: (v) => `hsl(${v[0]}, ${v[1]}%, ${v[2]}%)` },
+            oklab: { s1: { lbl: 'L', min: 0, max: 100, val: 50 }, s2: { lbl: 'A', min: -100, max: 100, val: 0 }, s3: { lbl: 'B', min: -100, max: 100, val: 0 }, fmt: (v) => `oklab(${v[0]}% ${v[1]/100*0.4} ${v[2]/100*0.4})` },
+            oklch: { s1: { lbl: 'L', min: 0, max: 100, val: 50 }, s2: { lbl: 'C', min: 0, max: 100, val: 50 }, s3: { lbl: 'H', min: 0, max: 360, val: 180 }, fmt: (v) => `oklch(${v[0]}% ${v[1]/100*0.4} ${v[2]})` }
+        };
 
-        const hiddenCanvas = document.createElement('canvas');
-        hiddenCanvas.width = 1; hiddenCanvas.height = 1;
-        const hiddenCtx = hiddenCanvas.getContext('2d', { willReadFrequently: true });
+        const defaultCfg = { s: 'rgb', t: 30, o: 'match', m: false, h: false, i: false };
 
+        let st = {
+            isDaily: false, dailyChallengeId: null, isViewingShared: false, suppressSave: false,
+            spaceId: 'rgb', dailyNum: 0, timeLimit: 30, timer: null,
+            baseVals: [0,0,0], targetVals: [0,0,0], currentVals: [0,0,0],
+            targetRgb: {r:0,g:0,b:0}, currentRgb: {r:0,g:0,b:0}, finalScore: 0,
+            isComplementary: false, isMap: false, isHardcore: false, isIllusion: false
+        };
+
+        const hiddenCtx = document.createElement('canvas').getContext('2d', { willReadFrequently: true });
+        hiddenCtx.canvas.width = 1; hiddenCtx.canvas.height = 1;
+
+        // FIXED: The missing function reference!
         function getRgbFromCss(cssString) {
             hiddenCtx.clearRect(0, 0, 1, 1);
             hiddenCtx.fillStyle = cssString;
@@ -230,233 +282,480 @@
             return { r: data[0], g: data[1], b: data[2] };
         }
 
-        // Mutually exclusive toggle logic
-        document.getElementById('cheater-checkbox').addEventListener('change', (e) => {
-            const hc = document.getElementById('hardcore-checkbox');
-            const hcLbl = document.getElementById('label-hardcore');
-            const selector = document.getElementById('space-selector');
-            hc.disabled = e.target.checked;
-            hcLbl.style.opacity = e.target.checked ? '0.3' : '1';
+        // --- 2. PERSISTENCE & URL SHARING ---
+        function getUIConfig() {
+            return {
+                s: document.querySelector('input[name="colorSpace"]:checked').value,
+                t: parseInt(document.getElementById('timer-select').value),
+                o: document.getElementById('objective-select').value,
+                m: document.getElementById('map-checkbox').checked,
+                h: document.getElementById('hardcore-checkbox').checked,
+                i: document.getElementById('illusion-checkbox').checked
+            };
+        }
+
+        function setUIConfig(cfg) {
+            st.suppressSave = true;
+            document.querySelector(`input[name="colorSpace"][value="${cfg.s}"]`).checked = true;
+            document.getElementById('timer-select').value = cfg.t;
+            document.getElementById('objective-select').value = cfg.o;
             
-            selector.style.opacity = e.target.checked ? '0.3' : '1';
-            selector.style.pointerEvents = e.target.checked ? 'none' : 'auto';
+            const mapCb = document.getElementById('map-checkbox');
+            const hardCb = document.getElementById('hardcore-checkbox');
+            mapCb.checked = cfg.m;
+            hardCb.checked = cfg.h;
+            document.getElementById('illusion-checkbox').checked = cfg.i;
+            
+            hardCb.disabled = cfg.m;
+            mapCb.disabled = cfg.h;
+            document.getElementById('lbl-hardcore').style.opacity = cfg.m ? '0.3' : '1';
+            document.getElementById('lbl-map').style.opacity = cfg.h ? '0.3' : '1';
+            
+            const sel = document.getElementById('space-selector');
+            sel.style.opacity = cfg.m ? '0.3' : '1';
+            sel.style.pointerEvents = cfg.m ? 'none' : 'auto';
+
+            changeColorSpace();
+            st.suppressSave = false;
+        }
+
+        function saveLocal() {
+            if (st.suppressSave || st.isViewingShared) return;
+            localStorage.setItem('chroma_cfg', JSON.stringify(getUIConfig()));
+        }
+
+        function loadLocal() {
+            try {
+                const stored = JSON.parse(localStorage.getItem('chroma_cfg'));
+                if (stored && validateConfig(stored)) return stored;
+            } catch(e) {}
+            return defaultCfg;
+        }
+
+        function validateConfig(cfg) {
+            if (!cfg) return false;
+            const validS = ['rgb', 'hsl', 'oklab', 'oklch'].includes(cfg.s);
+            const validT = [15, 30, 60].includes(cfg.t);
+            const validO = ['match', 'complementary'].includes(cfg.o);
+            const validBools = typeof cfg.m === 'boolean' && typeof cfg.h === 'boolean' && typeof cfg.i === 'boolean';
+            const validExclusivity = !(cfg.m && cfg.h);
+            return validS && validT && validO && validBools && validExclusivity;
+        }
+
+        function clearUrl() {
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+
+        function checkUrlConfig() {
+            const params = new URLSearchParams(window.location.search);
+            if (!params.has('s')) return null;
+
+            const urlCfg = {
+                s: params.get('s'),
+                t: parseInt(params.get('t')),
+                o: params.get('o'),
+                m: params.get('m') === '1',
+                h: params.get('h') === '1',
+                i: params.get('i') === '1'
+            };
+
+            if (validateConfig(urlCfg)) {
+                return urlCfg;
+            } else {
+                clearUrl(); 
+                return null;
+            }
+        }
+
+        function copyConfigUrl() {
+            const c = getUIConfig();
+            const qs = `?s=${c.s}&t=${c.t}&o=${c.o}&m=${c.m?1:0}&h=${c.h?1:0}&i=${c.i?1:0}`;
+            const url = window.location.origin + window.location.pathname + qs;
+            
+            navigator.clipboard.writeText(url).then(() => {
+                const btn = document.getElementById('btn-copy-config');
+                const orig = btn.innerHTML;
+                btn.innerHTML = '<span>Link Copied!</span>';
+                setTimeout(() => btn.innerHTML = orig, 2000);
+            });
+        }
+
+        function acceptSharedConfig() {
+            st.isViewingShared = false;
+            document.getElementById('shared-banner').style.display = 'none';
+            saveLocal();
+            clearUrl();
+        }
+
+        function discardSharedConfig() {
+            st.isViewingShared = false;
+            document.getElementById('shared-banner').style.display = 'none';
+            setUIConfig(loadLocal());
+            clearUrl();
+        }
+
+        document.querySelectorAll('#setup-screen input, #setup-screen select').forEach(el => {
+            el.addEventListener('change', () => {
+                if (st.isViewingShared) {
+                    st.isViewingShared = false;
+                    document.getElementById('shared-banner').style.display = 'none';
+                    clearUrl();
+                }
+                saveLocal();
+            });
         });
 
-        document.getElementById('hardcore-checkbox').addEventListener('change', (e) => {
-            const cc = document.getElementById('cheater-checkbox');
-            const ccLbl = document.getElementById('label-cheater');
-            cc.disabled = e.target.checked;
-            ccLbl.style.opacity = e.target.checked ? '0.3' : '1';
-        });
+        // --- 3. PRNG FOR DAILY SEED ---
+        function mulberry32(a) {
+            return function() {
+              var t = a += 0x6D2B79F5;
+              t = Math.imul(t ^ t >>> 15, t | 1);
+              t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+              return ((t ^ t >>> 14) >>> 0) / 4294967296;
+            }
+        }
+        
+        function getDailyRNG(offset = 0) {
+            const start = new Date('2026-03-23T00:00:00Z');
+            const now = new Date();
+            st.dailyNum = Math.floor((now - start) / 86400000) + 1;
+            return mulberry32(st.dailyNum * 42 + offset); 
+        }
+
+        // --- 4. UI TOGGLES & DAILY MENU ---
+        function toggleInfo(show) { document.getElementById('info-modal').style.display = show ? 'block' : 'none'; }
 
         function changeColorSpace() {
-            currentSpaceId = document.querySelector('input[name="colorSpace"]:checked').value;
-            const cfg = spaces[currentSpaceId];
-            
-            ['1', '2', '3'].forEach((n) => {
-                const sData = cfg[`s${n}`];
-                document.getElementById(`lbl-s${n}`).textContent = `Channel ${sData.lbl}`;
-                const slider = document.getElementById(`slider-${n}`);
-                slider.min = sData.min; slider.max = sData.max; slider.value = sData.val;
+            if (st.suppressSave) return; 
+            st.spaceId = document.querySelector('input[name="colorSpace"]:checked').value;
+            const cfg = spaces[st.spaceId];
+            [1, 2, 3].forEach((n) => {
+                document.getElementById(`lbl-s${n}`).textContent = cfg[`s${n}`].lbl;
+                const sl = document.getElementById(`slider-${n}`);
+                sl.min = cfg[`s${n}`].min; sl.max = cfg[`s${n}`].max; sl.value = cfg[`s${n}`].val;
             });
-            updateColor();
+            const isMap = document.getElementById('map-checkbox').checked;
+            if(!isMap) updateColor();
         }
 
-        function drawSpectrum() {
-            const canvas = document.getElementById('spectrum-map');
-            const ctx = canvas.getContext('2d');
-            const w = canvas.width = canvas.clientWidth;
-            const h = canvas.height = canvas.clientHeight;
-            const graySplit = Math.floor(w * 0.1);
-
-            const grayGrad = ctx.createLinearGradient(0, 0, 0, h);
-            grayGrad.addColorStop(0, '#ffffff');
-            grayGrad.addColorStop(1, '#000000');
-            ctx.fillStyle = grayGrad;
-            ctx.fillRect(0, 0, graySplit, h);
-
-            for (let x = graySplit; x < w; x++) {
-                const hue = ((x - graySplit) / (w - graySplit)) * 360;
-                const grad = ctx.createLinearGradient(0, 0, 0, h);
-                grad.addColorStop(0, '#ffffff'); 
-                grad.addColorStop(0.5, `hsl(${hue}, 100%, 50%)`);
-                grad.addColorStop(1, '#000000');
-                
-                ctx.fillStyle = grad;
-                ctx.fillRect(x, 0, 1, h);
-            }
-        }
-
-        function startGame() {
-            isCheaterMode = document.getElementById('cheater-checkbox').checked;
-            isHardcoreMode = document.getElementById('hardcore-checkbox').checked;
-            
-            document.querySelector('.game-setup').classList.remove('active');
-            
-            // Show the shared color boxes
-            document.getElementById('main-color-boxes').style.display = 'flex';
-            
-            document.querySelector('.game-area').classList.add('active');
-            document.querySelector('.results').classList.remove('active');
-
-            document.getElementById('standard-controls').style.display = isCheaterMode ? 'none' : 'block';
-            document.getElementById('cheater-controls').style.display = isCheaterMode ? 'block' : 'none';
-            document.getElementById('selector-dot').style.display = isCheaterMode ? 'block' : 'none';
-
-            const targetBox = document.getElementById('target-color');
-            const targetLabel = document.getElementById('target-label');
-
-            if (isCheaterMode) {
-                drawSpectrum(); 
-                const canvas = document.getElementById('spectrum-map');
-                const ctx = canvas.getContext('2d');
-                const randomX = Math.floor(Math.random() * canvas.width);
-                const randomY = Math.floor(Math.random() * canvas.height);
-                const pixelData = ctx.getImageData(randomX, randomY, 1, 1).data;
-                
-                targetColor = { r: pixelData[0], g: pixelData[1], b: pixelData[2] };
-                targetBox.style.backgroundColor = `rgb(${targetColor.r},${targetColor.g},${targetColor.b})`;
-                targetBox.textContent = '';
-                targetLabel.textContent = 'Reference';
-                
-                const dot = document.getElementById('selector-dot');
-                dot.style.left = '50%'; dot.style.top = '50%';
-                
+        function toggleDailyMenu(show) {
+            if (show) {
+                // Ensure shared config banner goes away if they dive into daily
+                document.getElementById('shared-banner').style.display = 'none';
+                generateDailyConfigs();
+                document.getElementById('setup-screen').classList.remove('active');
+                document.getElementById('daily-screen').classList.add('active');
             } else {
-                const cfg = spaces[currentSpaceId];
-                const rnd1 = Math.floor(Math.random() * (cfg.s1.max - cfg.s1.min + 1)) + cfg.s1.min;
-                const rnd2 = Math.floor(Math.random() * (cfg.s2.max - cfg.s2.min + 1)) + cfg.s2.min;
-                const rnd3 = Math.floor(Math.random() * (cfg.s3.max - cfg.s3.min + 1)) + cfg.s3.min;
-                
-                const targetCss = cfg.fmt([rnd1, rnd2, rnd3]);
-                targetColor = getRgbFromCss(targetCss);
-
-                if (isHardcoreMode) {
-                    targetBox.style.backgroundColor = 'var(--bg)';
-                    targetBox.textContent = targetCss;
-                    targetLabel.textContent = 'Blind Target';
-                } else {
-                    targetBox.style.backgroundColor = `rgb(${targetColor.r},${targetColor.g},${targetColor.b})`;
-                    targetBox.textContent = '';
-                    targetLabel.textContent = 'Reference';
-                }
+                document.getElementById('daily-screen').classList.remove('active');
+                document.getElementById('setup-screen').classList.add('active');
             }
-            
-            targetBox.style.textShadow = 'none';
+        }
 
-            timeLimit = parseInt(document.getElementById('timer-select').value);
+        function generateDailyConfigs() {
+            const rng = getDailyRNG(0); 
+            const spaceList = ['rgb', 'hsl', 'oklab', 'oklch'];
+            const timerList = [15, 30, 60];
+            const objList = ['match', 'complementary'];
+
+            st.dailyConfigs = [];
+            const container = document.getElementById('daily-challenges-list');
+            container.innerHTML = '';
+
+            for (let i = 1; i <= 3; i++) {
+                const isHard = rng() > 0.5;
+                const isMp = !isHard && rng() > 0.5; 
+                const cfg = {
+                    id: i,
+                    space: spaceList[Math.floor(rng() * spaceList.length)],
+                    timer: timerList[Math.floor(rng() * timerList.length)],
+                    objective: objList[Math.floor(rng() * objList.length)],
+                    isMap: isMp,
+                    isHardcore: isHard,
+                    isIllusion: rng() > 0.6
+                };
+                
+                let diffScore = 0;
+                if (cfg.space === 'rgb') diffScore += 3;
+                if (cfg.space === 'hsl') diffScore += 1;
+                if (cfg.space === 'oklch') diffScore += 2;
+                if (cfg.space === 'oklab') diffScore += 4;
+                
+                if (cfg.timer === 15) diffScore += 2;
+                if (cfg.timer === 30) diffScore += 1;
+                
+                if (cfg.objective === 'complementary') diffScore += 2;
+                if (cfg.isMap) diffScore -= 3;
+                if (cfg.isHardcore) diffScore += 5;
+                if (cfg.isIllusion) diffScore += 2;
+
+                let diffLabel, diffColor;
+                if (diffScore <= 2) { diffLabel = 'CASUAL'; diffColor = '#22c55e'; }
+                else if (diffScore <= 5) { diffLabel = 'NORMAL'; diffColor = '#facc15'; }
+                else if (diffScore <= 8) { diffLabel = 'HARD'; diffColor = '#f97316'; }
+                else { diffLabel = 'EXTREME'; diffColor = '#ef4444'; }
+
+                st.dailyConfigs.push(cfg);
+
+                let mods = [];
+                if (cfg.isMap) mods.push(`<span class="flag-item" title="Visual Map">${svgs.map} Map</span>`);
+                if (cfg.isHardcore) mods.push(`<span class="flag-item" title="Blind Hardcore">${svgs.blind} Blind</span>`);
+                if (cfg.isIllusion) mods.push(`<span class="flag-item" title="Illusion Frame">${svgs.illusion} Illusion</span>`);
+                if (cfg.objective === 'complementary') mods.push(`<span class="flag-item" title="Complementary">${svgs.complementary} Complement</span>`);
+                
+                const modStr = mods.length > 0 ? `<div style="display:flex; gap:10px; margin-top:6px; color:var(--text-main); align-items:center;">${mods.join('')}</div>` : '';
+                
+                const card = document.createElement('div');
+                card.className = 'daily-card';
+                card.innerHTML = `
+                    <div class="daily-card-title">
+                        <span>Challenge 0${cfg.id}</span>
+                        <div style="display:flex; gap:8px; align-items:center;">
+                            <span class="diff-badge" style="color:${diffColor}; border-color:${diffColor};">${diffLabel}</span>
+                            <span>${cfg.timer}s</span>
+                        </div>
+                    </div>
+                    <div class="daily-card-desc">
+                        <span style="font-weight:700; color:var(--text-main); font-size:0.7rem;">${cfg.space.toUpperCase()}</span>
+                    </div>
+                    ${modStr}
+                `;
+                card.onclick = () => startDailyGame(cfg);
+                container.appendChild(card);
+            }
+        }
+
+        function calcComplement(vals) {
+            if(st.spaceId === 'rgb') return [255-vals[0], 255-vals[1], 255-vals[2]];
+            if(st.spaceId === 'hsl' || st.spaceId === 'oklch') return [vals[0], vals[1], (vals[2]+180)%360];
+            if(st.spaceId === 'oklab') return [vals[0], -vals[1], -vals[2]];
+        }
+
+        // --- 5. MAIN GAME LOOP ---
+        function startFreeplay() {
+            st.isDaily = false;
+            st.dailyChallengeId = null;
+            const uiCfg = getUIConfig();
+            st.spaceId = uiCfg.s;
+            st.timeLimit = uiCfg.t;
+            st.isComplementary = uiCfg.o === 'complementary';
+            st.isMap = uiCfg.m;
+            st.isHardcore = uiCfg.h;
+            st.isIllusion = uiCfg.i;
+            
+            document.getElementById('shared-banner').style.display = 'none'; // Hide banner if playing
+            executeGameStart();
+        }
+
+        function startDailyGame(cfg) {
+            st.isDaily = true;
+            st.dailyChallengeId = cfg.id;
+            st.spaceId = cfg.space;
+            st.timeLimit = cfg.timer;
+            st.isMap = cfg.isMap;
+            st.isHardcore = cfg.isHardcore;
+            st.isIllusion = cfg.isIllusion;
+            st.isComplementary = cfg.objective === 'complementary';
+            
+            setUIConfig({ s: cfg.space, t: cfg.timer, o: cfg.objective, m: cfg.isMap, h: cfg.isHardcore, i: cfg.isIllusion });
+            executeGameStart();
+        }
+
+        function executeGameStart() {
+            const rng = st.isDaily ? getDailyRNG(st.dailyChallengeId) : Math.random;
+
+            document.getElementById('setup-screen').classList.remove('active');
+            document.getElementById('daily-screen').classList.remove('active');
+            
+            document.getElementById('main-color-boxes').style.display = 'flex';
+            document.getElementById('game-area').classList.add('active');
+            
+            document.getElementById('standard-controls').style.display = st.isMap ? 'none' : 'block';
+            document.getElementById('cheater-controls').style.display = st.isMap ? 'block' : 'none';
+            document.getElementById('selector-dot').style.display = st.isMap ? 'block' : 'none';
+
+            let objText = "Match the Reference Color";
+            if (st.isComplementary && st.isHardcore) objText = "Blind-Match the Complementary Color";
+            else if (st.isComplementary) objText = "Match the Complementary Color";
+            else if (st.isHardcore) objText = "Blind-Match the Target Color";
+            else if (st.isMap) objText = "Find the Reference Color";
+            document.getElementById('game-objective').textContent = objText;
+
+            const ft = document.getElementById('frame-target');
+            const fu = document.getElementById('frame-user');
+            if (st.isIllusion) {
+                ft.classList.add('active-illusion'); fu.classList.add('active-illusion');
+                ft.style.backgroundColor = `hsl(${Math.floor(rng()*360)}, 100%, 50%)`;
+                fu.style.backgroundColor = `hsl(${Math.floor(rng()*360)}, 100%, 50%)`;
+            } else {
+                ft.classList.remove('active-illusion'); fu.classList.remove('active-illusion');
+                ft.style.backgroundColor = 'var(--border)'; fu.style.backgroundColor = 'var(--border)';
+            }
+
+            const tBox = document.getElementById('target-color');
+            const tLbl = document.getElementById('target-label');
+            tBox.textContent = ''; tBox.style.textShadow = 'none';
+
+            if (st.isMap) {
+                drawSpectrum();
+                const rx = Math.floor(rng() * 280); const ry = Math.floor(rng() * 160);
+                const pd = document.getElementById('spectrum-map').getContext('2d').getImageData(rx, ry, 1, 1).data;
+                st.targetRgb = { r: pd[0], g: pd[1], b: pd[2] };
+                tBox.style.backgroundColor = `rgb(${pd[0]},${pd[1]},${pd[2]})`;
+                tLbl.textContent = 'Reference';
+            } else {
+                const cfg = spaces[st.spaceId];
+                st.baseVals = [
+                    Math.floor(rng() * (cfg.s1.max - cfg.s1.min + 1)) + cfg.s1.min,
+                    Math.floor(rng() * (cfg.s2.max - cfg.s2.min + 1)) + cfg.s2.min,
+                    Math.floor(rng() * (cfg.s3.max - cfg.s3.min + 1)) + cfg.s3.min
+                ];
+
+                st.targetVals = st.isComplementary ? calcComplement(st.baseVals) : st.baseVals;
+                const baseCss = cfg.fmt(st.baseVals);
+                const targetCss = cfg.fmt(st.targetVals);
+                
+                st.targetRgb = getRgbFromCss(targetCss);
+                const dispCss = st.isComplementary ? baseCss : targetCss;
+
+                if (st.isHardcore) {
+                    tBox.style.backgroundColor = 'var(--bg)';
+                    tBox.textContent = dispCss;
+                } else {
+                    tBox.style.backgroundColor = dispCss;
+                }
+                tLbl.textContent = st.isComplementary ? 'Base Color' : 'Reference';
+            }
+
             changeColorSpace();
             startTimer();
         }
 
-        function handleCanvasClick(e) {
-            const canvas = document.getElementById('spectrum-map');
-            const dot = document.getElementById('selector-dot');
-            const rect = canvas.getBoundingClientRect();
+        function drawSpectrum() {
+            const ctx = document.getElementById('spectrum-map').getContext('2d');
+            const w = ctx.canvas.width = ctx.canvas.clientWidth;
+            const h = ctx.canvas.height = ctx.canvas.clientHeight;
+            const gs = Math.floor(w * 0.1);
             
-            const x = Math.max(0, Math.min(e.clientX - rect.left, rect.width));
-            const y = Math.max(0, Math.min(e.clientY - rect.top, rect.height));
-            
-            dot.style.left = x + 'px';
-            dot.style.top = y + 'px';
+            let grd = ctx.createLinearGradient(0,0,0,h);
+            grd.addColorStop(0,'#fff'); grd.addColorStop(1,'#000');
+            ctx.fillStyle = grd; ctx.fillRect(0,0,gs,h);
 
-            const ctx = canvas.getContext('2d');
-            const data = ctx.getImageData(x * (canvas.width/rect.width), y * (canvas.height/rect.height), 1, 1).data;
-            
-            currentRGB = { r: data[0], g: data[1], b: data[2] };
-            document.getElementById('user-color').style.backgroundColor = `rgb(${data[0]}, ${data[1]}, ${data[2]})`;
-        }
-
-        const spectrumMap = document.getElementById('spectrum-map');
-        spectrumMap.addEventListener('mousedown', handleCanvasClick);
-        spectrumMap.addEventListener('mousemove', (e) => {
-            if (e.buttons === 1) handleCanvasClick(e);
-        });
-
-        function updateColor() {
-            if (!isCheaterMode) {
-                const v1 = parseInt(document.getElementById('slider-1').value);
-                const v2 = parseInt(document.getElementById('slider-2').value);
-                const v3 = parseInt(document.getElementById('slider-3').value);
-                
-                document.getElementById('val-s1').textContent = v1.toString().padStart(3, '0');
-                document.getElementById('val-s2').textContent = v2.toString().padStart(3, '0');
-                document.getElementById('val-s3').textContent = v3.toString().padStart(3, '0');
-
-                const cssColor = spaces[currentSpaceId].fmt([v1, v2, v3]);
-                document.getElementById('user-color').style.backgroundColor = cssColor;
-                currentRGB = getRgbFromCss(cssColor);
+            for (let x = gs; x < w; x++) {
+                let g = ctx.createLinearGradient(0,0,0,h);
+                g.addColorStop(0,'#fff'); g.addColorStop(0.5, `hsl(${((x-gs)/(w-gs))*360},100%,50%)`); g.addColorStop(1,'#000');
+                ctx.fillStyle = g; ctx.fillRect(x,0,1,h);
             }
         }
 
-        function startTimer() {
-            let remaining = timeLimit;
-            document.getElementById('timer').textContent = remaining.toString().padStart(2, '0');
-            if (gameTimer) clearInterval(gameTimer);
+        const sMap = document.getElementById('spectrum-map');
+        function handleMap(e) {
+            const r = sMap.getBoundingClientRect();
+            const x = Math.max(0, Math.min(e.clientX - r.left, r.width));
+            const y = Math.max(0, Math.min(e.clientY - r.top, r.height));
+            document.getElementById('selector-dot').style.cssText = `display:block; left:${x}px; top:${y}px;`;
+            const d = sMap.getContext('2d').getImageData(x * (sMap.width/r.width), y * (sMap.height/r.height), 1, 1).data;
+            st.currentRgb = { r:d[0], g:d[1], b:d[2] };
+            document.getElementById('user-color').style.backgroundColor = `rgb(${d[0]},${d[1]},${d[2]})`;
+        }
+        sMap.addEventListener('mousedown', handleMap);
+        sMap.addEventListener('mousemove', e => { if (e.buttons === 1) handleMap(e); });
+
+        function updateColor() {
+            if (st.isMap) return;
+            st.currentVals = [1,2,3].map(n => parseInt(document.getElementById(`slider-${n}`).value));
+            [1,2,3].forEach(n => document.getElementById(`val-s${n}`).textContent = st.currentVals[n-1].toString().padStart(3,'0'));
             
-            gameTimer = setInterval(() => {
-                remaining--;
-                document.getElementById('timer').textContent = remaining.toString().padStart(2, '0');
-                if (remaining <= 0) { 
-                    clearInterval(gameTimer); 
-                    endGame(); 
-                }
+            const css = spaces[st.spaceId].fmt(st.currentVals);
+            document.getElementById('user-color').style.backgroundColor = css;
+            st.currentRgb = getRgbFromCss(css);
+        }
+
+        function startTimer() {
+            let rem = st.timeLimit;
+            document.getElementById('timer').textContent = rem.toString().padStart(2, '0');
+            st.timer = setInterval(() => {
+                rem--; document.getElementById('timer').textContent = rem.toString().padStart(2, '0');
+                if (rem <= 0) { clearInterval(st.timer); endGame(); }
             }, 1000);
         }
 
         function endGame() {
-            // Stop the timer to be safe
-            clearInterval(gameTimer);
-
-            if (isHardcoreMode) {
-                const targetBox = document.getElementById('target-color');
-                targetBox.style.backgroundColor = `rgb(${targetColor.r},${targetColor.g},${targetColor.b})`;
-                targetBox.style.textShadow = '0 0 4px #000, 0 0 8px #000, 0 0 12px #000';
+            clearInterval(st.timer);
+            const tBox = document.getElementById('target-color');
+            const ft = document.getElementById('frame-target');
+            const fu = document.getElementById('frame-user');
+            
+            ft.classList.remove('active-illusion');
+            fu.classList.remove('active-illusion');
+            ft.style.backgroundColor = 'var(--border)';
+            fu.style.backgroundColor = 'var(--border)';
+            
+            tBox.style.backgroundColor = `rgb(${st.targetRgb.r},${st.targetRgb.g},${st.targetRgb.b})`;
+            if (st.isHardcore || st.isComplementary) {
+                tBox.style.textShadow = '0 0 8px #000, 0 0 12px #000';
+                tBox.textContent = spaces[st.spaceId].fmt(st.targetVals);
+                document.getElementById('target-label').textContent = 'True Target';
             }
 
-            const rMean = (targetColor.r + currentRGB.r) / 2;
-            const dr = targetColor.r - currentRGB.r;
-            const dg = targetColor.g - currentRGB.g;
-            const db = targetColor.b - currentRGB.b;
-            
-            const weightR = 2 + (rMean / 256);
-            const weightG = 4.0;
-            const weightB = 2 + ((255 - rMean) / 256);
-            
-            const distance = Math.sqrt(weightR * dr * dr + weightG * dg * dg + weightB * db * db);
-            const maxDistance = 764.83; 
-            
-            const linearAccuracy = Math.max(0, 1 - (distance / maxDistance));
-            const percentage = Math.round(Math.pow(linearAccuracy, 1.5) * 100);
-            
-            // Switch views
-            document.querySelector('.game-area').classList.remove('active');
-            document.querySelector('.results').classList.add('active');
-            // Notice: We NO LONGER hide `.color-boxes` here, so it stays visible!
+            const rM = (st.targetRgb.r + st.currentRgb.r)/2;
+            const dr = st.targetRgb.r - st.currentRgb.r, dg = st.targetRgb.g - st.currentRgb.g, db = st.targetRgb.b - st.currentRgb.b;
+            const dist = Math.sqrt((2+rM/256)*dr*dr + 4*dg*dg + (2+(255-rM)/256)*db*db);
+            const lin = Math.max(0, 1 - (dist / 764.83));
+            st.finalScore = Math.round(Math.pow(lin, 1.5) * 100);
 
-            document.getElementById('match-percentage').textContent = percentage + '%';
+            document.getElementById('game-area').classList.remove('active');
+            document.getElementById('results-screen').classList.add('active');
+            document.getElementById('match-percentage').textContent = st.finalScore + '%';
+
+            let flags = [`<span class="flag-item">${st.spaceId.toUpperCase()}</span>`];
+            if(st.isDaily) flags.push(`<span class="flag-item">Daily #${st.dailyNum} (Ch. ${st.dailyChallengeId})</span>`);
+            if(st.isComplementary) flags.push(`<span class="flag-item">${svgs.complementary} Complement</span>`);
+            if(st.isHardcore) flags.push(`<span class="flag-item">${svgs.blind} Blind</span>`);
+            if(st.isMap) flags.push(`<span class="flag-item">${svgs.map} Map</span>`);
+            if(st.isIllusion) flags.push(`<span class="flag-item">${svgs.illusion} Illusion</span>`);
+
+            document.getElementById('status-text').innerHTML = flags.join('<span class="flag-sep">|</span>');
+        }
+
+        function shareScore() {
+            const dr = Math.abs(st.targetRgb.r - st.currentRgb.r);
+            const dg = Math.abs(st.targetRgb.g - st.currentRgb.g);
+            const db = Math.abs(st.targetRgb.b - st.currentRgb.b);
+            const getEmoji = (diff) => diff < 15 ? '🟩' : diff < 40 ? '🟨' : '🟥';
             
-            let status = percentage >= 98 ? 'Absolute Precision' : 
-                         percentage >= 90 ? 'High Accuracy' : 
-                         percentage >= 70 ? 'Standard Deviation' : 'Tolerance Failure';
+            let str = `Chroma ${st.isDaily ? `Daily #${st.dailyNum} (Ch. ${st.dailyChallengeId})` : 'Freeplay'} | ${st.finalScore}%\n`;
+            str += `Mode: ${st.spaceId.toUpperCase()}`;
+            if(st.isComplementary) str += ' ☯'; if(st.isHardcore) str += ' 👁'; if(st.isIllusion) str += ' 🌀'; if(st.isMap) str += ' 🗺';
+            str += `\n[RGB] ${getEmoji(dr)}${getEmoji(dg)}${getEmoji(db)}`;
             
-            if (isCheaterMode) status += ' (Assisted)';
-            if (isHardcoreMode) status += ' (Blind Target)';
-            document.getElementById('status-text').textContent = status;
+            navigator.clipboard.writeText(str).then(() => {
+                const btn = document.getElementById('btn-share');
+                const originalHTML = btn.innerHTML;
+                btn.innerHTML = '<span>Copied to Clipboard!</span>';
+                setTimeout(() => btn.innerHTML = originalHTML, 2000);
+            });
         }
 
         function resetGame() {
-            document.querySelector('.game-setup').classList.add('active');
-            document.querySelector('.game-area').classList.remove('active');
-            document.querySelector('.results').classList.remove('active');
-            
-            // Hide the shared color boxes until the next game starts
+            document.getElementById('setup-screen').classList.add('active');
+            document.getElementById('results-screen').classList.remove('active');
             document.getElementById('main-color-boxes').style.display = 'none';
-            
+            if (st.isViewingShared) {
+                document.getElementById('shared-banner').style.display = 'block';
+            }
             changeColorSpace();
         }
 
-        changeColorSpace();
+        window.onload = () => {
+            const urlCfg = checkUrlConfig();
+            if (urlCfg) {
+                st.isViewingShared = true;
+                setUIConfig(urlCfg);
+                document.getElementById('shared-banner').style.display = 'block';
+            } else {
+                setUIConfig(loadLocal());
+            }
+        };
     </script>
 </body>
 </html>
