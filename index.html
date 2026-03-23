@@ -13,32 +13,34 @@
         * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
         body { font-family: 'Inter', -apple-system, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; background-color: var(--bg); color: var(--text-main); }
         
-        .container { background: var(--card); padding: 3rem; border-radius: 2px; box-shadow: 0 40px 100px rgba(0,0,0,0.8); text-align: center; max-width: 460px; width: 95%; border: 1px solid var(--border); position: relative; }
+        .container { background: var(--card); padding: 3rem; border-radius: 2px; box-shadow: 0 40px 100px rgba(0,0,0,0.8); text-align: center; max-width: 480px; width: 95%; border: 1px solid var(--border); position: relative; }
         
         h1 { font-size: 0.85rem; font-weight: 400; margin-bottom: 2rem; text-transform: uppercase; letter-spacing: 0.5em; color: var(--text-muted); display: flex; justify-content: center; align-items: center; gap: 10px; }
         
-        /* SVG Icon Utilities */
         .icon { width: 14px; height: 14px; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; fill: none; }
         .icon-sm { width: 12px; height: 12px; }
         
-        .info-btn { flex: none; width: 24px; height: 24px; padding: 0; border: 1px solid var(--border); border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--text-muted); transition: 0.2s; background: none; }
-        .info-btn:hover { color: var(--bg); background: var(--text-muted); }
+        .header-btns { display: flex; gap: 8px; }
+        .header-btn { flex: none; width: 24px; height: 24px; padding: 0; border: 1px solid var(--border); border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--text-muted); transition: 0.2s; background: none; }
+        .header-btn:hover { color: var(--bg); background: var(--text-muted); }
 
         .game-setup, .daily-menu, .game-area, .results, .info-modal { display: none; }
         .active { display: block; }
 
-        /* Floating Shared Config Banner */
-        .shared-banner { 
-            position: absolute; top: calc(100% + 15px); left: 0; width: 100%;
-            background: var(--card); border: 1px solid #3b82f6; padding: 16px; 
-            border-radius: 4px; text-align: left; box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-        }
+        /* Shared / Duel Banner */
+        .shared-banner { position: absolute; top: calc(100% + 15px); left: 0; width: 100%; background: var(--card); border: 1px solid #3b82f6; padding: 16px; border-radius: 4px; text-align: left; box-shadow: 0 20px 50px rgba(0,0,0,0.5); z-index: 50;}
+        .duel-banner { border-color: #f97316; background: rgba(249, 115, 22, 0.05); }
+        .duel-banner .shared-banner-title { color: #f97316; display: flex; align-items: center; gap: 6px; }
+        
         .shared-banner-title { font-size: 0.65rem; font-weight: 700; color: #3b82f6; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
         .shared-banner-text { font-size: 0.7rem; color: var(--text-main); margin-bottom: 12px; line-height: 1.4; }
         .shared-banner-btns { display: flex; gap: 8px; }
         .shared-banner-btns button { padding: 10px; font-size: 0.6rem; }
+        
         .btn-save { border-color: #3b82f6; color: #3b82f6; }
         .btn-save:hover { background: #3b82f6; color: var(--bg); }
+        .btn-duel { border-color: #f97316; color: #f97316; }
+        .btn-duel:hover { background: #f97316; color: var(--bg); }
 
         /* Modal */
         .info-modal { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--card); z-index: 100; padding: 2rem; text-align: left; overflow-y: auto; border: 1px solid var(--border); }
@@ -54,8 +56,10 @@
         .diff-badge { padding: 3px 6px; border-radius: 3px; font-size: 0.55rem; font-weight: 800; letter-spacing: 0.15em; border: 1px solid; }
 
         /* Gameplay Area UI */
-        .game-objective { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); margin-bottom: 1rem; }
-        .timer { font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin-bottom: 1.5rem; letter-spacing: 0.1em; }
+        .game-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+        .game-objective { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); }
+        .rush-badge { color: #f97316; font-weight: 800; font-size: 0.7rem; letter-spacing: 0.1em; display: none; align-items: center; gap: 4px; }
+        .timer { font-size: 0.8rem; font-weight: 600; color: var(--text-muted); letter-spacing: 0.1em; }
         
         /* Color Boxes */
         .color-boxes { display: flex; gap: 2px; justify-content: center; margin: 0 0 2rem 0; }
@@ -70,8 +74,8 @@
         #selector-dot { position: absolute; width: 14px; height: 14px; border: 2px solid white; border-radius: 50%; transform: translate(-50%, -50%); pointer-events: none; box-shadow: 0 0 0 1px black; display: none; z-index: 10; }
 
         /* Setup Grid */
-        .space-selector { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 1.5rem; transition: opacity 0.3s; }
-        .radio-label { display: inline-block; font-size: 0.6rem; text-transform: uppercase; font-weight: 600; letter-spacing: 0.1em; padding: 8px 12px; border: 1px solid var(--border); border-radius: 2px; cursor: pointer; color: var(--text-muted); transition: 0.2s; background: var(--bg); }
+        .space-selector { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-bottom: 1.5rem; transition: opacity 0.3s; }
+        .radio-label { display: inline-block; font-size: 0.55rem; text-transform: uppercase; font-weight: 600; letter-spacing: 0.1em; padding: 8px 10px; border: 1px solid var(--border); border-radius: 2px; cursor: pointer; color: var(--text-muted); transition: 0.2s; background: var(--bg); }
         .space-selector input[type="radio"] { display: none; }
         .space-selector input[type="radio"]:checked + .radio-label { background: var(--text-main); color: var(--bg); border-color: var(--text-main); }
 
@@ -87,7 +91,7 @@
         input[type="checkbox"] { display: none; }
 
         /* Sliders */
-        .slider-group { margin-bottom: 1.5rem; }
+        .slider-group { margin-bottom: 1rem; }
         .slider-header { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.7rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-main); }
         .slider-value { font-family: monospace; color: var(--text-muted); }
         input[type="range"] { -webkit-appearance: none; width: 100%; height: 2px; background: var(--border); outline: none; }
@@ -95,56 +99,100 @@
 
         /* Buttons */
         .btn-group { display: flex; gap: 10px; margin-bottom: 10px; }
-        button { flex: 1; padding: 16px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.2em; background: none; color: var(--text-main); border: 1px solid var(--border); cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; }
+        button { flex: 1; padding: 14px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.2em; background: none; color: var(--text-main); border: 1px solid var(--border); cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; }
         button:hover { background: var(--text-main); color: var(--bg); }
+        
+        .btn-rush { border-color: #f97316; color: #f97316; }
+        .btn-rush:hover { background: #f97316; color: var(--bg); }
         .btn-daily { border-color: #3b82f6; color: #3b82f6; }
         .btn-daily:hover { background: #3b82f6; color: var(--bg); }
         .btn-share { border-color: #22c55e; color: #22c55e; }
         .btn-share:hover { background: #22c55e; color: var(--bg); }
-        .btn-copy-config { border-color: var(--text-muted); color: var(--text-muted); }
-        .btn-copy-config:hover { background: var(--text-muted); color: var(--bg); }
+        .btn-lock { background: var(--text-main); color: var(--bg); margin-top: 1.5rem; }
+        .btn-lock:hover { background: var(--text-muted); }
 
         .match-percentage { font-size: 5rem; font-weight: 200; color: var(--text-main); margin: 1rem 0; letter-spacing: -0.05em; }
         
-        .status-text { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--text-muted); margin-bottom: 3rem; }
+        .status-text { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--text-muted); margin-bottom: 2rem; }
         .flag-item { display: inline-flex; align-items: center; gap: 4px; }
         .flag-sep { opacity: 0.3; }
+
+        /* Stats Grid */
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1rem; }
+        .stat-card { background: var(--bg); padding: 12px; border: 1px solid var(--border); text-align: center; border-radius: 4px; }
+        .stat-val { font-size: 1.2rem; font-weight: 200; color: var(--accent); margin-bottom: 4px; }
+        .stat-lbl { font-size: 0.55rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); }
+        .bias-card { grid-column: span 2; }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Chroma 
-            <button class="info-btn" onclick="toggleInfo(true)">
-                <svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-            </button>
+            <div class="header-btns">
+                <button class="header-btn" onclick="toggleStats(true)" title="Analytics">
+                    <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"></path></svg>
+                </button>
+                <button class="header-btn" onclick="toggleInfo(true)" title="Info">
+                    <svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                </button>
+            </div>
         </h1>
         
         <div id="shared-banner" class="shared-banner" style="display: none;">
-            <div class="shared-banner-title">Shared Configuration Loaded</div>
-            <div class="shared-banner-text">You are previewing a shared rule set. Would you like to save it as your new default?</div>
+            <div class="shared-banner-title">Shared Configuration</div>
+            <div class="shared-banner-text">Previewing a shared rule set. Save it as your default?</div>
             <div class="shared-banner-btns">
                 <button class="btn-save" onclick="acceptSharedConfig()">Save Config</button>
                 <button onclick="discardSharedConfig()">Discard</button>
             </div>
         </div>
 
+        <div id="duel-banner" class="shared-banner duel-banner" style="display: none;">
+            <div class="shared-banner-title">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M14.5 17.5L3 6V3h3l11.5 11.5M13 19l6-6M16 16l4 4M19 21l2-2"></path></svg> Rivalry Duel
+            </div>
+            <div class="shared-banner-text">You have been challenged! Your opponent scored <b id="duel-op-score" style="color:var(--text-main)"></b> on this exact color.</div>
+            <div class="shared-banner-btns">
+                <button class="btn-duel" onclick="acceptDuel()">Accept Duel</button>
+                <button onclick="discardSharedConfig()">Flee</button>
+            </div>
+        </div>
+
         <div class="info-modal" id="info-modal">
             <h2>Game Modes</h2>
-            <p><b>Visual Map:</b> Select from an assisted 2D spectrum. Guarantees 100% physically possible colors.</p>
-            <p><b>Blind Hardcore:</b> No visual reference. You must match the color using purely the text code.</p>
-            <p><b>Optical Illusion:</b> Wraps colors in violently contrasting frames to trigger the Albers Effect. Your eyes will lie to you.</p>
-            <p><b>Complementary Mode:</b> Given a base color, find its exact mathematical complement (opposite) in the chosen space.</p>
-            <p><b>Daily:</b> 3 globally synced target configurations of varying difficulty that reset at midnight. Prove your worth and share your grid.</p>
+            <p><b>Chroma Rush:</b> Survival mode. Start with 60s. >90% adds 5s, >98% adds 10s.</p>
+            <p><b>CMYK Mode:</b> Subtractive ink mixing. Red + Green no longer makes Yellow.</p>
+            <p><b>Rivalry Links:</b> Challenge friends to beat your exact score on a specific color.</p>
+            <p><b>Visual Map:</b> Select from an assisted 2D spectrum.</p>
+            <p><b>Blind Hardcore:</b> No visual reference. Rely entirely on the math code.</p>
+            <p><b>Optical Illusion:</b> Triggers the Albers Effect using violently contrasting borders.</p>
+            <p><b>Complementary:</b> Find the exact mathematical opposite of the base color.</p>
             <button onclick="toggleInfo(false)" style="margin-top: 20px;">Close</button>
         </div>
 
+        <div class="info-modal" id="stats-modal">
+            <h2>Your Analytics</h2>
+            <div class="stats-grid">
+                <div class="stat-card"><div class="stat-val" id="st-games">0</div><div class="stat-lbl">Colors Solved</div></div>
+                <div class="stat-card"><div class="stat-val" id="st-acc">0%</div><div class="stat-lbl">Avg Accuracy</div></div>
+                <div class="stat-card"><div class="stat-val" id="st-streak">0</div><div class="stat-lbl">Max Rush Streak</div></div>
+                <div class="stat-card"><div class="stat-val" id="st-bias-dir">-</div><div class="stat-lbl">Primary Drift</div></div>
+                <div class="stat-card bias-card">
+                    <div class="stat-val" id="st-bias" style="font-size:0.9rem;">No Data</div>
+                    <div class="stat-lbl">Biological Visual Bias</div>
+                </div>
+            </div>
+            <p style="text-align:center; font-size:0.6rem; margin-top:10px;">(Bias calculates how your eyes misinterpret light over time)</p>
+            <button onclick="toggleStats(false)" style="margin-top: 20px;">Close</button>
+        </div>
+
         <div class="game-setup active" id="setup-screen">
-            
             <div class="space-selector" id="space-selector">
                 <label><input type="radio" name="colorSpace" value="rgb" checked onchange="changeColorSpace()"><span class="radio-label">RGB</span></label>
                 <label><input type="radio" name="colorSpace" value="hsl" onchange="changeColorSpace()"><span class="radio-label">HSL</span></label>
                 <label><input type="radio" name="colorSpace" value="oklab" onchange="changeColorSpace()"><span class="radio-label">OKLAB</span></label>
                 <label><input type="radio" name="colorSpace" value="oklch" onchange="changeColorSpace()"><span class="radio-label">OKLCH</span></label>
+                <label><input type="radio" name="colorSpace" value="cmyk" onchange="changeColorSpace()"><span class="radio-label">CMYK</span></label>
             </div>
 
             <div class="config-grid">
@@ -179,12 +227,12 @@
 
             <div class="btn-group">
                 <button onclick="startFreeplay()">Free Play</button>
-                <button class="btn-daily" onclick="toggleDailyMenu(true)">Play Daily</button>
+                <button class="btn-rush" onclick="startRush()">Chroma Rush</button>
             </div>
-            <button class="btn-copy-config" id="btn-copy-config" onclick="copyConfigUrl()">
-                <svg class="icon" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
-                <span>Copy Config Link</span>
-            </button>
+            <div class="btn-group">
+                <button class="btn-daily" onclick="toggleDailyMenu(true)">Play Daily</button>
+                <button style="border-color:var(--text-muted); color:var(--text-muted);" id="btn-copy-config" onclick="copyConfigUrl()">Copy Config</button>
+            </div>
         </div>
 
         <div class="daily-menu" id="daily-screen">
@@ -194,6 +242,10 @@
         </div>
 
         <div class="color-boxes" id="main-color-boxes" style="display: none;">
+            <div class="illusion-frame" id="frame-opponent" style="display: none;">
+                <div class="color-box" id="op-color"></div>
+                <span class="color-box-label" id="op-label">Opponent</span>
+            </div>
             <div class="illusion-frame" id="frame-target">
                 <div class="color-box" id="target-color"></div>
                 <span class="color-box-label" id="target-label">Reference</span>
@@ -205,27 +257,26 @@
         </div>
 
         <div class="game-area" id="game-area">
-            <div class="game-objective" id="game-objective">Match the Color</div>
-            <div class="timer" id="timer">00</div>
+            <div class="game-header">
+                <div class="game-objective" id="game-objective">Match the Color</div>
+                <div class="rush-badge" id="rush-badge">
+                    <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M12 2c0 0-4 4-4 9a4 4 0 0 0 8 0c0-5-4-9-4-9z"/><path d="M12 12s-1 1-1 2 1 2 1 2 1-1 1-2-1-2-1-2z"/></svg> 
+                    <span id="rush-streak">0</span>
+                </div>
+                <div class="timer" id="timer">00</div>
+            </div>
             
             <div class="controls">
                 <div id="cheater-controls" style="display: none;">
                     <div class="canvas-wrapper"><canvas id="spectrum-map"></canvas><div id="selector-dot"></div></div>
                 </div>
                 <div id="standard-controls">
-                    <div class="slider-group">
-                        <div class="slider-header"><span id="lbl-s1">CH 1</span><span class="slider-value" id="val-s1">0</span></div>
-                        <input type="range" id="slider-1" oninput="updateColor()">
-                    </div>
-                    <div class="slider-group">
-                        <div class="slider-header"><span id="lbl-s2">CH 2</span><span class="slider-value" id="val-s2">0</span></div>
-                        <input type="range" id="slider-2" oninput="updateColor()">
-                    </div>
-                    <div class="slider-group">
-                        <div class="slider-header"><span id="lbl-s3">CH 3</span><span class="slider-value" id="val-s3">0</span></div>
-                        <input type="range" id="slider-3" oninput="updateColor()">
-                    </div>
+                    <div class="slider-group" id="group-s1"><div class="slider-header"><span id="lbl-s1">CH 1</span><span class="slider-value" id="val-s1">0</span></div><input type="range" id="slider-1" oninput="updateColor()"></div>
+                    <div class="slider-group" id="group-s2"><div class="slider-header"><span id="lbl-s2">CH 2</span><span class="slider-value" id="val-s2">0</span></div><input type="range" id="slider-2" oninput="updateColor()"></div>
+                    <div class="slider-group" id="group-s3"><div class="slider-header"><span id="lbl-s3">CH 3</span><span class="slider-value" id="val-s3">0</span></div><input type="range" id="slider-3" oninput="updateColor()"></div>
+                    <div class="slider-group" id="group-s4" style="display:none;"><div class="slider-header"><span id="lbl-s4">CH 4</span><span class="slider-value" id="val-s4">0</span></div><input type="range" id="slider-4" oninput="updateColor()"></div>
                 </div>
+                <button class="btn-lock" onclick="lockIn()">Lock In</button>
             </div>
         </div>
 
@@ -234,9 +285,17 @@
             <div class="status-text" id="status-text"></div>
             
             <div style="display: flex; flex-direction: column; gap: 10px;">
+                <button class="btn-duel" id="btn-challenge" onclick="shareDuel()" style="display:none;">
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M14.5 17.5L3 6V3h3l11.5 11.5M13 19l6-6M16 16l4 4M19 21l2-2"></path></svg>
+                    <span>Challenge a Friend</span>
+                </button>
                 <button class="btn-share" id="btn-share" onclick="shareScore()">
                     <svg class="icon" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
                     <span>Share Result</span>
+                </button>
+                <button onclick="playAgain()">
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><polyline points="3 3 3 8 8 8"></polyline></svg>
+                    <span>Play Again</span>
                 </button>
                 <button onclick="resetGame()">Menu</button>
             </div>
@@ -244,45 +303,80 @@
     </div>
 
     <script>
-        // --- SVG ASSETS ---
         const svgs = {
             complementary: `<svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="8" cy="12" r="5"/><circle cx="16" cy="12" r="5"/></svg>`,
             blind: `<svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`,
             map: `<svg class="icon icon-sm" viewBox="0 0 24 24"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>`,
-            illusion: `<svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20Z"/><path d="M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12Z"/><path d="M12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/></svg>`
+            illusion: `<svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20Z"/><path d="M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12Z"/><path d="M12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/></svg>`,
+            rush: `<svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M12 2c0 0-4 4-4 9a4 4 0 0 0 8 0c0-5-4-9-4-9z"/><path d="M12 12s-1 1-1 2 1 2 1 2 1-1 1-2-1-2-1-2z"/></svg>`,
+            duel: `<svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M14.5 17.5L3 6V3h3l11.5 11.5M13 19l6-6M16 16l4 4M19 21l2-2"></path></svg>`
         };
 
-        // --- 1. CORE DATA & CONFIG ---
+        // Fixed Float Artifacts for OKLAB and OKLCH using +(val).toFixed(4)
         const spaces = {
-            rgb: { s1: { lbl: 'R', min: 0, max: 255, val: 128 }, s2: { lbl: 'G', min: 0, max: 255, val: 128 }, s3: { lbl: 'B', min: 0, max: 255, val: 128 }, fmt: (v) => `#${v[0].toString(16).padStart(2,'0')}${v[1].toString(16).padStart(2,'0')}${v[2].toString(16).padStart(2,'0')}`.toUpperCase() },
-            hsl: { s1: { lbl: 'H', min: 0, max: 360, val: 180 }, s2: { lbl: 'S', min: 0, max: 100, val: 50 }, s3: { lbl: 'L', min: 0, max: 100, val: 50 }, fmt: (v) => `hsl(${v[0]}, ${v[1]}%, ${v[2]}%)` },
-            oklab: { s1: { lbl: 'L', min: 0, max: 100, val: 50 }, s2: { lbl: 'A', min: -100, max: 100, val: 0 }, s3: { lbl: 'B', min: -100, max: 100, val: 0 }, fmt: (v) => `oklab(${v[0]}% ${v[1]/100*0.4} ${v[2]/100*0.4})` },
-            oklch: { s1: { lbl: 'L', min: 0, max: 100, val: 50 }, s2: { lbl: 'C', min: 0, max: 100, val: 50 }, s3: { lbl: 'H', min: 0, max: 360, val: 180 }, fmt: (v) => `oklch(${v[0]}% ${v[1]/100*0.4} ${v[2]})` }
+            rgb: { s1:{lbl:'R',min:0,max:255,val:128}, s2:{lbl:'G',min:0,max:255,val:128}, s3:{lbl:'B',min:0,max:255,val:128}, fmt:(v)=>`#${v[0].toString(16).padStart(2,'0')}${v[1].toString(16).padStart(2,'0')}${v[2].toString(16).padStart(2,'0')}`.toUpperCase() },
+            hsl: { s1:{lbl:'H',min:0,max:360,val:180}, s2:{lbl:'S',min:0,max:100,val:50}, s3:{lbl:'L',min:0,max:100,val:50}, fmt:(v)=>`hsl(${v[0]}, ${v[1]}%, ${v[2]}%)` },
+            oklab: { s1:{lbl:'L',min:0,max:100,val:50}, s2:{lbl:'A',min:-100,max:100,val:0}, s3:{lbl:'B',min:-100,max:100,val:0}, fmt:(v)=>`oklab(${v[0]}% ${+(v[1]/100*0.4).toFixed(4)} ${+(v[2]/100*0.4).toFixed(4)})` },
+            oklch: { s1:{lbl:'L',min:0,max:100,val:50}, s2:{lbl:'C',min:0,max:100,val:50}, s3:{lbl:'H',min:0,max:360,val:180}, fmt:(v)=>`oklch(${v[0]}% ${+(v[1]/100*0.4).toFixed(4)} ${v[2]})` },
+            cmyk: { s1:{lbl:'C',min:0,max:100,val:0}, s2:{lbl:'M',min:0,max:100,val:0}, s3:{lbl:'Y',min:0,max:100,val:0}, s4:{lbl:'K',min:0,max:100,val:0}, 
+                fmt:(v)=>{
+                    let c=v[0]/100, m=v[1]/100, y=v[2]/100, k=v[3]/100;
+                    return `rgb(${Math.round(255*(1-c)*(1-k))}, ${Math.round(255*(1-m)*(1-k))}, ${Math.round(255*(1-y)*(1-k))})`;
+                }
+            }
         };
-
-        const defaultCfg = { s: 'rgb', t: 30, o: 'match', m: false, h: false, i: false };
 
         let st = {
-            isDaily: false, dailyChallengeId: null, isViewingShared: false, suppressSave: false,
-            spaceId: 'rgb', dailyNum: 0, timeLimit: 30, timer: null,
-            baseVals: [0,0,0], targetVals: [0,0,0], currentVals: [0,0,0],
-            targetRgb: {r:0,g:0,b:0}, currentRgb: {r:0,g:0,b:0}, finalScore: 0,
-            isComplementary: false, isMap: false, isHardcore: false, isIllusion: false
+            isDaily:false, dailyId:null, isViewingShared:false, suppressSave:false,
+            isRush:false, rushStreak:0, isDuel:false, duelData:null,
+            spaceId:'rgb', timeLimit:30, timer:null,
+            baseVals:[], targetVals:[], currentVals:[],
+            targetRgb:{r:0,g:0,b:0}, currentRgb:{r:0,g:0,b:0}, finalScore:0,
+            isComp:false, isMap:false, isHardcore:false, isIllusion:false
         };
 
         const hiddenCtx = document.createElement('canvas').getContext('2d', { willReadFrequently: true });
         hiddenCtx.canvas.width = 1; hiddenCtx.canvas.height = 1;
 
-        // FIXED: The missing function reference!
-        function getRgbFromCss(cssString) {
-            hiddenCtx.clearRect(0, 0, 1, 1);
-            hiddenCtx.fillStyle = cssString;
-            hiddenCtx.fillRect(0, 0, 1, 1);
-            const data = hiddenCtx.getImageData(0, 0, 1, 1).data;
-            return { r: data[0], g: data[1], b: data[2] };
+        function getRgbFromCss(css) {
+            hiddenCtx.clearRect(0,0,1,1); hiddenCtx.fillStyle = css; hiddenCtx.fillRect(0,0,1,1);
+            const d = hiddenCtx.getImageData(0,0,1,1).data; return { r:d[0], g:d[1], b:d[2] };
         }
 
-        // --- 2. PERSISTENCE & URL SHARING ---
+        // --- STATS SYSTEM (v2 to fix variable collision) ---
+        function loadStats() { return JSON.parse(localStorage.getItem('chroma_stats_v2')) || { games:0, scoreSum:0, errR:0, errG:0, errB:0, streak:0 }; }
+        function saveStats(score, dr, dg, db) {
+            let s = loadStats();
+            s.games++; s.scoreSum += score; s.errR += dr; s.errG += dg; s.errB += db;
+            if (st.isRush && st.rushStreak > s.streak) s.streak = st.rushStreak;
+            localStorage.setItem('chroma_stats_v2', JSON.stringify(s));
+        }
+        function toggleStats(show) {
+            const m = document.getElementById('stats-modal');
+            if (show) {
+                let s = loadStats();
+                document.getElementById('st-games').textContent = s.games;
+                document.getElementById('st-acc').textContent = s.games > 0 ? Math.round(s.scoreSum/s.games) + '%' : '0%';
+                document.getElementById('st-streak').textContent = s.streak;
+                
+                if (s.games > 0) {
+                    let avgR = s.errR/s.games, avgG = s.errG/s.games, avgB = s.errB/s.games;
+                    let maxBias = Math.max(Math.abs(avgR), Math.abs(avgG), Math.abs(avgB));
+                    let p = Math.round((maxBias / 255) * 100);
+                    let text = "Balanced"; let dir = "-";
+                    if (p > 1) {
+                        if (maxBias === Math.abs(avgR)) { text = avgR>0?"Too Much Red":"Too Little Red"; dir = "RED"; }
+                        else if (maxBias === Math.abs(avgG)) { text = avgG>0?"Too Much Green":"Too Little Green"; dir = "GREEN"; }
+                        else { text = avgB>0?"Too Much Blue":"Too Little Blue"; dir = "BLUE"; }
+                    }
+                    document.getElementById('st-bias-dir').textContent = dir;
+                    document.getElementById('st-bias').textContent = p > 1 ? `${text} (~${p}%)` : "Flawless Biological Balance";
+                }
+            }
+            m.style.display = show ? 'block' : 'none';
+        }
+
+        // --- UI CONFIG ---
         function getUIConfig() {
             return {
                 s: document.querySelector('input[name="colorSpace"]:checked').value,
@@ -293,468 +387,307 @@
                 i: document.getElementById('illusion-checkbox').checked
             };
         }
-
         function setUIConfig(cfg) {
             st.suppressSave = true;
             document.querySelector(`input[name="colorSpace"][value="${cfg.s}"]`).checked = true;
             document.getElementById('timer-select').value = cfg.t;
             document.getElementById('objective-select').value = cfg.o;
-            
-            const mapCb = document.getElementById('map-checkbox');
-            const hardCb = document.getElementById('hardcore-checkbox');
-            mapCb.checked = cfg.m;
-            hardCb.checked = cfg.h;
+            document.getElementById('map-checkbox').checked = cfg.m;
+            document.getElementById('hardcore-checkbox').checked = cfg.h;
             document.getElementById('illusion-checkbox').checked = cfg.i;
-            
-            hardCb.disabled = cfg.m;
-            mapCb.disabled = cfg.h;
+            document.getElementById('hardcore-checkbox').disabled = cfg.m;
+            document.getElementById('map-checkbox').disabled = cfg.h;
             document.getElementById('lbl-hardcore').style.opacity = cfg.m ? '0.3' : '1';
             document.getElementById('lbl-map').style.opacity = cfg.h ? '0.3' : '1';
-            
-            const sel = document.getElementById('space-selector');
-            sel.style.opacity = cfg.m ? '0.3' : '1';
-            sel.style.pointerEvents = cfg.m ? 'none' : 'auto';
-
+            document.getElementById('space-selector').style.opacity = cfg.m ? '0.3' : '1';
+            document.getElementById('space-selector').style.pointerEvents = cfg.m ? 'none' : 'auto';
             changeColorSpace();
             st.suppressSave = false;
         }
 
-        function saveLocal() {
-            if (st.suppressSave || st.isViewingShared) return;
-            localStorage.setItem('chroma_cfg', JSON.stringify(getUIConfig()));
-        }
+        function saveLocal() { if (!st.suppressSave && !st.isViewingShared) localStorage.setItem('chroma_cfg', JSON.stringify(getUIConfig())); }
+        function loadLocal() { try { let s = JSON.parse(localStorage.getItem('chroma_cfg')); if (s && s.s) return s; } catch(e){} return { s:'rgb', t:30, o:'match', m:false, h:false, i:false }; }
+        function clearUrl() { window.history.replaceState({}, document.title, window.location.pathname); }
 
-        function loadLocal() {
-            try {
-                const stored = JSON.parse(localStorage.getItem('chroma_cfg'));
-                if (stored && validateConfig(stored)) return stored;
-            } catch(e) {}
-            return defaultCfg;
-        }
-
-        function validateConfig(cfg) {
-            if (!cfg) return false;
-            const validS = ['rgb', 'hsl', 'oklab', 'oklch'].includes(cfg.s);
-            const validT = [15, 30, 60].includes(cfg.t);
-            const validO = ['match', 'complementary'].includes(cfg.o);
-            const validBools = typeof cfg.m === 'boolean' && typeof cfg.h === 'boolean' && typeof cfg.i === 'boolean';
-            const validExclusivity = !(cfg.m && cfg.h);
-            return validS && validT && validO && validBools && validExclusivity;
-        }
-
-        function clearUrl() {
-            window.history.replaceState({}, document.title, window.location.pathname);
-        }
-
-        function checkUrlConfig() {
-            const params = new URLSearchParams(window.location.search);
-            if (!params.has('s')) return null;
-
-            const urlCfg = {
-                s: params.get('s'),
-                t: parseInt(params.get('t')),
-                o: params.get('o'),
-                m: params.get('m') === '1',
-                h: params.get('h') === '1',
-                i: params.get('i') === '1'
-            };
-
-            if (validateConfig(urlCfg)) {
-                return urlCfg;
-            } else {
-                clearUrl(); 
+        function checkUrl() {
+            const p = new URLSearchParams(window.location.search);
+            if (p.has('duel')) {
+                st.isDuel = true;
+                st.duelData = { tr:p.get('tr'), tg:p.get('tg'), tb:p.get('tb'), or:p.get('or'), og:p.get('og'), ob:p.get('ob'), os:p.get('os') };
+                document.getElementById('duel-op-score').textContent = st.duelData.os + '%';
+                document.getElementById('duel-banner').style.display = 'block';
                 return null;
             }
+            if (!p.has('s')) return null;
+            return { s:p.get('s'), t:parseInt(p.get('t')), o:p.get('o'), m:p.get('m')==='1', h:p.get('h')==='1', i:p.get('i')==='1' };
         }
 
         function copyConfigUrl() {
-            const c = getUIConfig();
-            const qs = `?s=${c.s}&t=${c.t}&o=${c.o}&m=${c.m?1:0}&h=${c.h?1:0}&i=${c.i?1:0}`;
-            const url = window.location.origin + window.location.pathname + qs;
-            
-            navigator.clipboard.writeText(url).then(() => {
-                const btn = document.getElementById('btn-copy-config');
-                const orig = btn.innerHTML;
-                btn.innerHTML = '<span>Link Copied!</span>';
-                setTimeout(() => btn.innerHTML = orig, 2000);
-            });
+            const c = getUIConfig(); const qs = `?s=${c.s}&t=${c.t}&o=${c.o}&m=${c.m?1:0}&h=${c.h?1:0}&i=${c.i?1:0}`;
+            navigator.clipboard.writeText(window.location.origin + window.location.pathname + qs);
+            document.getElementById('btn-copy-config').innerHTML = '<span>Copied!</span>';
+            setTimeout(() => document.getElementById('btn-copy-config').innerHTML = 'Copy Config', 2000);
         }
 
-        function acceptSharedConfig() {
-            st.isViewingShared = false;
-            document.getElementById('shared-banner').style.display = 'none';
-            saveLocal();
-            clearUrl();
-        }
+        function acceptSharedConfig() { st.isViewingShared = false; document.getElementById('shared-banner').style.display = 'none'; saveLocal(); clearUrl(); }
+        function discardSharedConfig() { st.isViewingShared = false; document.getElementById('shared-banner').style.display = 'none'; document.getElementById('duel-banner').style.display = 'none'; st.isDuel = false; setUIConfig(loadLocal()); clearUrl(); }
+        document.querySelectorAll('#setup-screen input, #setup-screen select').forEach(el => el.addEventListener('change', () => { if(st.isViewingShared){ st.isViewingShared=false; document.getElementById('shared-banner').style.display='none'; clearUrl(); } saveLocal(); }));
 
-        function discardSharedConfig() {
-            st.isViewingShared = false;
-            document.getElementById('shared-banner').style.display = 'none';
-            setUIConfig(loadLocal());
-            clearUrl();
-        }
-
-        document.querySelectorAll('#setup-screen input, #setup-screen select').forEach(el => {
-            el.addEventListener('change', () => {
-                if (st.isViewingShared) {
-                    st.isViewingShared = false;
-                    document.getElementById('shared-banner').style.display = 'none';
-                    clearUrl();
-                }
-                saveLocal();
-            });
-        });
-
-        // --- 3. PRNG FOR DAILY SEED ---
-        function mulberry32(a) {
-            return function() {
-              var t = a += 0x6D2B79F5;
-              t = Math.imul(t ^ t >>> 15, t | 1);
-              t ^= t + Math.imul(t ^ t >>> 7, t | 61);
-              return ((t ^ t >>> 14) >>> 0) / 4294967296;
-            }
-        }
-        
-        function getDailyRNG(offset = 0) {
-            const start = new Date('2026-03-23T00:00:00Z');
-            const now = new Date();
-            st.dailyNum = Math.floor((now - start) / 86400000) + 1;
-            return mulberry32(st.dailyNum * 42 + offset); 
-        }
-
-        // --- 4. UI TOGGLES & DAILY MENU ---
         function toggleInfo(show) { document.getElementById('info-modal').style.display = show ? 'block' : 'none'; }
-
+        
         function changeColorSpace() {
-            if (st.suppressSave) return; 
+            if (st.suppressSave) return;
             st.spaceId = document.querySelector('input[name="colorSpace"]:checked').value;
             const cfg = spaces[st.spaceId];
-            [1, 2, 3].forEach((n) => {
-                document.getElementById(`lbl-s${n}`).textContent = cfg[`s${n}`].lbl;
-                const sl = document.getElementById(`slider-${n}`);
-                sl.min = cfg[`s${n}`].min; sl.max = cfg[`s${n}`].max; sl.value = cfg[`s${n}`].val;
+            [1,2,3,4].forEach(n => {
+                const g = document.getElementById(`group-s${n}`);
+                if (cfg[`s${n}`]) {
+                    g.style.display = 'block';
+                    document.getElementById(`lbl-s${n}`).textContent = cfg[`s${n}`].lbl;
+                    const sl = document.getElementById(`slider-${n}`);
+                    sl.min = cfg[`s${n}`].min; sl.max = cfg[`s${n}`].max; sl.value = cfg[`s${n}`].val;
+                } else { g.style.display = 'none'; }
             });
-            const isMap = document.getElementById('map-checkbox').checked;
-            if(!isMap) updateColor();
+            if(!document.getElementById('map-checkbox').checked) updateColor();
         }
+
+        function mulberry32(a) { return function() { var t=a+=0x6D2B79F5; t=Math.imul(t^t>>>15,t|1); t^=t+Math.imul(t^t>>>7,t|61); return ((t^t>>>14)>>>0)/4294967296; } }
+        function getDailyRNG(offset = 0) { const start = new Date('2026-03-23T00:00:00Z'); st.dailyNum = Math.floor((new Date() - start)/86400000)+1; return mulberry32(st.dailyNum*42+offset); }
 
         function toggleDailyMenu(show) {
             if (show) {
-                // Ensure shared config banner goes away if they dive into daily
-                document.getElementById('shared-banner').style.display = 'none';
-                generateDailyConfigs();
-                document.getElementById('setup-screen').classList.remove('active');
-                document.getElementById('daily-screen').classList.add('active');
-            } else {
-                document.getElementById('daily-screen').classList.remove('active');
-                document.getElementById('setup-screen').classList.add('active');
-            }
+                document.getElementById('shared-banner').style.display='none'; document.getElementById('duel-banner').style.display='none';
+                generateDailyConfigs(); document.getElementById('setup-screen').classList.remove('active'); document.getElementById('daily-screen').classList.add('active');
+            } else { document.getElementById('daily-screen').classList.remove('active'); document.getElementById('setup-screen').classList.add('active'); }
         }
 
         function generateDailyConfigs() {
-            const rng = getDailyRNG(0); 
-            const spaceList = ['rgb', 'hsl', 'oklab', 'oklch'];
-            const timerList = [15, 30, 60];
-            const objList = ['match', 'complementary'];
-
-            st.dailyConfigs = [];
-            const container = document.getElementById('daily-challenges-list');
-            container.innerHTML = '';
-
-            for (let i = 1; i <= 3; i++) {
-                const isHard = rng() > 0.5;
-                const isMp = !isHard && rng() > 0.5; 
-                const cfg = {
-                    id: i,
-                    space: spaceList[Math.floor(rng() * spaceList.length)],
-                    timer: timerList[Math.floor(rng() * timerList.length)],
-                    objective: objList[Math.floor(rng() * objList.length)],
-                    isMap: isMp,
-                    isHardcore: isHard,
-                    isIllusion: rng() > 0.6
-                };
+            const rng = getDailyRNG(0); const spaceList = ['rgb','hsl','oklab','oklch','cmyk'];
+            document.getElementById('daily-challenges-list').innerHTML = '';
+            for (let i=1; i<=3; i++) {
+                const cfg = { id:i, space:spaceList[Math.floor(rng()*spaceList.length)], timer:[15,30,60][Math.floor(rng()*3)], objective:['match','complementary'][Math.floor(rng()*2)], isMap:rng()>0.7, isHardcore:false, isIllusion:rng()>0.6 };
+                if(!cfg.isMap) cfg.isHardcore = rng()>0.7;
                 
-                let diffScore = 0;
-                if (cfg.space === 'rgb') diffScore += 3;
-                if (cfg.space === 'hsl') diffScore += 1;
-                if (cfg.space === 'oklch') diffScore += 2;
-                if (cfg.space === 'oklab') diffScore += 4;
+                let dScore = (cfg.space==='rgb'?3:cfg.space==='cmyk'?4:cfg.space==='oklab'?4:2) + (cfg.timer===15?2:cfg.timer===30?1:0) + (cfg.objective==='complementary'?2:0) - (cfg.isMap?3:0) + (cfg.isHardcore?5:0) + (cfg.isIllusion?2:0);
+                let dLbl = dScore<=3?'CASUAL':dScore<=6?'NORMAL':dScore<=9?'HARD':'EXTREME';
+                let dCol = dScore<=3?'#22c55e':dScore<=6?'#facc15':dScore<=9?'#f97316':'#ef4444';
                 
-                if (cfg.timer === 15) diffScore += 2;
-                if (cfg.timer === 30) diffScore += 1;
-                
-                if (cfg.objective === 'complementary') diffScore += 2;
-                if (cfg.isMap) diffScore -= 3;
-                if (cfg.isHardcore) diffScore += 5;
-                if (cfg.isIllusion) diffScore += 2;
-
-                let diffLabel, diffColor;
-                if (diffScore <= 2) { diffLabel = 'CASUAL'; diffColor = '#22c55e'; }
-                else if (diffScore <= 5) { diffLabel = 'NORMAL'; diffColor = '#facc15'; }
-                else if (diffScore <= 8) { diffLabel = 'HARD'; diffColor = '#f97316'; }
-                else { diffLabel = 'EXTREME'; diffColor = '#ef4444'; }
-
-                st.dailyConfigs.push(cfg);
-
                 let mods = [];
-                if (cfg.isMap) mods.push(`<span class="flag-item" title="Visual Map">${svgs.map} Map</span>`);
-                if (cfg.isHardcore) mods.push(`<span class="flag-item" title="Blind Hardcore">${svgs.blind} Blind</span>`);
-                if (cfg.isIllusion) mods.push(`<span class="flag-item" title="Illusion Frame">${svgs.illusion} Illusion</span>`);
-                if (cfg.objective === 'complementary') mods.push(`<span class="flag-item" title="Complementary">${svgs.complementary} Complement</span>`);
+                if(cfg.isMap) mods.push(`<span class="flag-item">${svgs.map} Map</span>`);
+                if(cfg.isHardcore) mods.push(`<span class="flag-item">${svgs.blind} Blind</span>`);
+                if(cfg.isIllusion) mods.push(`<span class="flag-item">${svgs.illusion} Illusion</span>`);
+                if(cfg.objective==='complementary') mods.push(`<span class="flag-item">${svgs.complementary} Comp</span>`);
                 
-                const modStr = mods.length > 0 ? `<div style="display:flex; gap:10px; margin-top:6px; color:var(--text-main); align-items:center;">${mods.join('')}</div>` : '';
-                
-                const card = document.createElement('div');
-                card.className = 'daily-card';
-                card.innerHTML = `
-                    <div class="daily-card-title">
-                        <span>Challenge 0${cfg.id}</span>
-                        <div style="display:flex; gap:8px; align-items:center;">
-                            <span class="diff-badge" style="color:${diffColor}; border-color:${diffColor};">${diffLabel}</span>
-                            <span>${cfg.timer}s</span>
-                        </div>
-                    </div>
-                    <div class="daily-card-desc">
-                        <span style="font-weight:700; color:var(--text-main); font-size:0.7rem;">${cfg.space.toUpperCase()}</span>
-                    </div>
-                    ${modStr}
-                `;
-                card.onclick = () => startDailyGame(cfg);
-                container.appendChild(card);
+                const card = document.createElement('div'); card.className = 'daily-card';
+                card.innerHTML = `<div class="daily-card-title"><span>Ch 0${cfg.id}</span><div style="display:flex; gap:8px;"><span class="diff-badge" style="color:${dCol}; border-color:${dCol};">${dLbl}</span><span>${cfg.timer}s</span></div></div>
+                                  <div class="daily-card-desc"><span style="font-weight:700; color:var(--text-main); font-size:0.7rem;">${cfg.space.toUpperCase()}</span></div>
+                                  ${mods.length?`<div style="display:flex;gap:10px;margin-top:6px;color:var(--text-main);">${mods.join('')}</div>`:''}`;
+                card.onclick = () => { st.isDaily=true; st.dailyChallengeId=cfg.id; st.spaceId=cfg.space; st.timeLimit=cfg.timer; st.isMap=cfg.isMap; st.isHardcore=cfg.isHardcore; st.isIllusion=cfg.isIllusion; st.isComp=cfg.objective==='complementary'; setUIConfig({s:cfg.space,t:cfg.timer,o:cfg.objective,m:cfg.isMap,h:cfg.isHardcore,i:cfg.isIllusion}); executeGameStart(); };
+                document.getElementById('daily-challenges-list').appendChild(card);
             }
         }
 
-        function calcComplement(vals) {
-            if(st.spaceId === 'rgb') return [255-vals[0], 255-vals[1], 255-vals[2]];
-            if(st.spaceId === 'hsl' || st.spaceId === 'oklch') return [vals[0], vals[1], (vals[2]+180)%360];
-            if(st.spaceId === 'oklab') return [vals[0], -vals[1], -vals[2]];
+        function calcComp(v) {
+            if(st.spaceId==='rgb') return [255-v[0],255-v[1],255-v[2]];
+            if(st.spaceId==='hsl'||st.spaceId==='oklch') return [v[0],v[1],(v[2]+180)%360];
+            if(st.spaceId==='oklab') return [v[0],-v[1],-v[2]];
+            if(st.spaceId==='cmyk') return [100-v[0],100-v[1],100-v[2],100-v[3]];
         }
 
-        // --- 5. MAIN GAME LOOP ---
         function startFreeplay() {
-            st.isDaily = false;
-            st.dailyChallengeId = null;
-            const uiCfg = getUIConfig();
-            st.spaceId = uiCfg.s;
-            st.timeLimit = uiCfg.t;
-            st.isComplementary = uiCfg.o === 'complementary';
-            st.isMap = uiCfg.m;
-            st.isHardcore = uiCfg.h;
-            st.isIllusion = uiCfg.i;
-            
-            document.getElementById('shared-banner').style.display = 'none'; // Hide banner if playing
-            executeGameStart();
+            st.isDaily=false; st.isRush=false; const c = getUIConfig();
+            st.spaceId=c.s; st.timeLimit=c.t; st.isComp=c.o==='complementary'; st.isMap=c.m; st.isHardcore=c.h; st.isIllusion=c.i;
+            document.getElementById('shared-banner').style.display='none'; executeGameStart();
         }
-
-        function startDailyGame(cfg) {
-            st.isDaily = true;
-            st.dailyChallengeId = cfg.id;
-            st.spaceId = cfg.space;
-            st.timeLimit = cfg.timer;
-            st.isMap = cfg.isMap;
-            st.isHardcore = cfg.isHardcore;
-            st.isIllusion = cfg.isIllusion;
-            st.isComplementary = cfg.objective === 'complementary';
-            
-            setUIConfig({ s: cfg.space, t: cfg.timer, o: cfg.objective, m: cfg.isMap, h: cfg.isHardcore, i: cfg.isIllusion });
-            executeGameStart();
+        function startRush() {
+            st.isDaily=false; st.isRush=true; st.rushStreak=0; const c = getUIConfig();
+            st.spaceId=c.s; st.timeLimit=60; st.isComp=c.o==='complementary'; st.isMap=c.m; st.isHardcore=c.h; st.isIllusion=c.i;
+            document.getElementById('shared-banner').style.display='none'; executeGameStart();
+        }
+        function acceptDuel() {
+            st.isDaily=false; st.isRush=false; st.timeLimit=30; st.spaceId='rgb'; st.isComp=false; st.isMap=false; st.isHardcore=false; st.isIllusion=false;
+            document.getElementById('duel-banner').style.display='none'; executeGameStart();
+        }
+        
+        function playAgain() {
+            if (st.isDaily) { executeGameStart(); } 
+            else if (st.isRush) { startRush(); } 
+            else if (st.isDuel) { acceptDuel(); } 
+            else { executeGameStart(); }
         }
 
         function executeGameStart() {
-            const rng = st.isDaily ? getDailyRNG(st.dailyChallengeId) : Math.random;
+            document.getElementById('setup-screen').classList.remove('active'); document.getElementById('daily-screen').classList.remove('active'); document.getElementById('results-screen').classList.remove('active');
+            document.getElementById('main-color-boxes').style.display='flex'; document.getElementById('game-area').classList.add('active');
+            document.getElementById('standard-controls').style.display=st.isMap?'none':'block'; document.getElementById('cheater-controls').style.display=st.isMap?'block':'none';
+            document.getElementById('selector-dot').style.display=st.isMap?'block':'none';
+            document.getElementById('frame-opponent').style.display='none'; document.getElementById('btn-challenge').style.display='none';
 
-            document.getElementById('setup-screen').classList.remove('active');
-            document.getElementById('daily-screen').classList.remove('active');
-            
-            document.getElementById('main-color-boxes').style.display = 'flex';
-            document.getElementById('game-area').classList.add('active');
-            
-            document.getElementById('standard-controls').style.display = st.isMap ? 'none' : 'block';
-            document.getElementById('cheater-controls').style.display = st.isMap ? 'block' : 'none';
-            document.getElementById('selector-dot').style.display = st.isMap ? 'block' : 'none';
+            let oTxt = "Match the Target";
+            if(st.isComp&&st.isHardcore) oTxt="Blind-Match Complement"; else if(st.isComp) oTxt="Match Complement"; else if(st.isHardcore) oTxt="Blind-Match Target";
+            document.getElementById('game-objective').textContent = oTxt;
 
-            let objText = "Match the Reference Color";
-            if (st.isComplementary && st.isHardcore) objText = "Blind-Match the Complementary Color";
-            else if (st.isComplementary) objText = "Match the Complementary Color";
-            else if (st.isHardcore) objText = "Blind-Match the Target Color";
-            else if (st.isMap) objText = "Find the Reference Color";
-            document.getElementById('game-objective').textContent = objText;
-
-            const ft = document.getElementById('frame-target');
-            const fu = document.getElementById('frame-user');
-            if (st.isIllusion) {
-                ft.classList.add('active-illusion'); fu.classList.add('active-illusion');
-                ft.style.backgroundColor = `hsl(${Math.floor(rng()*360)}, 100%, 50%)`;
-                fu.style.backgroundColor = `hsl(${Math.floor(rng()*360)}, 100%, 50%)`;
-            } else {
-                ft.classList.remove('active-illusion'); fu.classList.remove('active-illusion');
-                ft.style.backgroundColor = 'var(--border)'; fu.style.backgroundColor = 'var(--border)';
-            }
-
-            const tBox = document.getElementById('target-color');
-            const tLbl = document.getElementById('target-label');
-            tBox.textContent = ''; tBox.style.textShadow = 'none';
-
-            if (st.isMap) {
-                drawSpectrum();
-                const rx = Math.floor(rng() * 280); const ry = Math.floor(rng() * 160);
-                const pd = document.getElementById('spectrum-map').getContext('2d').getImageData(rx, ry, 1, 1).data;
-                st.targetRgb = { r: pd[0], g: pd[1], b: pd[2] };
-                tBox.style.backgroundColor = `rgb(${pd[0]},${pd[1]},${pd[2]})`;
-                tLbl.textContent = 'Reference';
-            } else {
-                const cfg = spaces[st.spaceId];
-                st.baseVals = [
-                    Math.floor(rng() * (cfg.s1.max - cfg.s1.min + 1)) + cfg.s1.min,
-                    Math.floor(rng() * (cfg.s2.max - cfg.s2.min + 1)) + cfg.s2.min,
-                    Math.floor(rng() * (cfg.s3.max - cfg.s3.min + 1)) + cfg.s3.min
-                ];
-
-                st.targetVals = st.isComplementary ? calcComplement(st.baseVals) : st.baseVals;
-                const baseCss = cfg.fmt(st.baseVals);
-                const targetCss = cfg.fmt(st.targetVals);
-                
-                st.targetRgb = getRgbFromCss(targetCss);
-                const dispCss = st.isComplementary ? baseCss : targetCss;
-
-                if (st.isHardcore) {
-                    tBox.style.backgroundColor = 'var(--bg)';
-                    tBox.textContent = dispCss;
-                } else {
-                    tBox.style.backgroundColor = dispCss;
-                }
-                tLbl.textContent = st.isComplementary ? 'Base Color' : 'Reference';
-            }
+            const rb = document.getElementById('rush-badge');
+            if (st.isRush) { rb.style.display='flex'; document.getElementById('rush-streak').textContent=st.rushStreak; } else { rb.style.display='none'; }
 
             changeColorSpace();
-            startTimer();
+            initRoundColors();
+            
+            if(!st.timer) startTimer();
+        }
+
+        function initRoundColors() {
+            const rng = st.isDaily ? getDailyRNG(st.dailyChallengeId + st.rushStreak) : Math.random;
+            const ft = document.getElementById('frame-target'); const fu = document.getElementById('frame-user');
+            
+            if (st.isIllusion) {
+                ft.classList.add('active-illusion'); fu.classList.add('active-illusion');
+                ft.style.backgroundColor = `hsl(${Math.floor(rng()*360)},100%,50%)`; fu.style.backgroundColor = `hsl(${Math.floor(rng()*360)},100%,50%)`;
+            } else { ft.classList.remove('active-illusion'); fu.classList.remove('active-illusion'); ft.style.backgroundColor = 'var(--border)'; fu.style.backgroundColor = 'var(--border)'; }
+
+            const tBox = document.getElementById('target-color'); const tLbl = document.getElementById('target-label');
+            tBox.textContent = ''; tBox.style.textShadow = 'none';
+
+            if (st.isDuel) {
+                st.targetRgb = { r:parseInt(st.duelData.tr), g:parseInt(st.duelData.tg), b:parseInt(st.duelData.tb) };
+                tBox.style.backgroundColor = `rgb(${st.targetRgb.r},${st.targetRgb.g},${st.targetRgb.b})`;
+                tLbl.textContent = 'Duel Target';
+            }
+            else if (st.isMap) {
+                drawSpectrum();
+                const d = document.getElementById('spectrum-map').getContext('2d').getImageData(Math.floor(rng()*280), Math.floor(rng()*160), 1, 1).data;
+                st.targetRgb = { r:d[0], g:d[1], b:d[2] };
+                tBox.style.backgroundColor = `rgb(${d[0]},${d[1]},${d[2]})`; tLbl.textContent = 'Reference';
+            } else {
+                const c = spaces[st.spaceId];
+                st.baseVals = [1,2,3,4].map(n => c[`s${n}`] ? Math.floor(rng()*(c[`s${n}`].max-c[`s${n}`].min+1))+c[`s${n}`].min : 0);
+                st.targetVals = st.isComp ? calcComp(st.baseVals) : st.baseVals;
+                const bCss = c.fmt(st.baseVals); const tCss = c.fmt(st.targetVals);
+                st.targetRgb = getRgbFromCss(tCss);
+                if(st.isHardcore) { tBox.style.backgroundColor='var(--bg)'; tBox.textContent=st.isComp?bCss:tCss; }
+                else { tBox.style.backgroundColor=st.isComp?bCss:tCss; }
+                tLbl.textContent = st.isComp ? 'Base Color' : 'Reference';
+                
+                [1,2,3,4].forEach(n => { if(c[`s${n}`]) document.getElementById(`slider-${n}`).value = c[`s${n}`].val; });
+                updateColor();
+            }
         }
 
         function drawSpectrum() {
-            const ctx = document.getElementById('spectrum-map').getContext('2d');
-            const w = ctx.canvas.width = ctx.canvas.clientWidth;
-            const h = ctx.canvas.height = ctx.canvas.clientHeight;
-            const gs = Math.floor(w * 0.1);
-            
-            let grd = ctx.createLinearGradient(0,0,0,h);
-            grd.addColorStop(0,'#fff'); grd.addColorStop(1,'#000');
-            ctx.fillStyle = grd; ctx.fillRect(0,0,gs,h);
-
-            for (let x = gs; x < w; x++) {
-                let g = ctx.createLinearGradient(0,0,0,h);
-                g.addColorStop(0,'#fff'); g.addColorStop(0.5, `hsl(${((x-gs)/(w-gs))*360},100%,50%)`); g.addColorStop(1,'#000');
-                ctx.fillStyle = g; ctx.fillRect(x,0,1,h);
-            }
+            const ctx = document.getElementById('spectrum-map').getContext('2d'); const w=ctx.canvas.width=ctx.canvas.clientWidth; const h=ctx.canvas.height=ctx.canvas.clientHeight;
+            const gs=Math.floor(w*0.1); let grd=ctx.createLinearGradient(0,0,0,h); grd.addColorStop(0,'#fff'); grd.addColorStop(1,'#000'); ctx.fillStyle=grd; ctx.fillRect(0,0,gs,h);
+            for(let x=gs;x<w;x++){ let g=ctx.createLinearGradient(0,0,0,h); g.addColorStop(0,'#fff'); g.addColorStop(0.5,`hsl(${((x-gs)/(w-gs))*360},100%,50%)`); g.addColorStop(1,'#000'); ctx.fillStyle=g; ctx.fillRect(x,0,1,h); }
         }
 
         const sMap = document.getElementById('spectrum-map');
         function handleMap(e) {
-            const r = sMap.getBoundingClientRect();
-            const x = Math.max(0, Math.min(e.clientX - r.left, r.width));
-            const y = Math.max(0, Math.min(e.clientY - r.top, r.height));
-            document.getElementById('selector-dot').style.cssText = `display:block; left:${x}px; top:${y}px;`;
-            const d = sMap.getContext('2d').getImageData(x * (sMap.width/r.width), y * (sMap.height/r.height), 1, 1).data;
-            st.currentRgb = { r:d[0], g:d[1], b:d[2] };
-            document.getElementById('user-color').style.backgroundColor = `rgb(${d[0]},${d[1]},${d[2]})`;
+            const r=sMap.getBoundingClientRect(); const x=Math.max(0,Math.min(e.clientX-r.left,r.width)); const y=Math.max(0,Math.min(e.clientY-r.top,r.height));
+            document.getElementById('selector-dot').style.cssText=`display:block; left:${x}px; top:${y}px;`;
+            const d=sMap.getContext('2d').getImageData(x*(sMap.width/r.width),y*(sMap.height/r.height),1,1).data;
+            st.currentRgb={r:d[0],g:d[1],b:d[2]}; document.getElementById('user-color').style.backgroundColor=`rgb(${d[0]},${d[1]},${d[2]})`;
         }
-        sMap.addEventListener('mousedown', handleMap);
-        sMap.addEventListener('mousemove', e => { if (e.buttons === 1) handleMap(e); });
+        sMap.addEventListener('mousedown', handleMap); sMap.addEventListener('mousemove', e => { if(e.buttons===1) handleMap(e); });
 
         function updateColor() {
-            if (st.isMap) return;
-            st.currentVals = [1,2,3].map(n => parseInt(document.getElementById(`slider-${n}`).value));
-            [1,2,3].forEach(n => document.getElementById(`val-s${n}`).textContent = st.currentVals[n-1].toString().padStart(3,'0'));
-            
-            const css = spaces[st.spaceId].fmt(st.currentVals);
-            document.getElementById('user-color').style.backgroundColor = css;
-            st.currentRgb = getRgbFromCss(css);
+            if(st.isMap) return; const c=spaces[st.spaceId]; st.currentVals=[];
+            [1,2,3,4].forEach(n => { if(c[`s${n}`]){ let v=parseInt(document.getElementById(`slider-${n}`).value); st.currentVals.push(v); document.getElementById(`val-s${n}`).textContent=v.toString().padStart(3,'0'); } });
+            const css = c.fmt(st.currentVals); document.getElementById('user-color').style.backgroundColor=css; st.currentRgb=getRgbFromCss(css);
         }
 
         function startTimer() {
-            let rem = st.timeLimit;
-            document.getElementById('timer').textContent = rem.toString().padStart(2, '0');
+            document.getElementById('timer').textContent = st.timeLimit.toString().padStart(2, '0');
             st.timer = setInterval(() => {
-                rem--; document.getElementById('timer').textContent = rem.toString().padStart(2, '0');
-                if (rem <= 0) { clearInterval(st.timer); endGame(); }
+                st.timeLimit--; document.getElementById('timer').textContent = st.timeLimit.toString().padStart(2, '0');
+                if (st.timeLimit <= 0) { lockIn(); }
             }, 1000);
         }
 
-        function endGame() {
-            clearInterval(st.timer);
-            const tBox = document.getElementById('target-color');
-            const ft = document.getElementById('frame-target');
-            const fu = document.getElementById('frame-user');
-            
-            ft.classList.remove('active-illusion');
-            fu.classList.remove('active-illusion');
-            ft.style.backgroundColor = 'var(--border)';
-            fu.style.backgroundColor = 'var(--border)';
-            
-            tBox.style.backgroundColor = `rgb(${st.targetRgb.r},${st.targetRgb.g},${st.targetRgb.b})`;
-            if (st.isHardcore || st.isComplementary) {
-                tBox.style.textShadow = '0 0 8px #000, 0 0 12px #000';
-                tBox.textContent = spaces[st.spaceId].fmt(st.targetVals);
-                document.getElementById('target-label').textContent = 'True Target';
-            }
-
-            const rM = (st.targetRgb.r + st.currentRgb.r)/2;
-            const dr = st.targetRgb.r - st.currentRgb.r, dg = st.targetRgb.g - st.currentRgb.g, db = st.targetRgb.b - st.currentRgb.b;
+        function calculateScore() {
+            const rM = (st.targetRgb.r+st.currentRgb.r)/2; const dr=st.targetRgb.r-st.currentRgb.r, dg=st.targetRgb.g-st.currentRgb.g, db=st.targetRgb.b-st.currentRgb.b;
             const dist = Math.sqrt((2+rM/256)*dr*dr + 4*dg*dg + (2+(255-rM)/256)*db*db);
-            const lin = Math.max(0, 1 - (dist / 764.83));
-            st.finalScore = Math.round(Math.pow(lin, 1.5) * 100);
+            return Math.round(Math.pow(Math.max(0,1-(dist/764.83)),1.5)*100);
+        }
 
-            document.getElementById('game-area').classList.remove('active');
-            document.getElementById('results-screen').classList.add('active');
+        function lockIn() {
+            const score = calculateScore();
+            saveStats(score, st.currentRgb.r - st.targetRgb.r, st.currentRgb.g - st.targetRgb.g, st.currentRgb.b - st.targetRgb.b);
+
+            if (st.isRush && st.timeLimit > 0) {
+                if (score >= 90) {
+                    st.rushStreak++; st.timeLimit += (score >= 98 ? 10 : 5);
+                    document.getElementById('rush-streak').textContent = st.rushStreak;
+                    initRoundColors();
+                } else {
+                    st.finalScore = score;
+                    triggerEndScreen();
+                }
+            } else {
+                st.finalScore = score;
+                triggerEndScreen();
+            }
+        }
+
+        function triggerEndScreen() {
+            clearInterval(st.timer); st.timer = null;
+            const tBox=document.getElementById('target-color'), ft=document.getElementById('frame-target'), fu=document.getElementById('frame-user');
+            ft.classList.remove('active-illusion'); fu.classList.remove('active-illusion'); ft.style.backgroundColor='var(--border)'; fu.style.backgroundColor='var(--border)';
+            
+            tBox.style.backgroundColor=`rgb(${st.targetRgb.r},${st.targetRgb.g},${st.targetRgb.b})`;
+            if(st.isHardcore||st.isComp){ tBox.style.textShadow='0 0 8px #000'; tBox.textContent=spaces[st.spaceId].fmt(st.targetVals); document.getElementById('target-label').textContent='True Target'; }
+
+            document.getElementById('game-area').classList.remove('active'); document.getElementById('results-screen').classList.add('active');
             document.getElementById('match-percentage').textContent = st.finalScore + '%';
 
             let flags = [`<span class="flag-item">${st.spaceId.toUpperCase()}</span>`];
-            if(st.isDaily) flags.push(`<span class="flag-item">Daily #${st.dailyNum} (Ch. ${st.dailyChallengeId})</span>`);
-            if(st.isComplementary) flags.push(`<span class="flag-item">${svgs.complementary} Complement</span>`);
-            if(st.isHardcore) flags.push(`<span class="flag-item">${svgs.blind} Blind</span>`);
-            if(st.isMap) flags.push(`<span class="flag-item">${svgs.map} Map</span>`);
-            if(st.isIllusion) flags.push(`<span class="flag-item">${svgs.illusion} Illusion</span>`);
-
+            if(st.isRush) flags.push(`<span class="flag-item">${svgs.rush} Streak: ${st.rushStreak}</span>`);
+            if(st.isDaily) flags.push(`<span class="flag-item">Daily #${st.dailyNum}</span>`);
+            if(st.isDuel) flags.push(`<span class="flag-item">${svgs.duel} Duel</span>`);
+            if(st.isComp) flags.push(`<span class="flag-item">${svgs.complementary}</span>`);
+            if(st.isHardcore) flags.push(`<span class="flag-item">${svgs.blind}</span>`);
+            if(st.isMap) flags.push(`<span class="flag-item">${svgs.map}</span>`);
+            if(st.isIllusion) flags.push(`<span class="flag-item">${svgs.illusion}</span>`);
             document.getElementById('status-text').innerHTML = flags.join('<span class="flag-sep">|</span>');
+
+            if (!st.isDaily && !st.isRush && !st.isDuel) document.getElementById('btn-challenge').style.display='flex';
+
+            if (st.isDuel) {
+                const fo = document.getElementById('frame-opponent');
+                fo.style.display = 'block'; fo.classList.remove('active-illusion'); fo.style.backgroundColor='var(--border)';
+                const oBox = document.getElementById('op-color');
+                oBox.style.backgroundColor = `rgb(${st.duelData.or},${st.duelData.og},${st.duelData.ob})`;
+                document.getElementById('op-label').textContent = `Opponent (${st.duelData.os}%)`;
+                
+                const win = st.finalScore > st.duelData.os;
+                document.getElementById('match-percentage').innerHTML = `${st.finalScore}% <div style="font-size:1.5rem; color:${win?'#22c55e':'#ef4444'}; margin-top:10px; font-weight:800;">${win?'VICTORY':'DEFEAT'}</div>`;
+            }
+        }
+
+        function shareDuel() {
+            const qs = `?duel=1&tr=${st.targetRgb.r}&tg=${st.targetRgb.g}&tb=${st.targetRgb.b}&or=${st.currentRgb.r}&og=${st.currentRgb.g}&ob=${st.currentRgb.b}&os=${st.finalScore}`;
+            navigator.clipboard.writeText(window.location.origin + window.location.pathname + qs);
+            document.getElementById('btn-challenge').innerHTML = '<span>Link Copied!</span>'; setTimeout(() => document.getElementById('btn-challenge').innerHTML = `${svgs.duel} <span>Challenge a Friend</span>`, 2000);
         }
 
         function shareScore() {
-            const dr = Math.abs(st.targetRgb.r - st.currentRgb.r);
-            const dg = Math.abs(st.targetRgb.g - st.currentRgb.g);
-            const db = Math.abs(st.targetRgb.b - st.currentRgb.b);
-            const getEmoji = (diff) => diff < 15 ? '🟩' : diff < 40 ? '🟨' : '🟥';
-            
-            let str = `Chroma ${st.isDaily ? `Daily #${st.dailyNum} (Ch. ${st.dailyChallengeId})` : 'Freeplay'} | ${st.finalScore}%\n`;
-            str += `Mode: ${st.spaceId.toUpperCase()}`;
-            if(st.isComplementary) str += ' ☯'; if(st.isHardcore) str += ' 👁'; if(st.isIllusion) str += ' 🌀'; if(st.isMap) str += ' 🗺';
-            str += `\n[RGB] ${getEmoji(dr)}${getEmoji(dg)}${getEmoji(db)}`;
-            
-            navigator.clipboard.writeText(str).then(() => {
-                const btn = document.getElementById('btn-share');
-                const originalHTML = btn.innerHTML;
-                btn.innerHTML = '<span>Copied to Clipboard!</span>';
-                setTimeout(() => btn.innerHTML = originalHTML, 2000);
-            });
+            const dr=Math.abs(st.targetRgb.r-st.currentRgb.r), dg=Math.abs(st.targetRgb.g-st.currentRgb.g), db=Math.abs(st.targetRgb.b-st.currentRgb.b);
+            const gE = (d) => d<15?'🟩':d<40?'🟨':'🟥';
+            let str = `Chroma ${st.isDaily?`Daily #${st.dailyNum}`:st.isRush?`Rush (Streak ${st.rushStreak})`:st.isDuel?'Duel':'Freeplay'} | ${st.finalScore}%\nMode: ${st.spaceId.toUpperCase()}`;
+            if(st.isComp) str+=' ☯'; if(st.isHardcore) str+=' 👁'; if(st.isIllusion) str+=' 🌀'; if(st.isMap) str+=' 🗺';
+            str += `\n[RGB] ${gE(dr)}${gE(dg)}${gE(db)}`;
+            navigator.clipboard.writeText(str).then(() => { const b=document.getElementById('btn-share'); const o=b.innerHTML; b.innerHTML='<span>Copied!</span>'; setTimeout(()=>b.innerHTML=o,2000); });
         }
 
         function resetGame() {
-            document.getElementById('setup-screen').classList.add('active');
-            document.getElementById('results-screen').classList.remove('active');
-            document.getElementById('main-color-boxes').style.display = 'none';
-            if (st.isViewingShared) {
-                document.getElementById('shared-banner').style.display = 'block';
-            }
+            document.getElementById('setup-screen').classList.add('active'); document.getElementById('results-screen').classList.remove('active');
+            document.getElementById('main-color-boxes').style.display='none';
+            if (st.isDuel) { clearUrl(); st.isDuel=false; st.duelData=null; document.getElementById('match-percentage').innerHTML='0%'; }
+            if (st.isViewingShared) document.getElementById('shared-banner').style.display='block';
             changeColorSpace();
         }
 
         window.onload = () => {
-            const urlCfg = checkUrlConfig();
-            if (urlCfg) {
-                st.isViewingShared = true;
-                setUIConfig(urlCfg);
-                document.getElementById('shared-banner').style.display = 'block';
-            } else {
-                setUIConfig(loadLocal());
-            }
+            const c = checkUrl();
+            if (st.isDuel) { } else if (c) { st.isViewingShared=true; setUIConfig(c); document.getElementById('shared-banner').style.display='block'; } else { setUIConfig(loadLocal()); }
         };
     </script>
 </body>
