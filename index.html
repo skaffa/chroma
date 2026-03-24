@@ -172,7 +172,7 @@
         input[type="range"] { -webkit-appearance: none; width: 100%; height: 2px; background: var(--border); outline: none; touch-action: manipulation; position: relative; z-index: 2;}
         input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 6px; height: 18px; background: var(--accent); cursor: pointer; touch-action: manipulation; border-radius: 1px;}
         
-        .ghost-thumb { position: absolute; width: 6px; height: 18px; background: rgba(255,255,255,0.25); border: 1px solid rgba(255,255,255,0.5); pointer-events: none; top: 15px; transform: translateX(-50%); border-radius: 1px; z-index: 1; display: none; transition: left 0.1s linear; }
+        .ghost-thumb { position: absolute; width: 6px; height: 18px; background: var(--accent); border: 1px solid #000; pointer-events: none; top: 15px; transform: translateX(-50%); border-radius: 1px; z-index: 1; display: none; }
 
         /* Terminal Input */
         .terminal-input-wrapper { display: flex; align-items: center; gap: 10px; border: 1px solid var(--border); background: var(--bg); padding: 12px; margin-bottom: 2rem; border-radius: 4px; }
@@ -630,7 +630,7 @@
             targetColorData: [], userColorData: [], targetCssData: [], userCssData: [],
             userNativeData: [], gradDeg: 180, renderedTargetCss: '', renderedUserCss: '',
             
-            ghostLog: [], ghostStart: 0, ghostTimer: null, lastGhostData: null,
+            parsedGhostLog: [], ghostStart: 0, ghostTimer: null, lastGhostData: null,
             haystackLevel: 0, haystackCorrect: 0,
             
             teleRound: 1, teleHistory: [],
@@ -691,21 +691,7 @@
             };
             p.unshift(entry); localStorage.setItem('chroma_pantheon_v2', JSON.stringify(p));
         }
-        window.togglePantheon = function(show) {
-            const m = document.getElementById('pantheon-modal');
-            if (show) {
-                document.getElementById('pantheon-details').style.display = 'none';
-                const grid = document.getElementById('pantheon-grid'); const p = window.loadPantheon();
-                grid.innerHTML = p.length === 0 ? '<div class="empty-pantheon">Achieve 98% or higher precision to immortalize colors here.</div>' : '';
-                p.forEach(entry => {
-                    const el = document.createElement('div'); el.className = 'pantheon-swatch';
-                    if (entry.cfg.type === 'Gradient' || entry.cfg.type === 'Palette') { el.style.background = entry.tCss; } 
-                    else { el.style.background = `linear-gradient(135deg, ${entry.tCss} 50%, ${entry.uCss} 50%)`; }
-                    el.onclick = () => window.showPantheonDetails(entry); grid.appendChild(el);
-                });
-            }
-            m.style.display = show ? 'block' : 'none';
-        }
+
         window.showPantheonDetails = function(e) {
             document.getElementById('pantheon-details').style.display = 'block';
             document.getElementById('pd-target').textContent = e.tCss; document.getElementById('pd-user').textContent = e.uCss;
@@ -819,16 +805,6 @@
         window.loadLocal = function() { try { let s = JSON.parse(localStorage.getItem('chroma_cfg')); if (s && s.s) return s; } catch(e){} return defaultCfg; }
         window.clearUrl = function() { window.history.replaceState({}, document.title, window.location.pathname); }
 
-        window.checkUrl = function() {
-            const p = new URLSearchParams(window.location.search);
-            if (p.has('duel') && p.has('d')) {
-                // Handled asynchronously in window.onload
-                return null;
-            }
-            if (!p.has('share')) return null;
-            return { s:p.get('s'), t:parseInt(p.get('t')), o:p.get('o'), p:p.get('p')||'solid', pr:p.get('pr')||'analogous', v:p.get('v')||'normal', m:p.get('m')==='1', h:p.get('h')==='1', i:p.get('i')==='1', tm:p.get('tm')==='1', mm:p.get('mm')==='1', dk:p.get('dk')==='1' };
-        }
-
         window.copyConfigUrl = function() {
             const c = window.getUIConfig(); const qs = `?share=1&s=${c.s}&t=${c.t}&o=${c.o}&p=${c.p}&pr=${c.pr}&v=${c.v}&m=${c.m?1:0}&h=${c.h?1:0}&i=${c.i?1:0}&tm=${c.tm?1:0}&mm=${c.mm?1:0}&dk=${c.dk?1:0}`;
             navigator.clipboard.writeText(window.location.origin + window.location.pathname + qs);
@@ -925,27 +901,54 @@
             return [baseVals, c2, c3];
         }
 
-        // --- GHOST SYSTEM ---
+        // --- GHOST SYSTEM (NUCLEAR COMPRESSION) ---
         window.recordGhost = function() {
-            if (st.isMap || st.isTerminal || st.type === 'studio' || st.type === 'haystack' || st.type === 'hexdle') return; 
-            const now = Date.now(); if (now - st.ghostStart < 100) return; 
-            let curState = JSON.stringify({ t: st.uiTab, d: st.gradDeg, v: [1,2,3,4].map(n=>document.getElementById(`slider-${n}`).value) });
-            if (st.lastGhostData !== curState) { st.ghostLog.push({ ms: now - st.ghostStart, s: curState }); st.lastGhostData = curState; }
+            if (st.isMap || st.isTerminal || st.type === 'studio' || st.type === 'haystack' || st.type === 'hexdle' || st.type === 'sort') return; 
+            const now = Date.now(); const delta = now - st.lastGhostTime;
+            if (delta < 100 && st.parsedGhostLog.length > 0) return; 
+
+            const t = st.uiTab; const d = st.gradDeg; 
+            const v = [1,2,3,4].map(n => document.getElementById(`slider-${n}`) ? parseInt(document.getElementById(`slider-${n}`).value) || 0 : 0);
+            
+            const curStateStr = `${t},${d},${v.join(',')}`;
+            if (st.lastGhostData !== curStateStr) {
+                // We store the flat integer array directly in parsedGhostLog during recording
+                st.parsedGhostLog.push(delta, t, d, ...v);
+                st.lastGhostData = curStateStr;
+                st.lastGhostTime = now;
+            }
         }
 
         window.playbackGhost = function() {
-            if (!st.isDuel || !st.duelData || !st.duelData.gL || st.duelData.gL.length === 0) return;
-            const elapsed = Date.now() - st.ghostStart; let activeFrame = null;
-            for (let i = 0; i < st.duelData.gL.length; i++) { if (st.duelData.gL[i].ms <= elapsed) activeFrame = st.duelData.gL[i]; else break; }
-            if (activeFrame) {
-                const state = JSON.parse(activeFrame.s);
-                if (st.type === 'gradient' || st.type === 'palette') { document.querySelectorAll('.ui-tab').forEach((t, i) => { t.style.boxShadow = (i === state.t) ? 'inset 0 0 10px rgba(255,255,255,0.2)' : 'none'; }); }
-                if (st.type === 'gradient') { const gDeg = document.getElementById('g-deg'); gDeg.style.display = 'block'; gDeg.style.left = (state.d / 360) * 100 + '%'; }
-                [1,2,3,4].forEach(n => {
-                    const sl = document.getElementById(`slider-${n}`); const ghost = document.getElementById(`g-${n}`);
-                    if (spaces[st.spaceId][`s${n}`] && state.v[n-1] !== undefined) { ghost.style.display = 'block'; ghost.style.left = ((state.v[n-1] - sl.min) / (sl.max - sl.min)) * 100 + '%'; } else { ghost.style.display = 'none'; }
-                });
+            if (!st.isDuel || !st.duelData || !st.parsedGhostLog || st.parsedGhostLog.length === 0) return;
+            const elapsed = Date.now() - st.ghostStart; 
+            const gL = st.parsedGhostLog; 
+            
+            let f1 = gL[0], f2 = gL[gL.length - 1];
+            for (let i = 0; i < gL.length - 1; i++) {
+                if (elapsed >= gL[i].ms && elapsed <= gL[i+1].ms) { f1 = gL[i]; f2 = gL[i+1]; break; }
             }
+            if (elapsed > f2.ms) { f1 = f2; }
+
+            let prog = 0; if (f2.ms > f1.ms) prog = (elapsed - f1.ms) / (f2.ms - f1.ms);
+
+            if (st.type === 'gradient' || st.type === 'palette') { document.querySelectorAll('.ui-tab').forEach((t, i) => { t.style.boxShadow = (i === f1.t) ? 'inset 0 0 10px rgba(255,255,255,0.2)' : 'none'; }); }
+            if (st.type === 'gradient') { 
+                const gDeg = document.getElementById('g-deg'); gDeg.style.display = 'block'; 
+                const curDeg = f1.d + (f2.d - f1.d) * prog;
+                gDeg.style.left = (curDeg / 360) * 100 + '%'; 
+            }
+            
+            [1,2,3,4].forEach(n => {
+                const sl = document.getElementById(`slider-${n}`); const ghost = document.getElementById(`g-${n}`);
+                if (spaces[st.spaceId][`s${n}`] && f1.v[n-1] !== undefined) { 
+                    ghost.style.display = 'block'; 
+                    const curVal = f1.v[n-1] + (f2.v[n-1] - f1.v[n-1]) * prog;
+                    ghost.style.left = ((curVal - sl.min) / (sl.max - sl.min)) * 100 + '%'; 
+                } else { ghost.style.display = 'none'; }
+            });
+
+            if (st.timer && elapsed <= gL[gL.length-1].ms) { st.ghostTimer = requestAnimationFrame(window.playbackGhost); }
         }
 
         // --- HEXDLE ENGINE ---
@@ -1026,10 +1029,10 @@
             st.memoryHidden = false; st.haystackCorrect = 0;
             if(st.timer) { clearInterval(st.timer); st.timer = null; }
             if(st.memoryTimeout) { clearTimeout(st.memoryTimeout); st.memoryTimeout = null; }
-            if(st.ghostTimer) { clearInterval(st.ghostTimer); st.ghostTimer = null; }
+            if(st.ghostTimer) { cancelAnimationFrame(st.ghostTimer); st.ghostTimer = null; }
             
             document.querySelectorAll('.ghost-thumb').forEach(el => el.style.display = 'none');
-            st.ghostLog = []; st.ghostStart = Date.now();
+            st.parsedGhostLog = []; st.ghostStart = Date.now(); st.lastGhostTime = st.ghostStart;
             
             if(st.type !== 'telephone' || st.teleRound === 1) { st.teleRound = 1; st.teleHistory = []; }
 
@@ -1093,7 +1096,15 @@
                 } else { document.getElementById('game-objective').style.color = 'var(--accent)'; document.getElementById('game-objective').textContent = oTxt; }
 
                 if(st.type !== 'hexdle' && st.type !== 'sort') { st.timeRemaining = st.timeLimit; window.startTimer(); }
-                if (st.isDuel) st.ghostTimer = setInterval(window.playbackGhost, 50);
+                
+                if (st.isDuel && st.duelData.gL && st.duelData.gL.length > 0) {
+                    let absTime = 0; st.parsedGhostLog = [];
+                    for (let i = 0; i < st.duelData.gL.length; i += 7) {
+                        absTime += st.duelData.gL[i];
+                        st.parsedGhostLog.push({ ms: absTime, t: st.duelData.gL[i+1], d: st.duelData.gL[i+2], v: [st.duelData.gL[i+3], st.duelData.gL[i+4], st.duelData.gL[i+5], st.duelData.gL[i+6]] });
+                    }
+                    st.ghostTimer = requestAnimationFrame(window.playbackGhost);
+                }
             }
         }
 
@@ -1293,41 +1304,13 @@
         }
         sMap.addEventListener('mousedown', window.handleMap); sMap.addEventListener('mousemove', e => { if(e.buttons===1) window.handleMap(e); });
 
-        window.generateSortGradient = function(c1, c2, steps) {
-            let arr = [];
-            for(let i=0; i<steps; i++) {
-                let r = Math.round(c1.r + (c2.r - c1.r) * (i / (steps-1)));
-                let g = Math.round(c1.g + (c2.g - c1.g) * (i / (steps-1)));
-                let b = Math.round(c1.b + (c2.b - c1.b) * (i / (steps-1)));
-                arr.push({r, g, b});
-            } return arr;
-        }
-
-        window.handleSortClick = function(idx) {
-            if (st.type !== 'sort' || !document.getElementById('game-area').classList.contains('active')) return;
-            if (st.sortSelectedIdx === -1) { st.sortSelectedIdx = idx; } 
-            else { const temp = st.sortCurrent[idx]; st.sortCurrent[idx] = st.sortCurrent[st.sortSelectedIdx]; st.sortCurrent[st.sortSelectedIdx] = temp; st.sortSelectedIdx = -1; }
-            window.renderSortGrid();
-        }
-
-        window.renderSortGrid = function() {
-            const grid = document.getElementById('sort-grid'); grid.innerHTML = '';
-            st.sortCurrent.forEach((rgb, i) => {
-                const block = document.createElement('div'); block.className = 'sort-block' + (st.sortSelectedIdx === i ? ' selected' : '');
-                block.style.background = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
-                if (i !== 0 && i !== 7) { block.onclick = () => window.handleSortClick(i); } 
-                else { block.innerHTML = '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;opacity:0.3;font-size:0.6rem;">🔒</div>'; block.style.cursor = 'not-allowed'; }
-                grid.appendChild(block);
-            });
-        }
-
         window.switchUITab = function(idx) {
             st.uiTab = idx; document.querySelectorAll('.ui-tab').forEach((el, i) => { if(!el.hasAttribute('style')) el.classList.toggle('active', i === idx); });
             const vals = st.userNativeData[idx]; [1,2,3,4].forEach(n => { if(spaces[st.spaceId][`s${n}`]) { document.getElementById(`slider-${n}`).value = vals[n-1] || 0; document.getElementById(`val-s${n}`).textContent = (vals[n-1]||0).toString().padStart(3,'0'); } });
             window.recordGhost();
         }
 
-        window.updateTerminal = function() { const str = document.getElementById('terminal-input').value; st.renderedUserCss = str; document.getElementById('user-color').style.background = str; st.currentRgb = window.getRgbFromCss(str); window.renderBoxes(); }
+        window.updateTerminal = function() { const str = document.getElementById('terminal-input').value; st.renderedUserCss = str; document.getElementById('user-color').style.background = str; st.currentRgb = window.getRgbFromCss(str); }
 
         window.updateColor = function() {
             if(st.isMap || st.isTerminal || st.type === 'haystack' || st.type === 'sort' || st.type === 'hexdle') return; 
@@ -1410,7 +1393,7 @@
 
             if (st.timer) { clearInterval(st.timer); st.timer = null; }
             if (st.memoryTimeout) { clearTimeout(st.memoryTimeout); st.memoryTimeout = null; }
-            if (st.ghostTimer) { clearInterval(st.ghostTimer); st.ghostTimer = null; }
+            if (st.ghostTimer) { cancelAnimationFrame(st.ghostTimer); st.ghostTimer = null; }
 
             st.memoryHidden = false; document.body.classList.remove('darkroom-active');
             if(st.type === 'telephone' && st.teleRound === 10) st.teleHistory.push({...st.currentRgb}); 
@@ -1511,7 +1494,7 @@
             const orig = btn.innerHTML; btn.textContent = 'Compressing...';
             try {
                 let teleArr = []; if(st.type==='telephone') teleArr = st.teleHistory;
-                const data = { c: window.getUIConfig(), tV: (st.type==='solid'||st.type==='midpoint'||st.type==='telephone'||st.type==='chromakey')?st.targetVals:null, tN: (st.type==='gradient'||st.type==='midpoint')?st.targetNativeData:null, tD: st.type==='gradient'?st.gradDeg:null, tC: st.type==='palette'?st.targetColorData:null, tCss: st.type==='palette'?st.targetCssData:null, tH: st.type==='hexdle'?st.hexTarget:null, sT: st.type==='sort'?st.sortTarget:null, sC: st.type==='sort'?st.sortCurrent:null, uBase: st.type==='palette'?st.userNativeData[0]:null, uC: st.type==='palette'?st.userCssData:st.renderedUserCss, oS: st.finalScore, gL: st.type==='telephone'?teleArr:st.ghostLog };
+                const data = { c: window.getUIConfig(), tV: (st.type==='solid'||st.type==='midpoint'||st.type==='telephone'||st.type==='chromakey')?st.targetVals:null, tN: (st.type==='gradient'||st.type==='midpoint')?st.targetNativeData:null, tD: st.type==='gradient'?st.gradDeg:null, tC: st.type==='palette'?st.targetColorData:null, tCss: st.type==='palette'?st.targetCssData:null, tH: st.type==='hexdle'?st.hexTarget:null, sT: st.type==='sort'?st.sortTarget:null, sC: st.type==='sort'?st.sortCurrent:null, uBase: st.type==='palette'?st.userNativeData[0]:null, uC: st.type==='palette'?st.userCssData:st.renderedUserCss, oS: st.finalScore, gL: st.parsedGhostLog };
                 const b64 = await window.compressData(data); const qs = `?duel=1&d=${b64}`;
                 navigator.clipboard.writeText(window.location.origin + window.location.pathname + qs);
                 btn.innerHTML = '<span>Link Copied!</span>'; setTimeout(() => btn.innerHTML = orig, 2000);
@@ -1528,7 +1511,7 @@
 
         window.resetGame = function() {
             if (st.timer) { clearInterval(st.timer); st.timer = null; }
-            if (st.ghostTimer) { clearInterval(st.ghostTimer); st.ghostTimer = null; }
+            if (st.ghostTimer) { cancelAnimationFrame(st.ghostTimer); st.ghostTimer = null; }
             document.body.classList.remove('darkroom-active');
             document.getElementById('setup-screen').classList.add('active'); document.getElementById('results-screen').classList.remove('active'); document.getElementById('main-color-boxes').style.display='none';
             if (st.isDuel) { window.clearUrl(); st.isDuel=false; st.duelData=null; document.getElementById('match-percentage').innerHTML='0%'; document.getElementById('duel-banner').style.display='none'; }
