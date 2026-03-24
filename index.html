@@ -14,8 +14,13 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
-        body { font-family: 'Inter', -apple-system, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; background-color: var(--bg); color: var(--text-main); }
+        body { font-family: 'Inter', -apple-system, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; background-color: var(--bg); color: var(--text-main); transition: filter 0.3s; }
         
+        /* Vision Filters */
+        body.protanopia { filter: url(#protanopia); }
+        body.deuteranopia { filter: url(#deuteranopia); }
+        body.tritanopia { filter: url(#tritanopia); }
+
         .container { background: var(--card); padding: 3rem; border-radius: 2px; box-shadow: 0 40px 100px rgba(0,0,0,0.8); text-align: center; max-width: 480px; width: 95%; border: 1px solid var(--border); position: relative; transition: box-shadow 0.3s; }
         
         h1 { font-size: 0.85rem; font-weight: 400; margin-bottom: 2rem; text-transform: uppercase; letter-spacing: 0.5em; color: var(--text-muted); display: flex; justify-content: center; align-items: center; gap: 10px; }
@@ -47,7 +52,7 @@
         /* Modals & Pantheon */
         .info-modal { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--card); z-index: 100; padding: 2rem; text-align: left; overflow-y: auto; border: 1px solid var(--border); }
         .info-modal h2 { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1rem; color: var(--accent); display: flex; justify-content: space-between; align-items: center; }
-        .info-modal p { font-size: 0.7rem; color: var(--text-muted); margin-bottom: 0.8rem; line-height: 1.5; }
+        .info-modal p { font-size: 0.65rem; color: var(--text-muted); margin-bottom: 0.8rem; line-height: 1.5; }
         .info-modal b { color: var(--text-main); }
         
         .pantheon-grid { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 1rem; margin-bottom: 1.5rem; max-height: 200px; overflow-y: auto; align-content: flex-start; }
@@ -68,6 +73,9 @@
         #confirm-modal { display: none; align-items: center; justify-content: center; background: rgba(10,10,12,0.95); z-index: 200; }
         .confirm-box { background: var(--card); padding: 2rem; border: 1px solid #ef4444; border-radius: 4px; text-align: center; max-width: 320px; width: 90%; }
         
+        /* Export Modal */
+        #export-modal textarea { width: 100%; height: 150px; background: var(--bg); color: #22c55e; font-family: monospace; font-size: 0.7rem; padding: 10px; border: 1px solid var(--border); outline: none; resize: none; margin-bottom: 10px; }
+        
         /* Daily Challenges */
         .daily-card { border: 1px solid var(--border); padding: 16px; border-radius: 4px; cursor: pointer; text-align: left; transition: 0.2s; background: var(--bg); margin-bottom: 10px; display: flex; flex-direction: column; gap: 8px; }
         .daily-card:hover { border-color: var(--accent); background: rgba(255,255,255, 0.05); }
@@ -85,8 +93,13 @@
         .color-boxes { display: flex; gap: 2px; justify-content: center; margin: 0 0 2rem 0; }
         .illusion-frame { flex: 1; padding: 1px; background: var(--border); border-radius: 4px; transition: padding 0.3s, background-color 0.3s; }
         .illusion-frame.active-illusion { padding: 16px; }
-        .color-box { width: 100%; aspect-ratio: 1.2/1; display: flex; align-items: center; justify-content: center; font-family: monospace; font-size: 0.7rem; font-weight: 600; text-align: center; letter-spacing: 0.05em; color: var(--text-main); overflow: hidden; border-radius: 2px; }
+        .color-box { width: 100%; aspect-ratio: 1.2/1; display: flex; align-items: center; justify-content: center; font-family: monospace; font-size: 0.7rem; font-weight: 600; text-align: center; letter-spacing: 0.05em; color: var(--text-main); overflow: hidden; border-radius: 2px; position: relative; }
         .color-box-label { display: block; padding: 10px 0; font-size: 0.65rem; font-weight: 600; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.1em; text-align: center; }
+        
+        /* Haystack Grid */
+        .haystack-grid { display: grid; gap: 2px; width: 100%; aspect-ratio: 1/1; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; margin-bottom: 2rem; }
+        .haystack-cell { cursor: pointer; transition: opacity 0.1s; }
+        .haystack-cell:active { opacity: 0.7; }
 
         /* Controls */
         .canvas-wrapper { position: relative; width: 100%; height: 160px; margin-bottom: 1rem; touch-action: none; }
@@ -152,6 +165,14 @@
     </style>
 </head>
 <body>
+    <svg style="display:none;">
+        <defs>
+            <filter id="protanopia"><feColorMatrix type="matrix" values="0.567, 0.433, 0, 0, 0  0.558, 0.442, 0, 0, 0  0, 0.242, 0.758, 0, 0  0, 0, 0, 1, 0"/></filter>
+            <filter id="deuteranopia"><feColorMatrix type="matrix" values="0.625, 0.375, 0, 0, 0  0.7, 0.3, 0, 0, 0  0, 0.3, 0.7, 0, 0  0, 0, 0, 1, 0"/></filter>
+            <filter id="tritanopia"><feColorMatrix type="matrix" values="0.95, 0.05, 0, 0, 0  0, 0.433, 0.567, 0, 0  0, 0.475, 0.525, 0, 0  0, 0, 0, 1, 0"/></filter>
+        </defs>
+    </svg>
+
     <div class="container">
         <h1>Chroma 
             <div class="header-btns">
@@ -212,6 +233,13 @@
             </div>
         </div>
 
+        <div class="info-modal" id="export-modal" style="display:none;">
+            <h2>Export Code <span style="font-size: 0.6rem; color: var(--text-muted); font-weight: normal; cursor:pointer;" onclick="document.getElementById('export-modal').style.display='none'">[X]</span></h2>
+            <p>Your studio creation formatted as CSS Variables.</p>
+            <textarea id="export-textarea" readonly></textarea>
+            <button onclick="copyExport()">Copy to Clipboard</button>
+        </div>
+
         <div class="info-modal" id="pantheon-modal">
             <h2>The Pantheon <span style="font-size: 0.6rem; color: var(--text-muted); font-weight: normal; cursor:pointer;" onclick="togglePantheon(false)">[X]</span></h2>
             <p style="text-transform: none;">Every configuration you score <b>98%+</b> on is permanently immortalized here. Click a swatch to reveal its metadata.</p>
@@ -229,15 +257,16 @@
 
         <div class="info-modal" id="info-modal">
             <h2>Game Modes <span style="font-size: 0.6rem; color: var(--text-muted); font-weight: normal; cursor:pointer;" onclick="toggleInfo(false)">[X]</span></h2>
-            <p><b>Studio Mode:</b> Pure utility. No timer. Lock In copies your CSS to clipboard.</p>
-            <p><b>Palette Architect:</b> Base color is locked. Create Triadic, Analogous, or Split-Comp schemes.</p>
+            <p><b>Haystack Acuity:</b> Grid vision test. Find the odd one out.</p>
+            <p><b>WCAG Contrast:</b> Achieve 4.5:1 (AA) minimum text contrast against the target.</p>
+            <p><b>Studio Mode:</b> Pure utility. No timer. Lock In exports your CSS.</p>
+            <p><b>Vision Simulator:</b> Apply medical colorblindness filters over the entire game.</p>
+            <p><b>Palette Architect:</b> Base color is locked. Create exact harmonious schemes.</p>
             <p><b>Gradient Matcher:</b> 2 Colors + Angle. The next dimension.</p>
             <p><b>Ghost Replays (Duels):</b> When sharing Duel links, your slider movements are replayed to your opponent.</p>
             <p><b>Memory Mode:</b> Target is visible for 3 seconds, then vanishes. Recall and recreate.</p>
             <p><b>Terminal Mode:</b> No UI. Type raw CSS code from memory.</p>
             <p><b>Daily Rush:</b> 60s survival. The sequence of colors is seeded globally every day.</p>
-            <p><b>CMYK Mode:</b> Subtractive ink mixing. Red + Green != Yellow.</p>
-            <p><b>Optical Illusion:</b> Triggers the Albers Effect using violently contrasting borders.</p>
         </div>
 
         <div class="info-modal" id="stats-modal">
@@ -267,9 +296,16 @@
             <div class="config-grid">
                 <select id="type-select" onchange="handleTypeChange()">
                     <option value="solid" selected>Solid Color</option>
+                    <option value="haystack">Haystack (Acuity)</option>
                     <option value="gradient">Gradient Matcher</option>
                     <option value="palette">Palette Architect</option>
-                    <option value="studio">Studio (Utility)</option>
+                    <option value="studio">Studio (Export Utility)</option>
+                </select>
+                <select id="vision-select" onchange="handleVision()">
+                    <option value="normal" selected>Normal Vision</option>
+                    <option value="protanopia">Protanopia (Red-Blind)</option>
+                    <option value="deuteranopia">Deuteranopia (Green-Blind)</option>
+                    <option value="tritanopia">Tritanopia (Blue-Blind)</option>
                 </select>
                 <select id="palette-rule" style="display:none;" onchange="handleToggles()">
                     <option value="analogous" selected>Analogous</option>
@@ -279,6 +315,7 @@
                 <select id="objective-select">
                     <option value="match" selected>Match Reference</option>
                     <option value="complementary">Complementary</option>
+                    <option value="wcag">WCAG 4.5:1 (AA)</option>
                 </select>
                 <select id="timer-select" style="grid-column: span 2;">
                     <option value="15">15 SECONDS</option>
@@ -304,7 +341,7 @@
                     <input type="checkbox" id="memory-checkbox" onchange="handleToggles()">
                     <div class="toggle-switch"></div> <span class="color-box-label" style="padding:0;">Memory Mode</span>
                 </label>
-                <label class="mode-toggle" style="grid-column: span 2;">
+                <label class="mode-toggle" style="grid-column: span 2;" id="lbl-illusion">
                     <input type="checkbox" id="illusion-checkbox" onchange="handleToggles()">
                     <div class="toggle-switch"></div> <span class="color-box-label" style="padding:0;">Illusion Framing</span>
                 </label>
@@ -336,10 +373,12 @@
                 <span class="color-box-label" id="target-label">Reference</span>
             </div>
             <div class="illusion-frame" id="frame-user">
-                <div class="color-box" id="user-color"></div>
+                <div class="color-box" id="user-color" style="transition: none;"></div>
                 <span class="color-box-label">Output</span>
             </div>
         </div>
+        
+        <div class="haystack-grid" id="haystack-grid" style="display: none;"></div>
 
         <div class="game-area" id="game-area">
             <div class="game-header">
@@ -351,7 +390,7 @@
                 <div class="timer" id="timer">00</div>
             </div>
             
-            <div class="controls">
+            <div class="controls" id="game-controls">
                 <div id="terminal-controls" style="display: none;">
                     <div class="terminal-input-wrapper">
                         <span class="terminal-prompt">&gt;</span>
@@ -399,6 +438,10 @@
     </div>
 
     <script>
+        // Ensure global access for simple inline calls
+        window.toggleInfo = function(show) { document.getElementById('info-modal').style.display = show ? 'block' : 'none'; };
+        window.toggleSettings = function(show) { document.getElementById('settings-modal').style.display = show ? 'block' : 'none'; };
+
         const svgs = {
             complementary: `<svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="8" cy="12" r="5"/><circle cx="16" cy="12" r="5"/></svg>`,
             blind: `<svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`,
@@ -409,7 +452,9 @@
             gradient: `<svg class="icon icon-sm" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="12" x2="21" y2="12"></line></svg>`,
             terminal: `<svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>`,
             memory: `<svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>`,
-            palette: `<svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M12 2.69l5.66 4.2c3.81 2.83 2.5 8.11-1.66 8.11H8c-4.16 0-5.47-5.28-1.66-8.11z"></path></svg>`
+            palette: `<svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M12 2.69l5.66 4.2c3.81 2.83 2.5 8.11-1.66 8.11H8c-4.16 0-5.47-5.28-1.66-8.11z"></path></svg>`,
+            wcag: `<svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>`,
+            haystack: `<svg class="icon icon-sm" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>`
         };
 
         const spaces = {
@@ -422,21 +467,20 @@
             }
         };
 
-        const defaultCfg = { s: 'rgb', t: 30, o: 'match', p: 'solid', pr: 'analogous', m: false, h: false, i: false, tm: false, mm: false };
+        const defaultCfg = { s: 'rgb', t: 30, o: 'match', p: 'solid', pr: 'analogous', v: 'normal', m: false, h: false, i: false, tm: false, mm: false };
 
         let st = {
             isDaily:false, dailyId:null, isViewingShared:false, suppressSave:false,
             isRush:false, rushStreak:0, isDuel:false, duelData:null,
             spaceId:'rgb', timeLimit:30, timeRemaining:0, timer:null, memoryTimeout:null, memoryHidden:false,
-            isComp:false, isMap:false, isHardcore:false, isIllusion:false, isTerminal:false, isMemory:false,
-            type:'solid', palRule:'analogous', uiTab:0, finalScore:0,
+            isComp:false, isWcag:false, isMap:false, isHardcore:false, isIllusion:false, isTerminal:false, isMemory:false,
+            type:'solid', palRule:'analogous', vision:'normal', uiTab:0, finalScore:0,
             
-            targetColorData: [], userColorData: [],
-            targetCssData: [], userCssData: [],
-            userNativeData: [], gradDeg: 180,
-            renderedTargetCss: '', renderedUserCss: '',
+            targetColorData: [], userColorData: [], targetCssData: [], userCssData: [],
+            userNativeData: [], gradDeg: 180, renderedTargetCss: '', renderedUserCss: '',
             
-            ghostLog: [], ghostStart: 0, ghostTimer: null, lastGhostData: null
+            ghostLog: [], ghostStart: 0, ghostTimer: null, lastGhostData: null,
+            haystackLevel: 0, haystackCorrect: 0
         };
 
         const hiddenCtx = document.createElement('canvas').getContext('2d', { willReadFrequently: true });
@@ -452,52 +496,38 @@
             return !rgbList.some(rgb => rgb.r===0 || rgb.r===255 || rgb.g===0 || rgb.g===255 || rgb.b===0 || rgb.b===255);
         }
 
-        // --- APP THEME ---
-        function initTheme() {
-            const t = localStorage.getItem('chroma_theme');
-            if(t) document.documentElement.style.setProperty('--accent', t);
+        // --- WCAG CONTRAST MATH ---
+        function getLuminance(r, g, b) {
+            let a = [r, g, b].map(v => { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); });
+            return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
         }
-        function setTheme(color) {
-            document.documentElement.style.setProperty('--accent', color);
-            localStorage.setItem('chroma_theme', color);
-            togglePantheon(false);
-        }
-        function resetTheme() {
-            document.documentElement.style.setProperty('--accent', '#ffffff');
-            localStorage.removeItem('chroma_theme');
-            toggleSettings(false);
+        function getContrast(c1, c2) {
+            let l1 = getLuminance(c1.r, c1.g, c1.b); let l2 = getLuminance(c2.r, c2.g, c2.b);
+            return (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
         }
 
-        // --- SETTINGS & CONFIRM MODAL ---
-        let currentConfirmCallback = null;
-        function toggleSettings(show) { document.getElementById('settings-modal').style.display = show ? 'block' : 'none'; }
-        function triggerConfirm(msg, callback) {
-            currentConfirmCallback = callback; document.getElementById('confirm-msg').textContent = msg; document.getElementById('confirm-modal').style.display = 'flex';
-        }
-        function closeConfirm() { document.getElementById('confirm-modal').style.display = 'none'; currentConfirmCallback = null; }
-        function executeConfirm() { if(currentConfirmCallback) currentConfirmCallback(); closeConfirm(); }
+        // --- APP THEME & VISION ---
+        function initTheme() { const t = localStorage.getItem('chroma_theme'); if(t) document.documentElement.style.setProperty('--accent', t); }
+        function setTheme(color) { document.documentElement.style.setProperty('--accent', color); localStorage.setItem('chroma_theme', color); togglePantheon(false); }
+        window.resetTheme = function() { document.documentElement.style.setProperty('--accent', '#ffffff'); localStorage.removeItem('chroma_theme'); toggleSettings(false); }
+        function handleVision() { st.vision = document.getElementById('vision-select').value; document.body.className = st.vision; saveLocal(); }
 
-        function resetConfig() { localStorage.removeItem('chroma_cfg'); setUIConfig(defaultCfg); toggleSettings(false); }
-        function resetPantheon() { localStorage.removeItem('chroma_pantheon_v2'); toggleSettings(false); }
-        function resetAnalytics() { localStorage.removeItem('chroma_stats_v2'); toggleSettings(false); }
-        function resetAll() { localStorage.clear(); window.location.href = window.location.pathname; }
+        window.resetConfig = function() { localStorage.removeItem('chroma_cfg'); setUIConfig(defaultCfg); toggleSettings(false); }
+        window.resetPantheon = function() { localStorage.removeItem('chroma_pantheon_v2'); toggleSettings(false); }
+        window.resetAnalytics = function() { localStorage.removeItem('chroma_stats_v2'); toggleSettings(false); }
+        window.resetAll = function() { localStorage.clear(); window.location.href = window.location.pathname; }
 
-        // --- PANTHEON SYSTEM V2 ---
         function loadPantheon() { return JSON.parse(localStorage.getItem('chroma_pantheon_v2')) || []; }
         function saveToPantheon(tCss, uCss) {
-            if (st.type === 'studio') return;
+            if (st.type === 'studio' || st.type === 'haystack') return;
             let p = loadPantheon();
             const entry = {
                 tCss, uCss, date: new Date().toLocaleDateString(),
-                cfg: {
-                    space: st.spaceId.toUpperCase(), type: st.type.charAt(0).toUpperCase() + st.type.slice(1), 
-                    obj: st.type==='palette'?st.palRule:(st.isComp ? 'Complementary' : 'Match'),
-                    mods: [st.isMap?'Map':'', st.isHardcore?'Blind':'', st.isTerminal?'Terminal':'', st.isIllusion?'Illusion':'', st.isMemory?'Memory':''].filter(Boolean).join(', ') || 'None'
-                }
+                cfg: { space: st.spaceId.toUpperCase(), type: st.type.charAt(0).toUpperCase() + st.type.slice(1), obj: st.type==='palette'?st.palRule:(st.isComp?'Complementary':st.isWcag?'WCAG':'Match'), mods: [st.isMap?'Map':'', st.isHardcore?'Blind':'', st.isTerminal?'Terminal':'', st.isIllusion?'Illusion':'', st.isMemory?'Memory':'', st.vision!=='normal'?st.vision:''].filter(Boolean).join(', ') || 'None' }
             };
             p.unshift(entry); localStorage.setItem('chroma_pantheon_v2', JSON.stringify(p));
         }
-        function togglePantheon(show) {
+        window.togglePantheon = function(show) {
             const m = document.getElementById('pantheon-modal');
             if (show) {
                 document.getElementById('pantheon-details').style.display = 'none';
@@ -516,11 +546,8 @@
             document.getElementById('pantheon-details').style.display = 'block';
             document.getElementById('pd-target').textContent = e.tCss; document.getElementById('pd-user').textContent = e.uCss;
             document.getElementById('pd-space').textContent = `${e.cfg.space} (${e.cfg.type})`; document.getElementById('pd-mods').textContent = e.cfg.mods; document.getElementById('pd-date').textContent = e.date;
-            
             const btn = document.getElementById('btn-set-theme');
-            if (e.cfg.type === 'Solid') {
-                btn.style.display = 'block'; btn.onclick = () => setTheme(e.tCss);
-            } else { btn.style.display = 'none'; }
+            if (e.cfg.type === 'Solid') { btn.style.display = 'block'; btn.onclick = () => setTheme(e.tCss); } else { btn.style.display = 'none'; }
         }
 
         // --- STATS SYSTEM ---
@@ -531,13 +558,11 @@
             if (st.isRush && st.rushStreak > s.streak) s.streak = st.rushStreak;
             localStorage.setItem('chroma_stats_v2', JSON.stringify(s));
         }
-        function toggleStats(show) {
+        window.toggleStats = function(show) {
             const m = document.getElementById('stats-modal');
             if (show) {
                 let s = loadStats();
-                document.getElementById('st-games').textContent = s.games;
-                document.getElementById('st-acc').textContent = s.games > 0 ? Math.round(s.scoreSum/s.games) + '%' : '0%';
-                document.getElementById('st-streak').textContent = s.streak;
+                document.getElementById('st-games').textContent = s.games; document.getElementById('st-acc').textContent = s.games > 0 ? Math.round(s.scoreSum/s.games) + '%' : '0%'; document.getElementById('st-streak').textContent = s.streak;
                 if (s.games > 0) {
                     let avgR = s.errR/s.games, avgG = s.errG/s.games, avgB = s.errB/s.games;
                     let maxBias = Math.max(Math.abs(avgR), Math.abs(avgG), Math.abs(avgB));
@@ -548,97 +573,77 @@
                         else if (maxBias === Math.abs(avgG)) { text = avgG>0?"Too Much Green":"Too Little Green"; dir = "GREEN"; }
                         else { text = avgB>0?"Too Much Blue":"Too Little Blue"; dir = "BLUE"; }
                     }
-                    document.getElementById('st-bias-dir').textContent = dir;
-                    document.getElementById('st-bias').textContent = p > 1 ? `${text} (~${p}%)` : "Flawless Biological Balance";
+                    document.getElementById('st-bias-dir').textContent = dir; document.getElementById('st-bias').textContent = p > 1 ? `${text} (~${p}%)` : "Flawless Biological Balance";
                 }
             }
             m.style.display = show ? 'block' : 'none';
         }
 
         // --- UI CONFIG ---
-        function handleTypeChange() {
+        window.handleTypeChange = function() {
             const t = document.getElementById('type-select').value;
-            const isGrad = t === 'gradient'; const isPal = t === 'palette'; const isStud = t === 'studio';
+            const isGrad = t === 'gradient'; const isPal = t === 'palette'; const isStud = t === 'studio'; const isHay = t === 'haystack';
             
-            document.getElementById('objective-select').style.display = (isPal || isStud) ? 'none' : 'block';
+            document.getElementById('objective-select').style.display = (isPal || isStud || isHay) ? 'none' : 'block';
             document.getElementById('palette-rule').style.display = isPal ? 'block' : 'none';
             document.getElementById('timer-select').disabled = isStud;
 
             if (isPal) {
                 const cur = document.querySelector('input[name="colorSpace"]:checked').value;
                 if (cur !== 'hsl' && cur !== 'oklch') { document.querySelector('input[name="colorSpace"][value="hsl"]').checked = true; changeColorSpace(); }
-                document.querySelector('input[name="colorSpace"][value="rgb"]').disabled = true;
-                document.querySelector('input[name="colorSpace"][value="oklab"]').disabled = true;
-                document.querySelector('input[name="colorSpace"][value="cmyk"]').disabled = true;
-                
-                document.getElementById('map-checkbox').checked = false; document.getElementById('terminal-checkbox').checked = false;
-                document.getElementById('hardcore-checkbox').checked = false; document.getElementById('memory-checkbox').checked = false;
+                document.querySelector('input[name="colorSpace"][value="rgb"]').disabled = true; document.querySelector('input[name="colorSpace"][value="oklab"]').disabled = true; document.querySelector('input[name="colorSpace"][value="cmyk"]').disabled = true;
             } else {
-                document.querySelector('input[name="colorSpace"][value="rgb"]').disabled = false;
-                document.querySelector('input[name="colorSpace"][value="oklab"]').disabled = false;
-                document.querySelector('input[name="colorSpace"][value="cmyk"]').disabled = false;
+                document.querySelector('input[name="colorSpace"][value="rgb"]').disabled = false; document.querySelector('input[name="colorSpace"][value="oklab"]').disabled = false; document.querySelector('input[name="colorSpace"][value="cmyk"]').disabled = false;
             }
 
-            if (isStud) {
-                document.getElementById('terminal-checkbox').checked = false; document.getElementById('hardcore-checkbox').checked = false;
-                document.getElementById('memory-checkbox').checked = false; document.getElementById('illusion-checkbox').checked = false;
+            if (isStud || isHay) {
+                document.getElementById('terminal-checkbox').checked = false; document.getElementById('hardcore-checkbox').checked = false; document.getElementById('memory-checkbox').checked = false; document.getElementById('illusion-checkbox').checked = false; document.getElementById('map-checkbox').checked = false;
             }
-
-            document.getElementById('terminal-checkbox').disabled = isGrad || isPal || isStud;
-            document.getElementById('map-checkbox').disabled = isGrad || isPal;
-            document.getElementById('hardcore-checkbox').disabled = isGrad || isPal || isStud;
-            document.getElementById('memory-checkbox').disabled = isGrad || isPal || isStud;
-            document.getElementById('illusion-checkbox').disabled = isStud;
 
             handleToggles();
         }
 
-        function handleToggles() {
+        window.handleToggles = function() {
             if(st.suppressSave) return;
             const t = document.getElementById('type-select').value;
-            const isMulti = t === 'gradient' || t === 'palette';
-            const isStud = t === 'studio';
-            const m = document.getElementById('map-checkbox').checked;
-            const h = document.getElementById('hardcore-checkbox').checked;
-            const tm = document.getElementById('terminal-checkbox').checked;
-            const mm = document.getElementById('memory-checkbox').checked;
+            const isMulti = t === 'gradient' || t === 'palette'; const isStud = t === 'studio'; const isHay = t === 'haystack';
+            const m = document.getElementById('map-checkbox').checked; const h = document.getElementById('hardcore-checkbox').checked; const tm = document.getElementById('terminal-checkbox').checked; const mm = document.getElementById('memory-checkbox').checked;
             
-            if(!isMulti && !isStud) {
-                document.getElementById('map-checkbox').disabled = h || tm;
+            if(!isMulti && !isStud && !isHay) {
+                document.getElementById('map-checkbox').disabled = h || tm || document.getElementById('objective-select').value === 'wcag';
                 document.getElementById('hardcore-checkbox').disabled = m || tm || mm;
                 document.getElementById('terminal-checkbox').disabled = m || h;
                 document.getElementById('memory-checkbox').disabled = h;
+                document.getElementById('objective-select').options[2].disabled = m || tm || h; // Disable WCAG if Map/Blind/Terminal
+            } else {
+                document.getElementById('map-checkbox').disabled = true; document.getElementById('hardcore-checkbox').disabled = true; document.getElementById('terminal-checkbox').disabled = true; document.getElementById('memory-checkbox').disabled = true;
             }
 
-            document.getElementById('lbl-map').style.opacity = (h||tm||isMulti)?'0.3':'1';
-            document.getElementById('lbl-hardcore').style.opacity = (m||tm||mm||isMulti||isStud)?'0.3':'1';
-            document.getElementById('lbl-terminal').style.opacity = (m||h||isMulti||isStud)?'0.3':'1';
-            document.getElementById('lbl-memory').style.opacity = (h||isMulti||isStud)?'0.3':'1';
+            document.getElementById('lbl-map').style.opacity = document.getElementById('map-checkbox').disabled?'0.3':'1';
+            document.getElementById('lbl-hardcore').style.opacity = document.getElementById('hardcore-checkbox').disabled?'0.3':'1';
+            document.getElementById('lbl-terminal').style.opacity = document.getElementById('terminal-checkbox').disabled?'0.3':'1';
+            document.getElementById('lbl-memory').style.opacity = document.getElementById('memory-checkbox').disabled?'0.3':'1';
+            document.getElementById('lbl-illusion').style.opacity = (isStud || isHay)?'0.3':'1'; document.getElementById('illusion-checkbox').disabled = isStud || isHay;
 
             const sel = document.getElementById('space-selector');
-            sel.style.opacity = m ? '0.3' : '1'; sel.style.pointerEvents = m ? 'none' : 'auto';
+            sel.style.opacity = (m || isHay) ? '0.3' : '1'; sel.style.pointerEvents = (m || isHay) ? 'none' : 'auto';
             saveLocal();
         }
 
         function getUIConfig() {
             return {
                 s: document.querySelector('input[name="colorSpace"]:checked').value, t: parseInt(document.getElementById('timer-select').value),
-                o: document.getElementById('objective-select').value, p: document.getElementById('type-select').value, pr: document.getElementById('palette-rule').value,
-                m: document.getElementById('map-checkbox').checked, h: document.getElementById('hardcore-checkbox').checked,
-                i: document.getElementById('illusion-checkbox').checked, tm: document.getElementById('terminal-checkbox').checked, mm: document.getElementById('memory-checkbox').checked
+                o: document.getElementById('objective-select').value, p: document.getElementById('type-select').value, pr: document.getElementById('palette-rule').value, v: document.getElementById('vision-select').value,
+                m: document.getElementById('map-checkbox').checked, h: document.getElementById('hardcore-checkbox').checked, i: document.getElementById('illusion-checkbox').checked, tm: document.getElementById('terminal-checkbox').checked, mm: document.getElementById('memory-checkbox').checked
             };
         }
 
         function setUIConfig(c) {
             st.suppressSave = true;
             if (document.querySelector(`input[name="colorSpace"][value="${c.s}"]`)) document.querySelector(`input[name="colorSpace"][value="${c.s}"]`).checked = true;
-            document.getElementById('timer-select').value = c.t || 30; document.getElementById('objective-select').value = c.o || 'match'; 
-            document.getElementById('type-select').value = c.p || 'solid'; document.getElementById('palette-rule').value = c.pr || 'analogous';
-            document.getElementById('map-checkbox').checked = c.m || false; document.getElementById('hardcore-checkbox').checked = c.h || false;
-            document.getElementById('illusion-checkbox').checked = c.i || false; document.getElementById('terminal-checkbox').checked = c.tm || false; document.getElementById('memory-checkbox').checked = c.mm || false;
-            
-            st.suppressSave = false;
-            handleTypeChange(); changeColorSpace();
+            document.getElementById('timer-select').value = c.t || 30; document.getElementById('objective-select').value = c.o || 'match'; document.getElementById('type-select').value = c.p || 'solid'; document.getElementById('palette-rule').value = c.pr || 'analogous'; document.getElementById('vision-select').value = c.v || 'normal';
+            document.getElementById('map-checkbox').checked = c.m || false; document.getElementById('hardcore-checkbox').checked = c.h || false; document.getElementById('illusion-checkbox').checked = c.i || false; document.getElementById('terminal-checkbox').checked = c.tm || false; document.getElementById('memory-checkbox').checked = c.mm || false;
+            st.suppressSave = false; handleVision(); handleTypeChange(); changeColorSpace();
         }
 
         function saveLocal() { if (!st.suppressSave && !st.isViewingShared) localStorage.setItem('chroma_cfg', JSON.stringify(getUIConfig())); }
@@ -651,24 +656,23 @@
                 try {
                     const data = JSON.parse(atob(p.get('d'))); st.isDuel = true; st.duelData = data;
                     document.getElementById('duel-op-score').textContent = st.duelData.oS + '%'; document.getElementById('duel-banner').style.display = 'block';
-                } catch(e) { clearUrl(); }
-                return null;
+                } catch(e) { clearUrl(); } return null;
             }
             if (!p.has('share')) return null;
-            return { s:p.get('s'), t:parseInt(p.get('t')), o:p.get('o'), p:p.get('p')||'solid', pr:p.get('pr')||'analogous', m:p.get('m')==='1', h:p.get('h')==='1', i:p.get('i')==='1', tm:p.get('tm')==='1', mm:p.get('mm')==='1' };
+            return { s:p.get('s'), t:parseInt(p.get('t')), o:p.get('o'), p:p.get('p')||'solid', pr:p.get('pr')||'analogous', v:p.get('v')||'normal', m:p.get('m')==='1', h:p.get('h')==='1', i:p.get('i')==='1', tm:p.get('tm')==='1', mm:p.get('mm')==='1' };
         }
 
-        function copyConfigUrl() {
-            const c = getUIConfig(); const qs = `?share=1&s=${c.s}&t=${c.t}&o=${c.o}&p=${c.p}&pr=${c.pr}&m=${c.m?1:0}&h=${c.h?1:0}&i=${c.i?1:0}&tm=${c.tm?1:0}&mm=${c.mm?1:0}`;
+        window.copyConfigUrl = function() {
+            const c = getUIConfig(); const qs = `?share=1&s=${c.s}&t=${c.t}&o=${c.o}&p=${c.p}&pr=${c.pr}&v=${c.v}&m=${c.m?1:0}&h=${c.h?1:0}&i=${c.i?1:0}&tm=${c.tm?1:0}&mm=${c.mm?1:0}`;
             navigator.clipboard.writeText(window.location.origin + window.location.pathname + qs);
             document.getElementById('btn-copy-config').innerHTML = '<span>Copied!</span>'; setTimeout(() => document.getElementById('btn-copy-config').innerHTML = 'Copy Config', 2000);
         }
 
-        function acceptSharedConfig() { st.isViewingShared = false; document.getElementById('shared-banner').style.display = 'none'; saveLocal(); clearUrl(); }
-        function discardSharedConfig() { st.isViewingShared = false; document.getElementById('shared-banner').style.display = 'none'; document.getElementById('duel-banner').style.display = 'none'; st.isDuel = false; setUIConfig(loadLocal()); clearUrl(); }
+        window.acceptSharedConfig = function() { st.isViewingShared = false; document.getElementById('shared-banner').style.display = 'none'; saveLocal(); clearUrl(); }
+        window.discardSharedConfig = function() { st.isViewingShared = false; document.getElementById('shared-banner').style.display = 'none'; document.getElementById('duel-banner').style.display = 'none'; st.isDuel = false; setUIConfig(loadLocal()); clearUrl(); }
         document.querySelectorAll('#setup-screen input, #setup-screen select').forEach(el => el.addEventListener('change', () => { if(st.isViewingShared){ st.isViewingShared=false; document.getElementById('shared-banner').style.display='none'; clearUrl(); } saveLocal(); }));
 
-        function changeColorSpace() {
+        window.changeColorSpace = function() {
             if (st.suppressSave) return;
             st.spaceId = document.querySelector('input[name="colorSpace"]:checked').value; const cfg = spaces[st.spaceId];
             [1,2,3,4].forEach(n => {
@@ -676,13 +680,13 @@
                 if (cfg[`s${n}`]) { g.style.display = 'block'; document.getElementById(`lbl-s${n}`).textContent = cfg[`s${n}`].lbl; const sl = document.getElementById(`slider-${n}`); sl.min = cfg[`s${n}`].min; sl.max = cfg[`s${n}`].max; 
                 } else { g.style.display = 'none'; }
             });
-            if(!document.getElementById('map-checkbox').checked && !document.getElementById('terminal-checkbox').checked) updateColor();
+            if(!document.getElementById('map-checkbox').checked && !document.getElementById('terminal-checkbox').checked && document.getElementById('type-select').value !== 'haystack') updateColor();
         }
 
         function mulberry32(a) { return function() { var t=a+=0x6D2B79F5; t=Math.imul(t^t>>>15,t|1); t^=t+Math.imul(t^t>>>7,t|61); return ((t^t>>>14)>>>0)/4294967296; } }
         function getDailyRNG(offset = 0) { const start = new Date('2026-03-23T00:00:00Z'); st.dailyNum = Math.floor((new Date() - start)/86400000)+1; return mulberry32(st.dailyNum*42+offset); }
 
-        function toggleDailyMenu(show) {
+        window.toggleDailyMenu = function(show) {
             if (show) {
                 document.getElementById('shared-banner').style.display='none'; document.getElementById('duel-banner').style.display='none';
                 generateDailyConfigs(); document.getElementById('setup-screen').classList.remove('active'); document.getElementById('daily-screen').classList.add('active');
@@ -694,19 +698,17 @@
             document.getElementById('daily-challenges-list').innerHTML = '';
             
             for (let i=1; i<=4; i++) {
-                let cfg = { id:i, objective:'match', type:'solid', isMap:false, isHardcore:false, isIllusion:false, isTerminal:false, isMemory:false, isRush:false };
+                let cfg = { id:i, objective:'match', type:'solid', vision:'normal', isMap:false, isHardcore:false, isIllusion:false, isTerminal:false, isMemory:false, isRush:false };
                 
                 if (i === 1) { cfg.space = rng()>0.5?'rgb':'hsl'; cfg.timer = rng()>0.5?60:30; cfg.isMap = rng()>0.5; } 
                 else if (i === 2) { cfg.space = ['oklab','oklch','cmyk'][Math.floor(rng()*3)]; cfg.timer = 30; cfg.isIllusion = rng()>0.5; cfg.isMemory = rng()>0.7; } 
                 else if (i === 3) {
                     cfg.space = spaceList[Math.floor(rng()*5)]; cfg.timer = rng()>0.5?15:30;
-                    const r = Math.floor(rng()*6);
-                    if(r===0) cfg.isHardcore=true; else if(r===1) cfg.isTerminal=true; else if(r===2) cfg.type='gradient'; else if(r===3) {cfg.type='palette'; cfg.space='hsl';} else if(r===4) cfg.isMemory=true; else cfg.isIllusion=true;
-                } else if (i === 4) {
-                    cfg.space = 'rgb'; cfg.timer = 60; cfg.isRush = true;
-                }
+                    const r = Math.floor(rng()*8);
+                    if(r===0) cfg.isHardcore=true; else if(r===1) cfg.isTerminal=true; else if(r===2) cfg.type='gradient'; else if(r===3) {cfg.type='palette'; cfg.space='hsl';} else if(r===4) cfg.isMemory=true; else if (r===5) cfg.objective='wcag'; else if (r===6) {cfg.type='haystack'; cfg.space='rgb';} else { cfg.vision = ['protanopia','deuteranopia','tritanopia'][Math.floor(rng()*3)]; cfg.isHardcore = true; }
+                } else if (i === 4) { cfg.space = 'rgb'; cfg.timer = 60; cfg.isRush = true; }
                 
-                let dScore = (cfg.space==='rgb'?3:cfg.space==='cmyk'?4:cfg.space==='oklab'?4:2) + (cfg.timer===15?2:cfg.timer===30?1:0) - (cfg.isMap?3:0) + (cfg.isHardcore?5:0) + (cfg.isIllusion?2:0) + (cfg.type==='gradient'?6:cfg.type==='palette'?4:0) + (cfg.isTerminal?8:0) + (cfg.isMemory?4:0);
+                let dScore = (cfg.space==='rgb'?3:cfg.space==='cmyk'?4:cfg.space==='oklab'?4:2) + (cfg.timer===15?2:cfg.timer===30?1:0) - (cfg.isMap?3:0) + (cfg.isHardcore?5:0) + (cfg.isIllusion?2:0) + (cfg.type==='gradient'?6:cfg.type==='palette'?4:cfg.type==='haystack'?3:0) + (cfg.isTerminal?8:0) + (cfg.isMemory?4:0) + (cfg.objective==='wcag'?4:0) + (cfg.vision!=='normal'?7:0);
                 let dLbl = cfg.isRush ? 'SURVIVAL' : dScore<=3?'CASUAL':dScore<=6?'NORMAL':dScore<=10?'HARD':'EXTREME';
                 let dCol = cfg.isRush ? '#f97316' : dScore<=3?'#22c55e':dScore<=6?'#facc15':dScore<=10?'#f97316':'#ef4444';
                 
@@ -714,6 +716,9 @@
                 if(cfg.isRush) mods.push(`<span class="flag-item">${svgs.rush} Seeded Sequence</span>`);
                 if(cfg.type==='gradient') mods.push(`<span class="flag-item">${svgs.gradient} Gradient</span>`);
                 if(cfg.type==='palette') mods.push(`<span class="flag-item">${svgs.palette} Palette</span>`);
+                if(cfg.type==='haystack') mods.push(`<span class="flag-item">${svgs.haystack} Haystack</span>`);
+                if(cfg.objective==='wcag') mods.push(`<span class="flag-item">${svgs.wcag} WCAG Contrast</span>`);
+                if(cfg.vision!=='normal') mods.push(`<span class="flag-item" style="color:#ef4444;">👁 Colorblind</span>`);
                 if(cfg.isTerminal) mods.push(`<span class="flag-item">${svgs.terminal} Terminal</span>`);
                 if(cfg.isMap) mods.push(`<span class="flag-item">${svgs.map} Map</span>`);
                 if(cfg.isMemory) mods.push(`<span class="flag-item">${svgs.memory} Memory</span>`);
@@ -725,100 +730,57 @@
                                   <div class="daily-card-desc"><span style="font-weight:700; color:var(--text-main); font-size:0.7rem;">${cfg.space.toUpperCase()}</span></div>
                                   ${mods.length?`<div style="display:flex;gap:10px;margin-top:6px;color:var(--text-main);">${mods.join('')}</div>`:''}`;
                 card.onclick = () => { 
-                    st.isDaily=true; st.dailyChallengeId=cfg.id; st.spaceId=cfg.space; st.timeLimit=cfg.timer; st.isMap=cfg.isMap; st.isHardcore=cfg.isHardcore; st.isIllusion=cfg.isIllusion; st.isComp=false; st.type=cfg.type; st.palRule='analogous'; st.isTerminal=cfg.isTerminal; st.isMemory=cfg.isMemory; st.isRush=cfg.isRush; st.rushStreak=0;
-                    setUIConfig({s:cfg.space,t:cfg.timer,o:'match',p:cfg.type,pr:'analogous',m:cfg.isMap,h:cfg.isHardcore,i:cfg.isIllusion,tm:cfg.isTerminal,mm:cfg.isMemory}); executeGameStart(); 
+                    st.isDaily=true; st.dailyChallengeId=cfg.id; st.spaceId=cfg.space; st.timeLimit=cfg.timer; st.isMap=cfg.isMap; st.isHardcore=cfg.isHardcore; st.isIllusion=cfg.isIllusion; st.isComp=false; st.isWcag=cfg.objective==='wcag'; st.type=cfg.type; st.palRule='analogous'; st.vision=cfg.vision; st.isTerminal=cfg.isTerminal; st.isMemory=cfg.isMemory; st.isRush=cfg.isRush; st.rushStreak=0;
+                    setUIConfig({s:cfg.space,t:cfg.timer,o:cfg.objective,p:cfg.type,pr:'analogous',v:cfg.vision,m:cfg.isMap,h:cfg.isHardcore,i:cfg.isIllusion,tm:cfg.isTerminal,mm:cfg.isMemory}); executeGameStart(); 
                 };
                 document.getElementById('daily-challenges-list').appendChild(card);
             }
         }
 
-        function calcComp(v) {
-            if(st.spaceId==='rgb') return [255-v[0],255-v[1],255-v[2]];
-            if(st.spaceId==='hsl'||st.spaceId==='oklch') return [v[0],v[1],(v[2]+180)%360];
-            if(st.spaceId==='oklab') return [v[0],-v[1],-v[2]];
-            if(st.spaceId==='cmyk') return [100-v[0],100-v[1],100-v[2],100-v[3]];
-        }
-        
-        function calcPalette(baseVals, rule) {
-            const hIdx = st.spaceId === 'hsl' ? 0 : 2;
-            let c2 = [...baseVals], c3 = [...baseVals];
-            if (rule === 'analogous') { c2[hIdx] = (baseVals[hIdx] + 30) % 360; c3[hIdx] = (baseVals[hIdx] + 330) % 360; } 
-            else if (rule === 'triadic') { c2[hIdx] = (baseVals[hIdx] + 120) % 360; c3[hIdx] = (baseVals[hIdx] + 240) % 360; } 
-            else if (rule === 'split') { c2[hIdx] = (baseVals[hIdx] + 150) % 360; c3[hIdx] = (baseVals[hIdx] + 210) % 360; }
-            return [baseVals, c2, c3];
-        }
-
         // --- GHOST SYSTEM ---
         function recordGhost() {
-            if (st.isMap || st.isTerminal || st.type === 'studio') return; 
-            const now = Date.now();
-            if (now - st.ghostStart < 100) return; 
-            
+            if (st.isMap || st.isTerminal || st.type === 'studio' || st.type === 'haystack') return; 
+            const now = Date.now(); if (now - st.ghostStart < 100) return; 
             let curState = JSON.stringify({ t: st.uiTab, d: st.gradDeg, v: [1,2,3,4].map(n=>document.getElementById(`slider-${n}`).value) });
-            if (st.lastGhostData !== curState) {
-                st.ghostLog.push({ ms: now - st.ghostStart, s: curState });
-                st.lastGhostData = curState;
-            }
+            if (st.lastGhostData !== curState) { st.ghostLog.push({ ms: now - st.ghostStart, s: curState }); st.lastGhostData = curState; }
         }
 
         function playbackGhost() {
             if (!st.isDuel || !st.duelData || !st.duelData.gL || st.duelData.gL.length === 0) return;
-            const elapsed = Date.now() - st.ghostStart;
-            
-            let activeFrame = null;
-            for (let i = 0; i < st.duelData.gL.length; i++) {
-                if (st.duelData.gL[i].ms <= elapsed) activeFrame = st.duelData.gL[i]; else break;
-            }
-            
+            const elapsed = Date.now() - st.ghostStart; let activeFrame = null;
+            for (let i = 0; i < st.duelData.gL.length; i++) { if (st.duelData.gL[i].ms <= elapsed) activeFrame = st.duelData.gL[i]; else break; }
             if (activeFrame) {
                 const state = JSON.parse(activeFrame.s);
-                if (st.type === 'gradient' || st.type === 'palette') {
-                    const tabs = document.querySelectorAll('.ui-tab');
-                    tabs.forEach((t, i) => { t.style.boxShadow = (i === state.t) ? 'inset 0 0 10px rgba(255,255,255,0.2)' : 'none'; });
-                }
-                if (st.type === 'gradient') {
-                    const gDeg = document.getElementById('g-deg'); gDeg.style.display = 'block';
-                    gDeg.style.left = (state.d / 360) * 100 + '%';
-                }
-                
+                if (st.type === 'gradient' || st.type === 'palette') { document.querySelectorAll('.ui-tab').forEach((t, i) => { t.style.boxShadow = (i === state.t) ? 'inset 0 0 10px rgba(255,255,255,0.2)' : 'none'; }); }
+                if (st.type === 'gradient') { const gDeg = document.getElementById('g-deg'); gDeg.style.display = 'block'; gDeg.style.left = (state.d / 360) * 100 + '%'; }
                 [1,2,3,4].forEach(n => {
-                    const sl = document.getElementById(`slider-${n}`);
-                    const ghost = document.getElementById(`g-${n}`);
-                    if (spaces[st.spaceId][`s${n}`] && state.v[n-1] !== undefined) {
-                        ghost.style.display = 'block';
-                        const min = sl.min, max = sl.max, val = state.v[n-1];
-                        ghost.style.left = ((val - min) / (max - min)) * 100 + '%';
-                    } else { ghost.style.display = 'none'; }
+                    const sl = document.getElementById(`slider-${n}`); const ghost = document.getElementById(`g-${n}`);
+                    if (spaces[st.spaceId][`s${n}`] && state.v[n-1] !== undefined) { ghost.style.display = 'block'; ghost.style.left = ((state.v[n-1] - sl.min) / (sl.max - sl.min)) * 100 + '%'; } else { ghost.style.display = 'none'; }
                 });
             }
         }
 
         // --- MAIN GAME LOOP ---
-        function startFreeplay() {
+        window.startFreeplay = function() {
             st.isDaily=false; st.isRush=false; const c = getUIConfig();
-            st.spaceId=c.s; st.timeLimit=c.t; st.isComp=c.o==='complementary'; st.type=c.p; st.palRule=c.pr; st.isMap=c.m; st.isHardcore=c.h; st.isIllusion=c.i; st.isTerminal=c.tm; st.isMemory=c.mm;
+            st.spaceId=c.s; st.timeLimit=c.t; st.isComp=c.o==='complementary'; st.isWcag=c.o==='wcag'; st.type=c.p; st.palRule=c.pr; st.vision=c.v; st.isMap=c.m; st.isHardcore=c.h; st.isIllusion=c.i; st.isTerminal=c.tm; st.isMemory=c.mm;
             document.getElementById('shared-banner').style.display='none'; executeGameStart();
         }
-        function startRush() {
+        window.startRush = function() {
             st.isDaily=false; st.isRush=true; st.rushStreak=0; const c = getUIConfig();
-            st.spaceId=c.s; st.timeLimit=60; st.isComp=c.o==='complementary'; st.type=c.p; st.palRule=c.pr; st.isMap=c.m; st.isHardcore=c.h; st.isIllusion=c.i; st.isTerminal=c.tm; st.isMemory=c.mm;
+            st.spaceId=c.s; st.timeLimit=60; st.isComp=c.o==='complementary'; st.isWcag=c.o==='wcag'; st.type=c.p; st.palRule=c.pr; st.vision=c.v; st.isMap=c.m; st.isHardcore=c.h; st.isIllusion=c.i; st.isTerminal=c.tm; st.isMemory=c.mm;
             document.getElementById('shared-banner').style.display='none'; executeGameStart();
         }
-        function acceptDuel() {
+        window.acceptDuel = function() {
             st.isDaily=false; st.isRush=false; 
             setUIConfig(st.duelData.c); const c = getUIConfig();
-            st.spaceId=c.s; st.timeLimit=c.t; st.isComp=c.o==='complementary'; st.type=c.p; st.palRule=c.pr; st.isMap=c.m; st.isHardcore=c.h; st.isIllusion=c.i; st.isTerminal=c.tm; st.isMemory=c.mm;
+            st.spaceId=c.s; st.timeLimit=c.t; st.isComp=c.o==='complementary'; st.isWcag=c.o==='wcag'; st.type=c.p; st.palRule=c.pr; st.vision=c.v; st.isMap=c.m; st.isHardcore=c.h; st.isIllusion=c.i; st.isTerminal=c.tm; st.isMemory=c.mm;
             document.getElementById('duel-banner').style.display='none'; executeGameStart();
         }
-        function playAgain() {
-            if (st.type === 'studio') { resetGame(); }
-            else if (st.isRush) { startRush(); } 
-            else if (st.isDuel) { acceptDuel(); } 
-            else { executeGameStart(); }
-        }
+        window.playAgain = function() { if (st.type === 'studio') { resetGame(); } else if (st.isRush) { startRush(); } else if (st.isDuel) { acceptDuel(); } else { executeGameStart(); } }
 
         function executeGameStart() {
-            st.memoryHidden = false;
+            st.memoryHidden = false; st.haystackCorrect = 0;
             if(st.timer) { clearInterval(st.timer); st.timer = null; }
             if(st.memoryTimeout) { clearTimeout(st.memoryTimeout); st.memoryTimeout = null; }
             if(st.ghostTimer) { clearInterval(st.ghostTimer); st.ghostTimer = null; }
@@ -827,10 +789,19 @@
             st.ghostLog = []; st.ghostStart = Date.now();
 
             document.getElementById('setup-screen').classList.remove('active'); document.getElementById('daily-screen').classList.remove('active'); document.getElementById('results-screen').classList.remove('active');
-            document.getElementById('main-color-boxes').style.display='flex'; document.getElementById('game-area').classList.add('active');
+            document.getElementById('game-area').classList.add('active');
             
-            document.getElementById('cheater-controls').style.display = st.isMap ? 'block' : 'none'; document.getElementById('selector-dot').style.display = st.isMap ? 'block' : 'none';
-            document.getElementById('terminal-controls').style.display = st.isTerminal ? 'block' : 'none'; document.getElementById('standard-controls').style.display = (!st.isMap && !st.isTerminal) ? 'block' : 'none';
+            const mainBoxes = document.getElementById('main-color-boxes');
+            const hsGrid = document.getElementById('haystack-grid');
+            const controls = document.getElementById('game-controls');
+
+            if (st.type === 'haystack') {
+                mainBoxes.style.display = 'none'; hsGrid.style.display = 'grid'; controls.style.display = 'none';
+            } else {
+                mainBoxes.style.display = 'flex'; hsGrid.style.display = 'none'; controls.style.display = 'block';
+                document.getElementById('cheater-controls').style.display = st.isMap ? 'block' : 'none'; document.getElementById('selector-dot').style.display = st.isMap ? 'block' : 'none';
+                document.getElementById('terminal-controls').style.display = st.isTerminal ? 'block' : 'none'; document.getElementById('standard-controls').style.display = (!st.isMap && !st.isTerminal) ? 'block' : 'none';
+            }
             
             const tabs = document.getElementById('ui-tabs');
             if (st.type === 'gradient') {
@@ -843,53 +814,72 @@
 
             document.getElementById('frame-opponent').style.display='none'; document.getElementById('btn-challenge').style.display='none';
             
-            // Studio Mode Layout adjustments
             const btnLock = document.getElementById('btn-lock');
             if (st.type === 'studio') {
-                document.getElementById('frame-target').style.display = 'none';
-                document.getElementById('frame-user').style.flex = '2';
-                document.getElementById('timer').style.display = 'none';
-                document.getElementById('game-objective').textContent = "Studio Mode (Utility)";
-                document.getElementById('game-objective').style.color = 'var(--text-muted)';
-                btnLock.textContent = 'Copy CSS to Clipboard';
+                document.getElementById('frame-target').style.display = 'none'; document.getElementById('frame-user').style.flex = '2'; document.getElementById('timer').style.display = 'none';
+                document.getElementById('game-objective').textContent = "Studio Mode (Utility)"; document.getElementById('game-objective').style.color = 'var(--text-muted)'; btnLock.textContent = 'Generate Code';
             } else {
-                document.getElementById('frame-target').style.display = 'block';
-                document.getElementById('frame-user').style.flex = '1';
-                document.getElementById('timer').style.display = 'block';
-                btnLock.textContent = 'Lock In';
+                document.getElementById('frame-target').style.display = 'block'; document.getElementById('frame-user').style.flex = '1'; document.getElementById('timer').style.display = 'block'; btnLock.textContent = 'Lock In';
             }
 
             const rb = document.getElementById('rush-badge');
             if (st.isRush) { rb.style.display='flex'; document.getElementById('rush-streak').textContent=st.rushStreak; } else { rb.style.display='none'; }
 
-            initRoundColors(); changeColorSpace();
+            if (st.type === 'haystack') { initHaystack(); } else { initRoundColors(); changeColorSpace(); }
             
             if (st.type !== 'studio') {
-                let oTxt = st.type === 'gradient' ? "Match the Gradient" : st.type === 'palette' ? `Build ${st.palRule} Palette` : "Match the Target";
-                if(st.isTerminal) oTxt = "Type the Code to Match";
-                else if(st.isComp&&st.isHardcore) oTxt="Blind-Match Complement"; 
-                else if(st.isComp) oTxt="Match Complement"; 
-                else if(st.isHardcore) oTxt="Blind-Match Target";
+                let oTxt = st.type === 'haystack' ? "Find the Odd Color" : st.type === 'gradient' ? "Match the Gradient" : st.type === 'palette' ? `Build ${st.palRule} Palette` : st.isWcag ? "Pass WCAG Contrast" : "Match the Target";
+                if(st.isTerminal) oTxt = "Type the Code to Match"; else if(st.isComp&&st.isHardcore) oTxt="Blind-Match Complement"; else if(st.isComp) oTxt="Match Complement"; else if(st.isHardcore) oTxt="Blind-Match Target";
 
-                if(st.isMemory) {
+                if(st.isMemory && st.type !== 'haystack') {
                     document.getElementById('game-objective').textContent = "Memorize the Target!"; document.getElementById('game-objective').style.color = '#facc15';
                     st.memoryTimeout = setTimeout(() => {
-                        st.memoryHidden = true;
-                        document.getElementById('game-objective').textContent = st.isComp ? "Remake Complement from Memory!" : "Remake from Memory!";
-                        document.getElementById('game-objective').style.color = 'var(--accent)';
-                        renderBoxes();
+                        st.memoryHidden = true; document.getElementById('game-objective').textContent = st.isComp ? "Remake Complement from Memory!" : "Remake from Memory!";
+                        document.getElementById('game-objective').style.color = 'var(--accent)'; renderBoxes();
                     }, 3000);
                 } else { document.getElementById('game-objective').style.color = 'var(--accent)'; document.getElementById('game-objective').textContent = oTxt; }
 
-                st.timeRemaining = st.timeLimit;
-                startTimer();
+                st.timeRemaining = st.timeLimit; startTimer();
                 if (st.isDuel) st.ghostTimer = setInterval(playbackGhost, 50);
             }
         }
 
+        // --- HAYSTACK ENGINE ---
+        function initHaystack() {
+            const rng = st.isDaily ? getDailyRNG(st.dailyChallengeId + st.rushStreak + st.haystackCorrect) : () => Math.random();
+            st.haystackLevel = st.haystackCorrect;
+            const gridEl = document.getElementById('haystack-grid');
+            
+            let size = Math.min(10, 2 + Math.floor(st.haystackLevel / 3));
+            let diff = Math.max(3, 40 - (st.haystackLevel * 2));
+            
+            gridEl.style.gridTemplateColumns = `repeat(${size}, 1fr)`; gridEl.style.gridTemplateRows = `repeat(${size}, 1fr)`;
+            gridEl.innerHTML = '';
+            
+            const r = Math.floor(rng() * 200) + 20; const g = Math.floor(rng() * 200) + 20; const b = Math.floor(rng() * 200) + 20;
+            const tIdx = Math.floor(rng() * (size * size));
+            const cChan = Math.floor(rng() * 3);
+            const dr = cChan===0 ? (rng()>0.5?diff:-diff) : 0; const dg = cChan===1 ? (rng()>0.5?diff:-diff) : 0; const db = cChan===2 ? (rng()>0.5?diff:-diff) : 0;
+            
+            for(let i=0; i<size*size; i++) {
+                const cell = document.createElement('div'); cell.className = 'haystack-cell';
+                if(i === tIdx) {
+                    cell.style.background = `rgb(${r+dr}, ${g+dg}, ${b+db})`;
+                    cell.onclick = () => {
+                        st.haystackCorrect++; st.timeRemaining += 2;
+                        if(st.isRush) { st.rushStreak++; document.getElementById('rush-streak').textContent = st.rushStreak; }
+                        initHaystack();
+                    };
+                } else {
+                    cell.style.background = `rgb(${r}, ${g}, ${b})`;
+                    cell.onclick = () => { st.timeRemaining -= 5; document.getElementById('timer').textContent = st.timeRemaining.toString().padStart(2, '0'); if (st.timeRemaining <= 0) lockIn(); };
+                }
+                gridEl.appendChild(cell);
+            }
+        }
+
         function buildFlexBoxes(containerId, count) {
-            const container = document.getElementById(containerId);
-            container.innerHTML = '';
+            const container = document.getElementById(containerId); container.innerHTML = '';
             for(let i=0; i<count; i++) { const box = document.createElement('div'); box.style.flex = '1'; box.style.height = '100%'; container.appendChild(box); }
         }
 
@@ -898,30 +888,23 @@
             
             if (st.type !== 'studio') {
                 if (!(st.isMemory && st.memoryHidden)) {
-                    if (st.type === 'palette') {
-                        for(let i=0; i<3; i++) { tBox.children[i].style.background = st.targetCssData[i]; }
-                    } else if (st.type === 'gradient') {
-                        tBox.style.background = st.renderedTargetCss;
+                    if (st.type === 'palette') { for(let i=0; i<3; i++) { tBox.children[i].style.background = st.targetCssData[i]; }
+                    } else if (st.type === 'gradient') { tBox.style.background = st.renderedTargetCss;
                     } else {
-                        if (st.isHardcore && !st.isMemory) { tBox.style.background = 'var(--bg)'; tBox.textContent = st.renderedTargetCss; }
-                        else { tBox.style.background = st.renderedTargetCss; }
+                        tBox.style.background = st.renderedTargetCss;
+                        if (st.isWcag) {
+                            tBox.innerHTML = `<span style="font-size:1.8rem; font-family:sans-serif; color:${st.renderedUserCss};">Aa</span><div style="position:absolute; bottom:4px; font-size:0.5rem; text-shadow:none; color:${st.renderedUserCss};">WCAG 4.5:1</div>`;
+                        } else if (st.isHardcore && !st.isMemory) { tBox.style.background = 'var(--bg)'; tBox.textContent = st.renderedTargetCss; }
                     }
                 } else if (st.isMemory && st.memoryHidden) {
-                    if(st.type === 'palette') {
-                        tBox.innerHTML = '<div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; background:var(--bg); border-radius:2px;"><span style="font-size:1.5rem;">???</span></div>';
-                    } else {
-                        tBox.style.background = 'var(--bg)'; tBox.style.textShadow = 'none'; tBox.innerHTML = '<span style="font-size:1.5rem;">???</span>';
-                    }
+                    if(st.type === 'palette') { tBox.innerHTML = '<div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; background:var(--bg); border-radius:2px;"><span style="font-size:1.5rem;">???</span></div>';
+                    } else { tBox.style.background = 'var(--bg)'; tBox.style.textShadow = 'none'; tBox.innerHTML = '<span style="font-size:1.5rem;">???</span>'; }
                 }
             }
             
-            if (st.type === 'palette') {
-                for(let i=0; i<3; i++) { uBox.children[i].style.background = st.userCssData[i]; }
-            } else if (st.type === 'gradient') {
-                uBox.style.background = st.renderedUserCss;
-            } else {
-                uBox.style.background = st.renderedUserCss;
-            }
+            if (st.type === 'palette') { for(let i=0; i<3; i++) { uBox.children[i].style.background = st.userCssData[i]; }
+            } else if (st.type === 'gradient') { uBox.style.background = st.renderedUserCss;
+            } else { uBox.style.background = st.renderedUserCss; }
         }
 
         function initRoundColors() {
@@ -937,50 +920,28 @@
             if (st.type === 'palette') {
                 buildFlexBoxes('target-color', 3); buildFlexBoxes('user-color', 3); tLbl.textContent = 'Reference Palette';
                 if (st.isDuel) {
-                    st.targetColorData = st.duelData.tC; st.targetCssData = st.duelData.tCss;
-                    st.userNativeData = [st.duelData.uBase, [1,2,3,4].map(n=>c[`s${n}`]?c[`s${n}`].val:0), [1,2,3,4].map(n=>c[`s${n}`]?c[`s${n}`].val:0)];
+                    st.targetColorData = st.duelData.tC; st.targetCssData = st.duelData.tCss; st.userNativeData = [st.duelData.uBase, [1,2,3,4].map(n=>c[`s${n}`]?c[`s${n}`].val:0), [1,2,3,4].map(n=>c[`s${n}`]?c[`s${n}`].val:0)];
                 } else {
                     let valid = false; let attempts = 0; let bVals, palVals;
-                    while (!valid && attempts < 50) {
-                        bVals = [1,2,3,4].map(n => c[`s${n}`] ? Math.floor(rng()*(c[`s${n}`].max-c[`s${n}`].min+1))+c[`s${n}`].min : 0);
-                        palVals = calcPalette(bVals, st.palRule);
-                        st.targetCssData = palVals.map(v => c.fmt(v));
-                        st.targetColorData = st.targetCssData.map(css => getRgbFromCss(css));
-                        valid = isGamutSafe(st.targetColorData); attempts++;
-                    }
+                    while (!valid && attempts < 50) { bVals = [1,2,3,4].map(n => c[`s${n}`] ? Math.floor(rng()*(c[`s${n}`].max-c[`s${n}`].min+1))+c[`s${n}`].min : 0); palVals = calcPalette(bVals, st.palRule); st.targetCssData = palVals.map(v => c.fmt(v)); st.targetColorData = st.targetCssData.map(css => getRgbFromCss(css)); valid = isGamutSafe(st.targetColorData); attempts++; }
                     st.userNativeData = [bVals, [1,2,3,4].map(n=>c[`s${n}`]?c[`s${n}`].val:0), [1,2,3,4].map(n=>c[`s${n}`]?c[`s${n}`].val:0)];
                 }
-                st.userCssData = st.userNativeData.map(v => c.fmt(v));
-                st.userColorData = st.userCssData.map(css => getRgbFromCss(css));
-                st.renderedTargetCss = `linear-gradient(90deg, ${st.targetCssData.join(', ')})`;
+                st.userCssData = st.userNativeData.map(v => c.fmt(v)); st.userColorData = st.userCssData.map(css => getRgbFromCss(css)); st.renderedTargetCss = `linear-gradient(90deg, ${st.targetCssData.join(', ')})`;
                 st.uiTab = 1; switchUITab(1); updateColor();
             } 
             else if (st.type === 'gradient') {
                 tBox.style.display='flex'; uBox.style.display='flex'; tLbl.textContent = 'Reference Grad';
                 if (st.isDuel) {
-                    st.targetNativeData = st.duelData.tN; st.gradDeg = st.duelData.tD;
-                    st.renderedTargetCss = `linear-gradient(${st.gradDeg}deg, ${c.fmt(st.targetNativeData[0])}, ${c.fmt(st.targetNativeData[1])})`;
-                    st.userNativeData = [[1,2,3,4].map(n=>c[`s${n}`]?c[`s${n}`].val:0), [1,2,3,4].map(n=>c[`s${n}`]?c[`s${n}`].val:0)];
+                    st.targetNativeData = st.duelData.tN; st.gradDeg = st.duelData.tD; st.renderedTargetCss = `linear-gradient(${st.gradDeg}deg, ${c.fmt(st.targetNativeData[0])}, ${c.fmt(st.targetNativeData[1])})`; st.userNativeData = [[1,2,3,4].map(n=>c[`s${n}`]?c[`s${n}`].val:0), [1,2,3,4].map(n=>c[`s${n}`]?c[`s${n}`].val:0)];
                 } else {
                     let valid = false; let attempts = 0; let baseA, baseB;
-                    while(!valid && attempts < 50) {
-                        baseA = [1,2,3,4].map(n => c[`s${n}`] ? Math.floor(rng()*(c[`s${n}`].max-c[`s${n}`].min+1))+c[`s${n}`].min : 0);
-                        baseB = [1,2,3,4].map(n => c[`s${n}`] ? Math.floor(rng()*(c[`s${n}`].max-c[`s${n}`].min+1))+c[`s${n}`].min : 0);
-                        st.tGradA = st.isComp ? calcComp(baseA) : baseA;
-                        st.tGradB = st.isComp ? calcComp(baseB) : baseB;
-                        const rgbA = getRgbFromCss(c.fmt(st.tGradA)); const rgbB = getRgbFromCss(c.fmt(st.tGradB));
-                        valid = isGamutSafe([rgbA, rgbB]);
-                        st.tDeg = Math.floor(rng() * 360); attempts++;
-                    }
-                    st.targetNativeData = [st.tGradA, st.tGradB];
-                    st.renderedTargetCss = `linear-gradient(${st.tDeg}deg, ${c.fmt(st.targetNativeData[0])}, ${c.fmt(st.targetNativeData[1])})`;
-                    st.userNativeData = [[1,2,3,4].map(n=>c[`s${n}`]?c[`s${n}`].val:0), [1,2,3,4].map(n=>c[`s${n}`]?c[`s${n}`].val:0)];
+                    while(!valid && attempts < 50) { baseA = [1,2,3,4].map(n => c[`s${n}`] ? Math.floor(rng()*(c[`s${n}`].max-c[`s${n}`].min+1))+c[`s${n}`].min : 0); baseB = [1,2,3,4].map(n => c[`s${n}`] ? Math.floor(rng()*(c[`s${n}`].max-c[`s${n}`].min+1))+c[`s${n}`].min : 0); st.tGradA = st.isComp ? calcComp(baseA) : baseA; st.tGradB = st.isComp ? calcComp(baseB) : baseB; const rgbA = getRgbFromCss(c.fmt(st.tGradA)); const rgbB = getRgbFromCss(c.fmt(st.tGradB)); valid = isGamutSafe([rgbA, rgbB]); st.tDeg = Math.floor(rng() * 360); attempts++; }
+                    st.targetNativeData = [st.tGradA, st.tGradB]; st.renderedTargetCss = `linear-gradient(${st.tDeg}deg, ${c.fmt(st.targetNativeData[0])}, ${c.fmt(st.targetNativeData[1])})`; st.userNativeData = [[1,2,3,4].map(n=>c[`s${n}`]?c[`s${n}`].val:0), [1,2,3,4].map(n=>c[`s${n}`]?c[`s${n}`].val:0)];
                 }
-                st.uiTab = 0; document.getElementById('slider-deg').value = 180; document.getElementById('val-deg').textContent = 180;
-                switchUITab(0); updateColor();
+                st.uiTab = 0; document.getElementById('slider-deg').value = 180; document.getElementById('val-deg').textContent = 180; switchUITab(0); updateColor();
             } 
             else { 
-                tBox.style.display='flex'; uBox.style.display='flex'; tLbl.textContent = st.isComp ? 'Base Color' : 'Reference';
+                tBox.style.display='flex'; uBox.style.display='flex'; tLbl.textContent = st.isComp ? 'Base Color' : st.isWcag ? 'Background' : 'Reference';
                 if (st.isDuel) {
                     st.targetVals = st.duelData.tV; st.renderedTargetCss = c.fmt(st.targetVals); st.targetRgb = getRgbFromCss(st.renderedTargetCss);
                     if (st.isTerminal) { document.getElementById('terminal-input').value = ''; st.renderedUserCss = 'var(--bg)'; } 
@@ -995,8 +956,7 @@
                             else if(st.spaceId==='oklab') tVals = [bVals[0], -bVals[1], -bVals[2]];
                             else if(st.spaceId==='cmyk') tVals = [100-bVals[0], 100-bVals[1], 100-bVals[2], 100-bVals[3]];
                         } else { tVals = bVals; }
-                        tCss = c.fmt(tVals); st.targetRgb = getRgbFromCss(tCss);
-                        valid = isGamutSafe([st.targetRgb]); attempts++;
+                        tCss = c.fmt(tVals); st.targetRgb = getRgbFromCss(tCss); valid = isGamutSafe([st.targetRgb]); attempts++;
                     }
                     st.baseVals = bVals; st.targetVals = tVals; st.renderedTargetCss = tCss;
                     
@@ -1014,7 +974,7 @@
         }
 
         const sMap = document.getElementById('spectrum-map');
-        function handleMap(e) {
+        window.handleMap = function(e) {
             const r=sMap.getBoundingClientRect(); const x=Math.max(0,Math.min(e.clientX-r.left,r.width)); const y=Math.max(0,Math.min(e.clientY-r.top,r.height));
             document.getElementById('selector-dot').style.cssText=`display:block; left:${x}px; top:${y}px;`;
             const d=sMap.getContext('2d').getImageData(x*(sMap.width/r.width),y*(sMap.height/r.height),1,1).data;
@@ -1022,19 +982,15 @@
         }
         sMap.addEventListener('mousedown', handleMap); sMap.addEventListener('mousemove', e => { if(e.buttons===1) handleMap(e); });
 
-        function switchUITab(idx) {
-            st.uiTab = idx;
-            document.querySelectorAll('.ui-tab').forEach((el, i) => { if(!el.hasAttribute('style')) el.classList.toggle('active', i === idx); });
-            const vals = st.userNativeData[idx];
-            [1,2,3,4].forEach(n => { if(spaces[st.spaceId][`s${n}`]) { document.getElementById(`slider-${n}`).value = vals[n-1] || 0; document.getElementById(`val-s${n}`).textContent = (vals[n-1]||0).toString().padStart(3,'0'); } });
+        window.switchUITab = function(idx) {
+            st.uiTab = idx; document.querySelectorAll('.ui-tab').forEach((el, i) => { if(!el.hasAttribute('style')) el.classList.toggle('active', i === idx); });
+            const vals = st.userNativeData[idx]; [1,2,3,4].forEach(n => { if(spaces[st.spaceId][`s${n}`]) { document.getElementById(`slider-${n}`).value = vals[n-1] || 0; document.getElementById(`val-s${n}`).textContent = (vals[n-1]||0).toString().padStart(3,'0'); } });
             recordGhost();
         }
 
-        function updateTerminal() {
-            const str = document.getElementById('terminal-input').value; st.renderedUserCss = str; document.getElementById('user-color').style.background = str; st.currentRgb = getRgbFromCss(str);
-        }
+        window.updateTerminal = function() { const str = document.getElementById('terminal-input').value; st.renderedUserCss = str; document.getElementById('user-color').style.background = str; st.currentRgb = getRgbFromCss(str); renderBoxes(); }
 
-        function updateColor() {
+        window.updateColor = function() {
             if(st.isMap || st.isTerminal) return; const c=spaces[st.spaceId]; 
             const vals = []; [1,2,3,4].forEach(n => { if(c[`s${n}`]){ let v=parseInt(document.getElementById(`slider-${n}`).value); vals.push(v); document.getElementById(`val-s${n}`).textContent=v.toString().padStart(3,'0'); } });
             
@@ -1044,12 +1000,9 @@
                     st.cDeg = parseInt(document.getElementById('slider-deg').value); document.getElementById('val-deg').textContent = st.cDeg.toString().padStart(3,'0');
                     if (st.userNativeData[0].length && st.userNativeData[1].length) { st.renderedUserCss = `linear-gradient(${st.cDeg}deg, ${c.fmt(st.userNativeData[0])}, ${c.fmt(st.userNativeData[1])})`; }
                 } else {
-                    st.userCssData[st.uiTab] = c.fmt(vals); st.userColorData[st.uiTab] = getRgbFromCss(st.userCssData[st.uiTab]);
-                    st.renderedUserCss = `linear-gradient(90deg, ${st.userCssData.join(', ')})`;
+                    st.userCssData[st.uiTab] = c.fmt(vals); st.userColorData[st.uiTab] = getRgbFromCss(st.userCssData[st.uiTab]); st.renderedUserCss = `linear-gradient(90deg, ${st.userCssData.join(', ')})`;
                 }
-            } else {
-                st.currentVals=vals; st.renderedUserCss = c.fmt(st.currentVals); st.currentRgb=getRgbFromCss(st.renderedUserCss);
-            }
+            } else { st.currentVals=vals; st.renderedUserCss = c.fmt(st.currentVals); st.currentRgb=getRgbFromCss(st.renderedUserCss); }
             renderBoxes(); recordGhost();
         }
 
@@ -1063,17 +1016,19 @@
 
         function calcColorScore(c1, c2) {
             const rM = (c1.r+c2.r)/2; const dr=c1.r-c2.r, dg=c1.g-c2.g, db=c1.b-c2.b;
-            const dist = Math.sqrt((2+rM/256)*dr*dr + 4*dg*dg + (2+(255-rM)/256)*db*db);
-            return Math.max(0,1-(dist/764.83));
+            const dist = Math.sqrt((2+rM/256)*dr*dr + 4*dg*dg + (2+(255-rM)/256)*db*db); return Math.max(0,1-(dist/764.83));
         }
 
         function calculateScore() {
-            if (st.type === 'palette') {
-                const s1 = calcColorScore(st.targetColorData[1], st.userColorData[1]);
-                const s2 = calcColorScore(st.targetColorData[2], st.userColorData[2]);
-                return Math.round(Math.pow((s1+s2)/2, 1.5) * 100);
-            }
-            else if (st.type === 'gradient') {
+            if (st.type === 'haystack') {
+                return Math.min(100, Math.round((st.haystackCorrect / 15) * 100)); // Arbitrary scale for haystack %
+            } else if (st.isWcag) {
+                const ratio = getContrast(st.targetRgb, st.currentRgb);
+                if (ratio >= 4.5) return 100;
+                return Math.max(0, Math.round((ratio / 4.5) * 100));
+            } else if (st.type === 'palette') {
+                const s1 = calcColorScore(st.targetColorData[1], st.userColorData[1]); const s2 = calcColorScore(st.targetColorData[2], st.userColorData[2]); return Math.round(Math.pow((s1+s2)/2, 1.5) * 100);
+            } else if (st.type === 'gradient') {
                 const c = spaces[st.spaceId];
                 const tA = getRgbFromCss(c.fmt(st.targetNativeData[0])), tB = getRgbFromCss(c.fmt(st.targetNativeData[1])); const uA = getRgbFromCss(c.fmt(st.userNativeData[0])), uB = getRgbFromCss(c.fmt(st.userNativeData[1]));
                 const score1 = (calcColorScore(tA, uA) + calcColorScore(tB, uB)) / 2; let aDiff1 = Math.abs(st.gradDeg - st.cDeg) % 360; if(aDiff1 > 180) aDiff1 = 360 - aDiff1; const final1 = score1 * (0.8 + 0.2 * (1 - aDiff1/180));
@@ -1082,12 +1037,24 @@
             } else { return Math.round(Math.pow(calcColorScore(st.targetRgb, st.currentRgb), 1.5) * 100); }
         }
 
-        function lockIn() {
+        function buildCodeExport() {
+            let css = `:root {\n`;
+            if (st.type === 'palette') { css += `  --color-base: ${st.userCssData[0]};\n  --color-2: ${st.userCssData[1]};\n  --color-3: ${st.userCssData[2]};\n`; } 
+            else if (st.type === 'gradient') { css += `  --gradient-main: ${st.renderedUserCss};\n`; } 
+            else { css += `  --color-main: ${st.renderedUserCss};\n`; }
+            css += `}`; return css;
+        }
+
+        window.copyExport = function() {
+            navigator.clipboard.writeText(document.getElementById('export-textarea').value);
+            document.getElementById('export-modal').style.display='none';
+        }
+
+        window.lockIn = function() {
             if (st.type === 'studio') {
-                navigator.clipboard.writeText(st.renderedUserCss);
-                const btn = document.getElementById('btn-lock'); const orig = btn.textContent;
-                btn.textContent = 'CSS Copied!'; setTimeout(() => btn.textContent = orig, 2000);
-                return;
+                const ex = document.getElementById('export-modal');
+                document.getElementById('export-textarea').value = buildCodeExport();
+                ex.style.display = 'block'; return;
             }
 
             if (st.timer) { clearInterval(st.timer); st.timer = null; }
@@ -1097,14 +1064,15 @@
             st.memoryHidden = false; 
 
             const score = calculateScore();
-            if (st.type === 'solid') saveStats(score, st.currentRgb.r - st.targetRgb.r, st.currentRgb.g - st.targetRgb.g, st.currentRgb.b - st.targetRgb.b);
-            if (score >= 98 && !st.isDuel) saveToPantheon(st.renderedTargetCss, st.renderedUserCss);
+            if (st.type === 'solid' && !st.isWcag) saveStats(score, st.currentRgb.r - st.targetRgb.r, st.currentRgb.g - st.targetRgb.g, st.currentRgb.b - st.targetRgb.b);
+            if (score >= 98 && !st.isDuel && st.type !== 'haystack') saveToPantheon(st.renderedTargetCss, st.renderedUserCss);
 
             if (st.isRush && st.timeRemaining > 0) {
-                if (score >= 90) {
-                    st.rushStreak++; st.timeRemaining += (score >= 98 ? 10 : 5);
+                if (score >= 90 || (st.type === 'haystack' && st.timeRemaining > 0)) { // Haystack passes naturally if time > 0
+                    if(st.type !== 'haystack') { st.rushStreak++; st.timeRemaining += (score >= 98 ? 10 : 5); } // Haystack logic handled internally
                     document.getElementById('rush-streak').textContent = st.rushStreak;
-                    initRoundColors(); startTimer(); 
+                    if(st.type === 'haystack') initHaystack(); else initRoundColors(); 
+                    startTimer(); 
                 } else { st.finalScore = score; triggerEndScreen(); }
             } else { st.finalScore = score; triggerEndScreen(); }
         }
@@ -1113,14 +1081,22 @@
             const tBox=document.getElementById('target-color'), ft=document.getElementById('frame-target'), fu=document.getElementById('frame-user');
             ft.classList.remove('active-illusion'); fu.classList.remove('active-illusion'); ft.style.backgroundColor='var(--border)'; fu.style.backgroundColor='var(--border)';
             
+            document.getElementById('haystack-grid').style.display = 'none';
+            document.getElementById('main-color-boxes').style.display = 'flex';
+            document.getElementById('frame-target').style.display = 'block'; document.getElementById('frame-user').style.flex = '1';
+
             if (st.type === 'palette') {
                 tBox.innerHTML=''; for(let i=0; i<3; i++) { const d = document.createElement('div'); d.style.flex='1'; d.style.height='100%'; d.style.background=st.targetCssData[i]; tBox.appendChild(d); }
             } else {
                 tBox.style.background = st.renderedTargetCss;
-                if(st.isHardcore || (st.isComp && st.type === 'solid') || st.isMemory){ 
+                if(st.isWcag) {
+                    tBox.innerHTML = `<span style="font-size:1.8rem; font-family:sans-serif; color:${st.renderedUserCss};">Aa</span><div style="position:absolute; bottom:4px; font-size:0.5rem; text-shadow:none; color:${st.renderedUserCss};">Actual Ratio: ${getContrast(st.targetRgb, st.currentRgb).toFixed(2)}:1</div>`;
+                } else if(st.isHardcore || (st.isComp && st.type === 'solid') || st.isMemory){ 
                     tBox.style.textShadow='0 0 8px #000'; 
                     tBox.textContent = st.type==='gradient' ? '' : spaces[st.spaceId].fmt(st.targetVals); 
                     document.getElementById('target-label').textContent='True Target'; 
+                } else if (st.type === 'haystack') {
+                    tBox.style.background = 'var(--bg)'; tBox.textContent = `Score: ${st.haystackCorrect}`; document.getElementById('target-label').textContent='Tiles Found';
                 } else { tBox.textContent = ''; }
             }
 
@@ -1133,22 +1109,24 @@
             if(st.isDuel) flags.push(`<span class="flag-item">${svgs.duel} Duel</span>`);
             if(st.type==='gradient') flags.push(`<span class="flag-item">${svgs.gradient} Gradient</span>`);
             if(st.type==='palette') flags.push(`<span class="flag-item">${svgs.palette} Palette</span>`);
+            if(st.type==='haystack') flags.push(`<span class="flag-item">${svgs.haystack} Haystack</span>`);
+            if(st.isWcag) flags.push(`<span class="flag-item">${svgs.wcag} WCAG</span>`);
             if(st.isTerminal) flags.push(`<span class="flag-item">${svgs.terminal} Terminal</span>`);
             if(st.isComp) flags.push(`<span class="flag-item">${svgs.complementary} Comp</span>`);
             if(st.isMemory) flags.push(`<span class="flag-item">${svgs.memory} Memory</span>`);
             if(st.isHardcore) flags.push(`<span class="flag-item">${svgs.blind} Blind</span>`);
             if(st.isMap) flags.push(`<span class="flag-item">${svgs.map} Map</span>`);
             if(st.isIllusion) flags.push(`<span class="flag-item">${svgs.illusion} Illusion</span>`);
+            if(st.vision!=='normal') flags.push(`<span class="flag-item" style="color:#ef4444;">👁 Colorblind</span>`);
             document.getElementById('status-text').innerHTML = flags.join('<span class="flag-sep">|</span>');
 
-            if (!st.isDaily && !st.isRush && !st.isDuel && !st.isTerminal && !st.isMap) document.getElementById('btn-challenge').style.display='flex';
+            if (!st.isDaily && !st.isRush && !st.isDuel && !st.isTerminal && !st.isMap && st.type !== 'haystack') document.getElementById('btn-challenge').style.display='flex';
 
             if (st.isDuel) {
                 const fo = document.getElementById('frame-opponent');
                 fo.style.display = 'block'; fo.classList.remove('active-illusion'); fo.style.backgroundColor='var(--border)';
                 const oBox = document.getElementById('op-color'); 
-                if (st.type === 'palette') {
-                    oBox.innerHTML=''; for(let i=0; i<3; i++) { const d = document.createElement('div'); d.style.flex='1'; d.style.height='100%'; d.style.background=st.duelData.uC[i]; oBox.appendChild(d); }
+                if (st.type === 'palette') { oBox.innerHTML=''; for(let i=0; i<3; i++) { const d = document.createElement('div'); d.style.flex='1'; d.style.height='100%'; d.style.background=st.duelData.uC[i]; oBox.appendChild(d); }
                 } else { oBox.style.background = st.duelData.uC; }
                 
                 document.getElementById('op-label').textContent = `Opponent (${st.duelData.oS}%)`;
@@ -1157,29 +1135,21 @@
             }
         }
 
-        function shareDuel() {
-            const data = { 
-                c: getUIConfig(), 
-                tV: st.type==='solid'?st.targetVals:null, 
-                tN: st.type==='gradient'?st.targetNativeData:null, tD: st.type==='gradient'?st.gradDeg:null,
-                tC: st.type==='palette'?st.targetColorData:null, tCss: st.type==='palette'?st.targetCssData:null, uBase: st.type==='palette'?st.userNativeData[0]:null,
-                uC: st.type==='palette'?st.userCssData:st.renderedUserCss, 
-                oS: st.finalScore,
-                gL: st.ghostLog
-            };
+        window.shareDuel = function() {
+            const data = { c: getUIConfig(), tV: st.type==='solid'?st.targetVals:null, tN: st.type==='gradient'?st.targetNativeData:null, tD: st.type==='gradient'?st.gradDeg:null, tC: st.type==='palette'?st.targetColorData:null, tCss: st.type==='palette'?st.targetCssData:null, uBase: st.type==='palette'?st.userNativeData[0]:null, uC: st.type==='palette'?st.userCssData:st.renderedUserCss, oS: st.finalScore, gL: st.ghostLog };
             const qs = `?duel=1&d=${btoa(JSON.stringify(data))}`; navigator.clipboard.writeText(window.location.origin + window.location.pathname + qs);
             document.getElementById('btn-challenge').innerHTML = '<span>Link Copied!</span>'; setTimeout(() => document.getElementById('btn-challenge').innerHTML = `${svgs.duel} <span>Challenge a Friend</span>`, 2000);
         }
 
-        function shareScore() {
+        window.shareScore = function() {
             const getEmoji = (diff) => diff < 15 ? '🟩' : diff < 40 ? '🟨' : '🟥';
             let str = `Chroma ${st.isDaily?`Daily #${st.dailyNum}`:st.isRush?`Rush (Streak ${st.rushStreak})`:st.isDuel?'Duel':'Freeplay'} | ${st.finalScore}%\nMode: ${st.spaceId.toUpperCase()}`;
-            if(st.type==='gradient') str+=' 🌈'; if(st.type==='palette') str+=' 🎨'; if(st.isTerminal) str+=' ⌨️'; if(st.isMemory) str+=' 🧠'; if(st.isComp) str+=' ☯'; if(st.isHardcore) str+=' 👁'; if(st.isIllusion) str+=' 🌀'; if(st.isMap) str+=' 🗺';
-            if(st.type==='solid') { const dr=Math.abs(st.targetRgb.r-st.currentRgb.r), dg=Math.abs(st.targetRgb.g-st.currentRgb.g), db=Math.abs(st.targetRgb.b-st.currentRgb.b); str += `\n[RGB] ${getEmoji(dr)}${getEmoji(dg)}${getEmoji(db)}`; }
+            if(st.type==='gradient') str+=' 🌈'; if(st.type==='palette') str+=' 🎨'; if(st.type==='haystack') str+=' 🔲'; if(st.isTerminal) str+=' ⌨️'; if(st.isMemory) str+=' 🧠'; if(st.isComp) str+=' ☯'; if(st.isWcag) str+=' Aa'; if(st.isHardcore) str+=' 👁'; if(st.vision!=='normal') str+=' 🕶'; if(st.isIllusion) str+=' 🌀'; if(st.isMap) str+=' 🗺';
+            if(st.type==='solid' && !st.isWcag) { const dr=Math.abs(st.targetRgb.r-st.currentRgb.r), dg=Math.abs(st.targetRgb.g-st.currentRgb.g), db=Math.abs(st.targetRgb.b-st.currentRgb.b); str += `\n[RGB] ${getEmoji(dr)}${getEmoji(dg)}${getEmoji(db)}`; }
             navigator.clipboard.writeText(str).then(() => { const b=document.getElementById('btn-share'); const o=b.innerHTML; b.innerHTML='<span>Copied!</span>'; setTimeout(()=>b.innerHTML=o,2000); });
         }
 
-        function resetGame() {
+        window.resetGame = function() {
             if (st.timer) { clearInterval(st.timer); st.timer = null; }
             if (st.ghostTimer) { clearInterval(st.ghostTimer); st.ghostTimer = null; }
             document.getElementById('setup-screen').classList.add('active'); document.getElementById('results-screen').classList.remove('active'); document.getElementById('main-color-boxes').style.display='none';
@@ -1189,10 +1159,8 @@
         }
 
         window.onload = () => {
-            initTheme();
-            getDailyRNG(0)(); document.getElementById('daily-day-display').textContent = st.dailyNum;
-            const c = checkUrl();
-            if (st.isDuel) { } else if (c) { st.isViewingShared=true; setUIConfig(c); document.getElementById('shared-banner').style.display='block'; } else { setUIConfig(loadLocal()); }
+            initTheme(); getDailyRNG(0)(); document.getElementById('daily-day-display').textContent = st.dailyNum;
+            const c = checkUrl(); if (st.isDuel) { } else if (c) { st.isViewingShared=true; setUIConfig(c); document.getElementById('shared-banner').style.display='block'; } else { setUIConfig(loadLocal()); }
         };
     </script>
 </body>
