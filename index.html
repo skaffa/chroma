@@ -21,43 +21,55 @@
         .icon-sm { width: 12px; height: 12px; }
         
         .header-btns { display: flex; gap: 8px; }
-        .header-btn { flex: none; width: 24px; height: 24px; padding: 0; border: 1px solid var(--border); border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--text-muted); transition: 0.2s; background: none; }
+        .header-btn { flex: none; width: 26px; height: 26px; padding: 0; border: 1px solid var(--border); border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--text-muted); transition: 0.2s; background: var(--bg); }
         .header-btn:hover { color: var(--bg); background: var(--text-muted); }
+        .pantheon-btn { color: #facc15; border-color: rgba(250, 204, 21, 0.3); }
+        .pantheon-btn:hover { background: #facc15; color: var(--bg); }
 
         .game-setup, .daily-menu, .game-area, .results, .info-modal { display: none; }
         .active { display: block; }
 
-        /* Shared / Duel Banner */
+        /* Banners */
         .shared-banner { position: absolute; top: calc(100% + 15px); left: 0; width: 100%; background: var(--card); border: 1px solid #3b82f6; padding: 16px; border-radius: 4px; text-align: left; box-shadow: 0 20px 50px rgba(0,0,0,0.5); z-index: 50;}
         .duel-banner { border-color: #f97316; background: rgba(249, 115, 22, 0.05); }
         .duel-banner .shared-banner-title { color: #f97316; display: flex; align-items: center; gap: 6px; }
-        
         .shared-banner-title { font-size: 0.65rem; font-weight: 700; color: #3b82f6; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
         .shared-banner-text { font-size: 0.7rem; color: var(--text-main); margin-bottom: 12px; line-height: 1.4; }
         .shared-banner-btns { display: flex; gap: 8px; }
         .shared-banner-btns button { padding: 10px; font-size: 0.6rem; }
-        
-        .btn-save { border-color: #3b82f6; color: #3b82f6; }
-        .btn-save:hover { background: #3b82f6; color: var(--bg); }
-        .btn-duel { border-color: #f97316; color: #f97316; }
-        .btn-duel:hover { background: #f97316; color: var(--bg); }
 
-        /* Modal */
+        /* Modals & Pantheon */
         .info-modal { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--card); z-index: 100; padding: 2rem; text-align: left; overflow-y: auto; border: 1px solid var(--border); }
-        .info-modal h2 { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1rem; color: var(--accent); }
+        .info-modal h2 { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1rem; color: var(--accent); display: flex; justify-content: space-between; align-items: center; }
         .info-modal p { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.8rem; line-height: 1.5; }
         .info-modal b { color: var(--text-main); }
         
-        /* Daily Challenges Menu */
+        .pantheon-grid { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 1rem; margin-bottom: 1.5rem; max-height: 200px; overflow-y: auto; align-content: flex-start; }
+        .pantheon-swatch { width: 42px; height: 42px; border-radius: 4px; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); transition: transform 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.5); }
+        .pantheon-swatch:hover { transform: scale(1.1); z-index: 2; border-color: white; }
+        .empty-pantheon { font-size: 0.7rem; color: var(--text-muted); text-align: center; width: 100%; padding: 2rem 0; font-style: italic; }
+        
+        .pantheon-details { border-top: 1px solid var(--border); padding-top: 1rem; display: none; }
+        .pd-title { font-size: 0.65rem; font-weight: 700; color: #facc15; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
+        .pd-stat { font-size: 0.65rem; color: var(--text-muted); margin-bottom: 4px; display: flex; justify-content: space-between; }
+        .pd-stat span { color: var(--text-main); font-family: monospace; text-align: right; word-break: break-all; max-width: 60%; }
+
+        /* Settings / Confirm Modals */
+        .btn-danger { border-color: #ef4444; color: #ef4444; width: 100%; margin-bottom: 8px; }
+        .btn-danger:hover { background: #ef4444; color: var(--bg); }
+        #confirm-modal { display: none; align-items: center; justify-content: center; background: rgba(10,10,12,0.95); z-index: 200; }
+        .confirm-box { background: var(--card); padding: 2rem; border: 1px solid #ef4444; border-radius: 4px; text-align: center; max-width: 320px; width: 90%; }
+        
+        /* Daily Challenges */
         .daily-card { border: 1px solid var(--border); padding: 16px; border-radius: 4px; cursor: pointer; text-align: left; transition: 0.2s; background: var(--bg); margin-bottom: 10px; display: flex; flex-direction: column; gap: 8px; }
         .daily-card:hover { border-color: #3b82f6; background: rgba(59, 130, 246, 0.05); }
         .daily-card-title { font-size: 0.7rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.1em; display: flex; justify-content: space-between; align-items: center; }
         .daily-card-desc { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
         .diff-badge { padding: 3px 6px; border-radius: 3px; font-size: 0.55rem; font-weight: 800; letter-spacing: 0.15em; border: 1px solid; }
 
-        /* Gameplay Area UI */
+        /* Game Header */
         .game-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
-        .game-objective { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); }
+        .game-objective { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); transition: color 0.3s; }
         .rush-badge { color: #f97316; font-weight: 800; font-size: 0.7rem; letter-spacing: 0.1em; display: none; align-items: center; gap: 4px; }
         .timer { font-size: 0.8rem; font-weight: 600; color: var(--text-muted); letter-spacing: 0.1em; }
         
@@ -68,12 +80,11 @@
         .color-box { width: 100%; aspect-ratio: 1.2/1; transition: background-color 0.1s; display: flex; align-items: center; justify-content: center; font-family: monospace; font-size: 0.7rem; font-weight: 600; text-align: center; letter-spacing: 0.05em; color: var(--text-main); }
         .color-box-label { display: block; padding: 10px 0; font-size: 0.65rem; font-weight: 600; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.1em; text-align: center; }
 
-        /* Canvas Mapping */
-        .canvas-wrapper { position: relative; width: 100%; height: 160px; margin-bottom: 1rem; }
-        #spectrum-map { width: 100%; height: 100%; border: 1px solid var(--border); cursor: crosshair; display: block; }
+        /* Controls */
+        .canvas-wrapper { position: relative; width: 100%; height: 160px; margin-bottom: 1rem; touch-action: none; }
+        #spectrum-map { width: 100%; height: 100%; border: 1px solid var(--border); cursor: crosshair; display: block; touch-action: manipulation; }
         #selector-dot { position: absolute; width: 14px; height: 14px; border: 2px solid white; border-radius: 50%; transform: translate(-50%, -50%); pointer-events: none; box-shadow: 0 0 0 1px black; display: none; z-index: 10; }
 
-        /* Setup Grid */
         .space-selector { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-bottom: 1.5rem; transition: opacity 0.3s; }
         .radio-label { display: inline-block; font-size: 0.55rem; text-transform: uppercase; font-weight: 600; letter-spacing: 0.1em; padding: 8px 10px; border: 1px solid var(--border); border-radius: 2px; cursor: pointer; color: var(--text-muted); transition: 0.2s; background: var(--bg); }
         .space-selector input[type="radio"] { display: none; }
@@ -82,7 +93,7 @@
         .config-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1.5rem; }
         select { background: var(--bg); color: var(--text-main); border: 1px solid var(--border); padding: 10px; font-size: 0.7rem; appearance: none; text-align: center; outline: none; text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; }
 
-        .toggles-container { display: flex; flex-direction: column; gap: 12px; margin-bottom: 2rem; align-items: flex-start; padding-left: 10%; }
+        .toggles-container { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 2rem; align-items: center; justify-items: start; padding: 0 5%; }
         .mode-toggle { display: flex; align-items: center; gap: 10px; cursor: pointer; transition: 0.3s; }
         .toggle-switch { width: 32px; height: 16px; background: var(--border); position: relative; border-radius: 2px; }
         .toggle-switch::after { content: ''; position: absolute; width: 8px; height: 8px; background: var(--text-muted); top: 4px; left: 4px; transition: 0.2s; border-radius: 1px; }
@@ -90,32 +101,35 @@
         input[type="checkbox"]:checked + .toggle-switch::after { left: 20px; background: var(--accent); }
         input[type="checkbox"] { display: none; }
 
-        /* Sliders */
+        /* Sliders & Gradient Tabs */
+        .grad-tabs { display: flex; gap: 4px; margin-bottom: 1.5rem; }
+        .grad-tab { flex: 1; padding: 8px; font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; background: var(--bg); color: var(--text-muted); border: 1px solid var(--border); cursor: pointer; border-radius: 2px; }
+        .grad-tab.active { background: var(--text-main); color: var(--bg); border-color: var(--text-main); }
+        
         .slider-group { margin-bottom: 1rem; }
         .slider-header { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.7rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-main); }
         .slider-value { font-family: monospace; color: var(--text-muted); }
-        input[type="range"] { -webkit-appearance: none; width: 100%; height: 2px; background: var(--border); outline: none; }
-        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 4px; height: 16px; background: var(--accent); cursor: pointer; }
+        input[type="range"] { -webkit-appearance: none; width: 100%; height: 2px; background: var(--border); outline: none; touch-action: manipulation; }
+        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 6px; height: 18px; background: var(--accent); cursor: pointer; touch-action: manipulation;}
+
+        /* Terminal Input */
+        .terminal-input-wrapper { display: flex; align-items: center; gap: 10px; border: 1px solid var(--border); background: var(--bg); padding: 12px; margin-bottom: 2rem; border-radius: 4px; }
+        .terminal-prompt { color: #22c55e; font-family: monospace; font-weight: bold; font-size: 1rem; }
+        #terminal-input { flex: 1; background: transparent; border: none; color: var(--accent); font-family: monospace; font-size: 0.9rem; outline: none; }
 
         /* Buttons */
         .btn-group { display: flex; gap: 10px; margin-bottom: 10px; }
-        button { flex: 1; padding: 14px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.2em; background: none; color: var(--text-main); border: 1px solid var(--border); cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; }
+        button { flex: 1; padding: 14px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.2em; background: none; color: var(--text-main); border: 1px solid var(--border); cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; border-radius: 2px; }
         button:hover { background: var(--text-main); color: var(--bg); }
         
-        .btn-rush { border-color: #f97316; color: #f97316; }
-        .btn-rush:hover { background: #f97316; color: var(--bg); }
-        .btn-daily { border-color: #3b82f6; color: #3b82f6; }
-        .btn-daily:hover { background: #3b82f6; color: var(--bg); }
-        .btn-share { border-color: #22c55e; color: #22c55e; }
-        .btn-share:hover { background: #22c55e; color: var(--bg); }
-        .btn-lock { background: var(--text-main); color: var(--bg); margin-top: 1.5rem; }
-        .btn-lock:hover { background: var(--text-muted); }
+        .btn-rush { border-color: #f97316; color: #f97316; } .btn-rush:hover { background: #f97316; color: var(--bg); }
+        .btn-daily { border-color: #3b82f6; color: #3b82f6; } .btn-daily:hover { background: #3b82f6; color: var(--bg); }
+        .btn-share { border-color: #22c55e; color: #22c55e; } .btn-share:hover { background: #22c55e; color: var(--bg); }
+        .btn-lock { background: var(--text-main); color: var(--bg); margin-top: 1.5rem; } .btn-lock:hover { background: var(--text-muted); }
 
         .match-percentage { font-size: 5rem; font-weight: 200; color: var(--text-main); margin: 1rem 0; letter-spacing: -0.05em; }
-        
         .status-text { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--text-muted); margin-bottom: 2rem; }
-        .flag-item { display: inline-flex; align-items: center; gap: 4px; }
-        .flag-sep { opacity: 0.3; }
+        .flag-item { display: inline-flex; align-items: center; gap: 4px; } .flag-sep { opacity: 0.3; }
 
         /* Stats Grid */
         .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1rem; }
@@ -129,8 +143,14 @@
     <div class="container">
         <h1>Chroma 
             <div class="header-btns">
+                <button class="header-btn pantheon-btn" onclick="togglePantheon(true)" title="The Pantheon">
+                    <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path></svg>
+                </button>
                 <button class="header-btn" onclick="toggleStats(true)" title="Analytics">
                     <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"></path></svg>
+                </button>
+                <button class="header-btn" onclick="toggleSettings(true)" title="Settings">
+                    <svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
                 </button>
                 <button class="header-btn" onclick="toggleInfo(true)" title="Info">
                     <svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
@@ -151,29 +171,67 @@
             <div class="shared-banner-title">
                 <svg class="icon" viewBox="0 0 24 24"><path d="M14.5 17.5L3 6V3h3l11.5 11.5M13 19l6-6M16 16l4 4M19 21l2-2"></path></svg> Rivalry Duel
             </div>
-            <div class="shared-banner-text">You have been challenged! Your opponent scored <b id="duel-op-score" style="color:var(--text-main)"></b> on this exact color.</div>
+            <div class="shared-banner-text">You have been challenged! Your opponent scored <b id="duel-op-score" style="color:var(--text-main)"></b> on this exact match.</div>
             <div class="shared-banner-btns">
                 <button class="btn-duel" onclick="acceptDuel()">Accept Duel</button>
                 <button onclick="discardSharedConfig()">Flee</button>
             </div>
         </div>
 
+        <div class="info-modal" id="settings-modal">
+            <h2>Settings <span style="font-size: 0.6rem; color: var(--text-muted); font-weight: normal; cursor:pointer;" onclick="toggleSettings(false)">[X]</span></h2>
+            <div style="margin-top: 1rem;">
+                <button class="btn-danger" onclick="triggerConfirm('Reset Configuration to defaults?', resetConfig)">Reset Configuration</button>
+                <button class="btn-danger" onclick="triggerConfirm('Wipe your entire Pantheon gallery?', resetPantheon)">Clear Pantheon</button>
+                <button class="btn-danger" onclick="triggerConfirm('Delete all your analytics and stats?', resetAnalytics)">Clear Analytics</button>
+                <button class="btn-danger" onclick="triggerConfirm('WARNING: This will delete EVERYTHING and hard refresh the page. Continue?', resetAll)">Factory Reset</button>
+            </div>
+        </div>
+
+        <div class="info-modal" id="confirm-modal" style="display:none;">
+            <div class="confirm-box">
+                <h3 style="color:#ef4444; margin-bottom: 1rem; font-size:0.8rem; text-transform:uppercase;">Confirm Action</h3>
+                <p id="confirm-msg" style="font-size:0.7rem; margin-bottom: 1.5rem;"></p>
+                <div style="display:flex; gap:10px;">
+                    <button style="border-color:#ef4444; color:#ef4444;" onclick="executeConfirm()">Confirm</button>
+                    <button onclick="closeConfirm()">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-modal" id="pantheon-modal">
+            <h2>The Pantheon 
+                <span style="font-size: 0.6rem; color: var(--text-muted); font-weight: normal; cursor:pointer;" onclick="togglePantheon(false)">[X]</span>
+            </h2>
+            <p style="text-transform: none; margin-bottom: 1.5rem;">A gallery of your absolute perfection. Every color you score <b>98% or higher</b> on is permanently immortalized here.</p>
+            <div class="pantheon-grid" id="pantheon-grid"></div>
+            
+            <div class="pantheon-details" id="pantheon-details">
+                <div class="pd-title">Match Data</div>
+                <div class="pd-stat">Target: <span id="pd-target">-</span></div>
+                <div class="pd-stat">Output: <span id="pd-user">-</span></div>
+                <div class="pd-stat">Color Space: <span id="pd-space">-</span></div>
+                <div class="pd-stat">Modifiers: <span id="pd-mods">-</span></div>
+                <div class="pd-stat">Date: <span id="pd-date">-</span></div>
+            </div>
+        </div>
+
         <div class="info-modal" id="info-modal">
-            <h2>Game Modes</h2>
-            <p><b>Chroma Rush:</b> Survival mode. Start with 60s. >90% adds 5s, >98% adds 10s.</p>
-            <p><b>CMYK Mode:</b> Subtractive ink mixing. Red + Green no longer makes Yellow.</p>
-            <p><b>Rivalry Links:</b> Challenge friends to beat your exact score on a specific color.</p>
-            <p><b>Visual Map:</b> Select from an assisted 2D spectrum.</p>
-            <p><b>Blind Hardcore:</b> No visual reference. Rely entirely on the math code.</p>
+            <h2>Game Modes <span style="font-size: 0.6rem; color: var(--text-muted); font-weight: normal; cursor:pointer;" onclick="toggleInfo(false)">[X]</span></h2>
+            <p><b>Memory Mode:</b> Target is visible for 3 seconds, then vanishes. Recall and recreate.</p>
+            <p><b>Gradient Matcher:</b> 2 Colors + Angle. The next dimension.</p>
+            <p><b>Terminal Mode:</b> No UI. Type raw CSS code from memory.</p>
+            <p><b>Chroma Rush:</b> Survival mode. Start with 60s. >90% adds time.</p>
+            <p><b>CMYK Mode:</b> Subtractive ink mixing. Red + Green != Yellow.</p>
+            <p><b>Rivalry Links:</b> Challenge friends to beat your score on a specific color.</p>
             <p><b>Optical Illusion:</b> Triggers the Albers Effect using violently contrasting borders.</p>
             <p><b>Complementary:</b> Find the exact mathematical opposite of the base color.</p>
-            <button onclick="toggleInfo(false)" style="margin-top: 20px;">Close</button>
         </div>
 
         <div class="info-modal" id="stats-modal">
-            <h2>Your Analytics</h2>
+            <h2>Your Analytics <span style="font-size: 0.6rem; color: var(--text-muted); font-weight: normal; cursor:pointer;" onclick="toggleStats(false)">[X]</span></h2>
             <div class="stats-grid">
-                <div class="stat-card"><div class="stat-val" id="st-games">0</div><div class="stat-lbl">Colors Solved</div></div>
+                <div class="stat-card"><div class="stat-val" id="st-games">0</div><div class="stat-lbl">Matches Solved</div></div>
                 <div class="stat-card"><div class="stat-val" id="st-acc">0%</div><div class="stat-lbl">Avg Accuracy</div></div>
                 <div class="stat-card"><div class="stat-val" id="st-streak">0</div><div class="stat-lbl">Max Rush Streak</div></div>
                 <div class="stat-card"><div class="stat-val" id="st-bias-dir">-</div><div class="stat-lbl">Primary Drift</div></div>
@@ -182,8 +240,7 @@
                     <div class="stat-lbl">Biological Visual Bias</div>
                 </div>
             </div>
-            <p style="text-align:center; font-size:0.6rem; margin-top:10px;">(Bias calculates how your eyes misinterpret light over time)</p>
-            <button onclick="toggleStats(false)" style="margin-top: 20px;">Close</button>
+            <p style="text-align:center; font-size:0.6rem; margin-top:10px;">(Bias calculates how your eyes naturally misinterpret RGB light over time)</p>
         </div>
 
         <div class="game-setup active" id="setup-screen">
@@ -196,32 +253,41 @@
             </div>
 
             <div class="config-grid">
-                <select id="timer-select">
-                    <option value="15">15 SEC</option>
-                    <option value="30" selected>30 SEC</option>
-                    <option value="60">60 SEC</option>
+                <select id="type-select" onchange="handleTypeChange()">
+                    <option value="solid" selected>Solid Color</option>
+                    <option value="gradient">Gradient</option>
                 </select>
                 <select id="objective-select">
-                    <option value="match" selected>Match Color</option>
+                    <option value="match" selected>Match Reference</option>
                     <option value="complementary">Complementary</option>
+                </select>
+                <select id="timer-select" style="grid-column: span 2;">
+                    <option value="15">15 SECONDS</option>
+                    <option value="30" selected>30 SECONDS</option>
+                    <option value="60">60 SECONDS</option>
                 </select>
             </div>
             
             <div class="toggles-container">
                 <label class="mode-toggle" id="lbl-map">
-                    <input type="checkbox" id="map-checkbox">
-                    <div class="toggle-switch"></div>
-                    <span class="color-box-label" style="padding:0;">Visual Map</span>
+                    <input type="checkbox" id="map-checkbox" onchange="handleToggles()">
+                    <div class="toggle-switch"></div> <span class="color-box-label" style="padding:0;">Visual Map</span>
                 </label>
                 <label class="mode-toggle" id="lbl-hardcore">
-                    <input type="checkbox" id="hardcore-checkbox">
-                    <div class="toggle-switch"></div>
-                    <span class="color-box-label" style="padding:0;">Blind Hardcore</span>
+                    <input type="checkbox" id="hardcore-checkbox" onchange="handleToggles()">
+                    <div class="toggle-switch"></div> <span class="color-box-label" style="padding:0;">Blind Hardcore</span>
                 </label>
-                <label class="mode-toggle">
-                    <input type="checkbox" id="illusion-checkbox">
-                    <div class="toggle-switch"></div>
-                    <span class="color-box-label" style="padding:0;">Illusion Framing</span>
+                <label class="mode-toggle" id="lbl-terminal">
+                    <input type="checkbox" id="terminal-checkbox" onchange="handleToggles()">
+                    <div class="toggle-switch"></div> <span class="color-box-label" style="padding:0;">Terminal Mode</span>
+                </label>
+                <label class="mode-toggle" id="lbl-memory">
+                    <input type="checkbox" id="memory-checkbox" onchange="handleToggles()">
+                    <div class="toggle-switch"></div> <span class="color-box-label" style="padding:0;">Memory Mode</span>
+                </label>
+                <label class="mode-toggle" style="grid-column: span 2;">
+                    <input type="checkbox" id="illusion-checkbox" onchange="handleToggles()">
+                    <div class="toggle-switch"></div> <span class="color-box-label" style="padding:0;">Illusion Framing</span>
                 </label>
             </div>
 
@@ -236,7 +302,7 @@
         </div>
 
         <div class="daily-menu" id="daily-screen">
-            <h2 style="font-size:0.7rem; text-transform:uppercase; color:var(--text-muted); margin-bottom:1.5rem; letter-spacing:0.2em;">Global Daily Challenges</h2>
+            <h2 style="font-size:0.7rem; text-transform:uppercase; color:var(--text-muted); margin-bottom:1.5rem; letter-spacing:0.2em;">Global Daily Challenges &mdash; Day <span id="daily-day-display"></span></h2>
             <div id="daily-challenges-list" style="margin-bottom: 2rem;"></div>
             <button onclick="toggleDailyMenu(false)">Back to Menu</button>
         </div>
@@ -258,7 +324,7 @@
 
         <div class="game-area" id="game-area">
             <div class="game-header">
-                <div class="game-objective" id="game-objective">Match the Color</div>
+                <div class="game-objective" id="game-objective" style="transition: color 0.3s;">Match the Color</div>
                 <div class="rush-badge" id="rush-badge">
                     <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M12 2c0 0-4 4-4 9a4 4 0 0 0 8 0c0-5-4-9-4-9z"/><path d="M12 12s-1 1-1 2 1 2 1 2 1-1 1-2-1-2-1-2z"/></svg> 
                     <span id="rush-streak">0</span>
@@ -267,10 +333,24 @@
             </div>
             
             <div class="controls">
+                <div id="terminal-controls" style="display: none;">
+                    <div class="terminal-input-wrapper">
+                        <span class="terminal-prompt">&gt;</span>
+                        <input type="text" id="terminal-input" placeholder="e.g. #FF4500 or hsl(180, 50%, 50%)" spellcheck="false" autocomplete="off" oninput="updateTerminal()">
+                    </div>
+                </div>
+
                 <div id="cheater-controls" style="display: none;">
                     <div class="canvas-wrapper"><canvas id="spectrum-map"></canvas><div id="selector-dot"></div></div>
                 </div>
+                
                 <div id="standard-controls">
+                    <div class="grad-tabs" id="grad-tabs" style="display:none;">
+                        <button class="grad-tab active" id="tab-grad-a" onclick="switchGradTab(0)">Color A</button>
+                        <button class="grad-tab" id="tab-grad-b" onclick="switchGradTab(1)">Color B</button>
+                    </div>
+
+                    <div class="slider-group" id="group-deg" style="display:none;"><div class="slider-header"><span>Rotation (Deg)</span><span class="slider-value" id="val-deg">180</span></div><input type="range" id="slider-deg" min="0" max="360" value="180" oninput="updateColor()"></div>
                     <div class="slider-group" id="group-s1"><div class="slider-header"><span id="lbl-s1">CH 1</span><span class="slider-value" id="val-s1">0</span></div><input type="range" id="slider-1" oninput="updateColor()"></div>
                     <div class="slider-group" id="group-s2"><div class="slider-header"><span id="lbl-s2">CH 2</span><span class="slider-value" id="val-s2">0</span></div><input type="range" id="slider-2" oninput="updateColor()"></div>
                     <div class="slider-group" id="group-s3"><div class="slider-header"><span id="lbl-s3">CH 3</span><span class="slider-value" id="val-s3">0</span></div><input type="range" id="slider-3" oninput="updateColor()"></div>
@@ -309,15 +389,17 @@
             map: `<svg class="icon icon-sm" viewBox="0 0 24 24"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>`,
             illusion: `<svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20Z"/><path d="M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12Z"/><path d="M12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/></svg>`,
             rush: `<svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M12 2c0 0-4 4-4 9a4 4 0 0 0 8 0c0-5-4-9-4-9z"/><path d="M12 12s-1 1-1 2 1 2 1 2 1-1 1-2-1-2-1-2z"/></svg>`,
-            duel: `<svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M14.5 17.5L3 6V3h3l11.5 11.5M13 19l6-6M16 16l4 4M19 21l2-2"></path></svg>`
+            duel: `<svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M14.5 17.5L3 6V3h3l11.5 11.5M13 19l6-6M16 16l4 4M19 21l2-2"></path></svg>`,
+            gradient: `<svg class="icon icon-sm" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="12" x2="21" y2="12"></line></svg>`,
+            terminal: `<svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>`,
+            memory: `<svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>`
         };
 
-        // Fixed Float Artifacts for OKLAB and OKLCH using +(val).toFixed(4)
         const spaces = {
             rgb: { s1:{lbl:'R',min:0,max:255,val:128}, s2:{lbl:'G',min:0,max:255,val:128}, s3:{lbl:'B',min:0,max:255,val:128}, fmt:(v)=>`#${v[0].toString(16).padStart(2,'0')}${v[1].toString(16).padStart(2,'0')}${v[2].toString(16).padStart(2,'0')}`.toUpperCase() },
             hsl: { s1:{lbl:'H',min:0,max:360,val:180}, s2:{lbl:'S',min:0,max:100,val:50}, s3:{lbl:'L',min:0,max:100,val:50}, fmt:(v)=>`hsl(${v[0]}, ${v[1]}%, ${v[2]}%)` },
             oklab: { s1:{lbl:'L',min:0,max:100,val:50}, s2:{lbl:'A',min:-100,max:100,val:0}, s3:{lbl:'B',min:-100,max:100,val:0}, fmt:(v)=>`oklab(${v[0]}% ${+(v[1]/100*0.4).toFixed(4)} ${+(v[2]/100*0.4).toFixed(4)})` },
-            oklch: { s1:{lbl:'L',min:0,max:100,val:50}, s2:{lbl:'C',min:0,max:100,val:50}, s3:{lbl:'H',min:0,max:360,val:180}, fmt:(v)=>`oklch(${v[0]}% ${+(v[1]/100*0.4).toFixed(4)} ${v[2]})` },
+            oklch: { s1:{lbl:'L',min:0,max:100,val:50}, s2:{lbl:'C',min:0,max:100,val:50}, s3:{lbl:'H',min:0,max:360,val:180}, fmt:(v)=>`oklch(${v[0]}% ${+(v[1]/100*0.4).toFixed(4)} ${+(v[2]).toFixed(4)})` },
             cmyk: { s1:{lbl:'C',min:0,max:100,val:0}, s2:{lbl:'M',min:0,max:100,val:0}, s3:{lbl:'Y',min:0,max:100,val:0}, s4:{lbl:'K',min:0,max:100,val:0}, 
                 fmt:(v)=>{
                     let c=v[0]/100, m=v[1]/100, y=v[2]/100, k=v[3]/100;
@@ -326,13 +408,17 @@
             }
         };
 
+        const defaultCfg = { s: 'rgb', t: 30, o: 'match', p: 'solid', m: false, h: false, i: false, tm: false, mm: false };
+
         let st = {
             isDaily:false, dailyId:null, isViewingShared:false, suppressSave:false,
             isRush:false, rushStreak:0, isDuel:false, duelData:null,
-            spaceId:'rgb', timeLimit:30, timer:null,
-            baseVals:[], targetVals:[], currentVals:[],
-            targetRgb:{r:0,g:0,b:0}, currentRgb:{r:0,g:0,b:0}, finalScore:0,
-            isComp:false, isMap:false, isHardcore:false, isIllusion:false
+            spaceId:'rgb', timeLimit:30, timeRemaining:0, timer:null, memoryTimeout:null,
+            isComp:false, isMap:false, isHardcore:false, isIllusion:false, isGradient:false, isTerminal:false, isMemory:false,
+            
+            baseVals:[], targetVals:[], currentVals:[], targetRgb:{r:0,g:0,b:0}, currentRgb:{r:0,g:0,b:0}, 
+            tGradA:[], tGradB:[], tDeg:180, cGradA:[], cGradB:[], cDeg:180, gradTab:0, finalScore:0,
+            renderedTargetCss: '', renderedUserCss: ''
         };
 
         const hiddenCtx = document.createElement('canvas').getContext('2d', { willReadFrequently: true });
@@ -343,11 +429,58 @@
             const d = hiddenCtx.getImageData(0,0,1,1).data; return { r:d[0], g:d[1], b:d[2] };
         }
 
-        // --- STATS SYSTEM (v2 to fix variable collision) ---
+        // --- SETTINGS & CONFIRM MODAL ---
+        let currentConfirmCallback = null;
+        function toggleSettings(show) { document.getElementById('settings-modal').style.display = show ? 'block' : 'none'; }
+        function triggerConfirm(msg, callback) {
+            currentConfirmCallback = callback; document.getElementById('confirm-msg').textContent = msg;
+            document.getElementById('confirm-modal').style.display = 'flex';
+        }
+        function closeConfirm() { document.getElementById('confirm-modal').style.display = 'none'; currentConfirmCallback = null; }
+        function executeConfirm() { if(currentConfirmCallback) currentConfirmCallback(); closeConfirm(); }
+
+        function resetConfig() { localStorage.removeItem('chroma_cfg'); setUIConfig(defaultCfg); toggleSettings(false); }
+        function resetPantheon() { localStorage.removeItem('chroma_pantheon_v2'); toggleSettings(false); }
+        function resetAnalytics() { localStorage.removeItem('chroma_stats_v2'); toggleSettings(false); }
+        function resetAll() { localStorage.clear(); window.location.href = window.location.pathname; }
+
+        // --- PANTHEON SYSTEM V2 ---
+        function loadPantheon() { return JSON.parse(localStorage.getItem('chroma_pantheon_v2')) || []; }
+        function saveToPantheon(tCss, uCss) {
+            let p = loadPantheon();
+            const entry = {
+                tCss, uCss, date: new Date().toLocaleDateString(),
+                cfg: {
+                    space: st.spaceId.toUpperCase(), type: st.isGradient ? 'Gradient' : 'Solid', obj: st.isComp ? 'Complementary' : 'Match',
+                    mods: [st.isMap?'Map':'', st.isHardcore?'Blind':'', st.isTerminal?'Terminal':'', st.isIllusion?'Illusion':'', st.isMemory?'Memory':''].filter(Boolean).join(', ') || 'None'
+                }
+            };
+            p.unshift(entry); localStorage.setItem('chroma_pantheon_v2', JSON.stringify(p));
+        }
+        function togglePantheon(show) {
+            const m = document.getElementById('pantheon-modal');
+            if (show) {
+                document.getElementById('pantheon-details').style.display = 'none';
+                const grid = document.getElementById('pantheon-grid'); const p = loadPantheon();
+                grid.innerHTML = p.length === 0 ? '<div class="empty-pantheon">Achieve 98% or higher precision to immortalize colors here.</div>' : '';
+                p.forEach(entry => {
+                    const el = document.createElement('div'); el.className = 'pantheon-swatch';
+                    el.style.background = entry.cfg.type === 'Gradient' ? entry.tCss : `linear-gradient(135deg, ${entry.tCss} 50%, ${entry.uCss} 50%)`;
+                    el.onclick = () => showPantheonDetails(entry); grid.appendChild(el);
+                });
+            }
+            m.style.display = show ? 'block' : 'none';
+        }
+        function showPantheonDetails(e) {
+            document.getElementById('pantheon-details').style.display = 'block';
+            document.getElementById('pd-target').textContent = e.tCss; document.getElementById('pd-user').textContent = e.uCss;
+            document.getElementById('pd-space').textContent = `${e.cfg.space} (${e.cfg.type})`; document.getElementById('pd-mods').textContent = e.cfg.mods; document.getElementById('pd-date').textContent = e.date;
+        }
+
+        // --- STATS SYSTEM ---
         function loadStats() { return JSON.parse(localStorage.getItem('chroma_stats_v2')) || { games:0, scoreSum:0, errR:0, errG:0, errB:0, streak:0 }; }
         function saveStats(score, dr, dg, db) {
-            let s = loadStats();
-            s.games++; s.scoreSum += score; s.errR += dr; s.errG += dg; s.errB += db;
+            let s = loadStats(); s.games++; s.scoreSum += score; s.errR += dr; s.errG += dg; s.errB += db;
             if (st.isRush && st.rushStreak > s.streak) s.streak = st.rushStreak;
             localStorage.setItem('chroma_stats_v2', JSON.stringify(s));
         }
@@ -358,7 +491,6 @@
                 document.getElementById('st-games').textContent = s.games;
                 document.getElementById('st-acc').textContent = s.games > 0 ? Math.round(s.scoreSum/s.games) + '%' : '0%';
                 document.getElementById('st-streak').textContent = s.streak;
-                
                 if (s.games > 0) {
                     let avgR = s.errR/s.games, avgG = s.errG/s.games, avgB = s.errB/s.games;
                     let maxBias = Math.max(Math.abs(avgR), Math.abs(avgG), Math.abs(avgB));
@@ -377,78 +509,99 @@
         }
 
         // --- UI CONFIG ---
+        function handleTypeChange() {
+            const isGrad = document.getElementById('type-select').value === 'gradient';
+            document.getElementById('terminal-checkbox').disabled = isGrad;
+            document.getElementById('map-checkbox').disabled = isGrad;
+            document.getElementById('hardcore-checkbox').disabled = isGrad;
+            if(isGrad) {
+                document.getElementById('terminal-checkbox').checked = false;
+                document.getElementById('map-checkbox').checked = false;
+                document.getElementById('hardcore-checkbox').checked = false;
+            }
+            handleToggles();
+        }
+
+        function handleToggles() {
+            if(st.suppressSave) return;
+            const isGrad = document.getElementById('type-select').value === 'gradient';
+            const m = document.getElementById('map-checkbox').checked;
+            const h = document.getElementById('hardcore-checkbox').checked;
+            const tm = document.getElementById('terminal-checkbox').checked;
+            const mm = document.getElementById('memory-checkbox').checked;
+            
+            document.getElementById('map-checkbox').disabled = h || tm || isGrad;
+            document.getElementById('hardcore-checkbox').disabled = m || tm || mm || isGrad;
+            document.getElementById('terminal-checkbox').disabled = m || h || isGrad;
+            document.getElementById('memory-checkbox').disabled = h;
+
+            document.getElementById('lbl-map').style.opacity = (h||tm||isGrad)?'0.3':'1';
+            document.getElementById('lbl-hardcore').style.opacity = (m||tm||mm||isGrad)?'0.3':'1';
+            document.getElementById('lbl-terminal').style.opacity = (m||h||isGrad)?'0.3':'1';
+            document.getElementById('lbl-memory').style.opacity = h?'0.3':'1';
+
+            const sel = document.getElementById('space-selector');
+            sel.style.opacity = m ? '0.3' : '1'; sel.style.pointerEvents = m ? 'none' : 'auto';
+            saveLocal();
+        }
+
         function getUIConfig() {
             return {
-                s: document.querySelector('input[name="colorSpace"]:checked').value,
-                t: parseInt(document.getElementById('timer-select').value),
-                o: document.getElementById('objective-select').value,
-                m: document.getElementById('map-checkbox').checked,
-                h: document.getElementById('hardcore-checkbox').checked,
-                i: document.getElementById('illusion-checkbox').checked
+                s: document.querySelector('input[name="colorSpace"]:checked').value, t: parseInt(document.getElementById('timer-select').value),
+                o: document.getElementById('objective-select').value, p: document.getElementById('type-select').value,
+                m: document.getElementById('map-checkbox').checked, h: document.getElementById('hardcore-checkbox').checked,
+                i: document.getElementById('illusion-checkbox').checked, tm: document.getElementById('terminal-checkbox').checked, mm: document.getElementById('memory-checkbox').checked
             };
         }
-        function setUIConfig(cfg) {
+
+        function setUIConfig(c) {
             st.suppressSave = true;
-            document.querySelector(`input[name="colorSpace"][value="${cfg.s}"]`).checked = true;
-            document.getElementById('timer-select').value = cfg.t;
-            document.getElementById('objective-select').value = cfg.o;
-            document.getElementById('map-checkbox').checked = cfg.m;
-            document.getElementById('hardcore-checkbox').checked = cfg.h;
-            document.getElementById('illusion-checkbox').checked = cfg.i;
-            document.getElementById('hardcore-checkbox').disabled = cfg.m;
-            document.getElementById('map-checkbox').disabled = cfg.h;
-            document.getElementById('lbl-hardcore').style.opacity = cfg.m ? '0.3' : '1';
-            document.getElementById('lbl-map').style.opacity = cfg.h ? '0.3' : '1';
-            document.getElementById('space-selector').style.opacity = cfg.m ? '0.3' : '1';
-            document.getElementById('space-selector').style.pointerEvents = cfg.m ? 'none' : 'auto';
-            changeColorSpace();
+            if (document.querySelector(`input[name="colorSpace"][value="${c.s}"]`)) document.querySelector(`input[name="colorSpace"][value="${c.s}"]`).checked = true;
+            document.getElementById('timer-select').value = c.t || 30; document.getElementById('objective-select').value = c.o || 'match'; document.getElementById('type-select').value = c.p || 'solid';
+            document.getElementById('map-checkbox').checked = c.m || false; document.getElementById('hardcore-checkbox').checked = c.h || false;
+            document.getElementById('illusion-checkbox').checked = c.i || false; document.getElementById('terminal-checkbox').checked = c.tm || false; document.getElementById('memory-checkbox').checked = c.mm || false;
+            
             st.suppressSave = false;
+            handleTypeChange(); changeColorSpace();
         }
 
         function saveLocal() { if (!st.suppressSave && !st.isViewingShared) localStorage.setItem('chroma_cfg', JSON.stringify(getUIConfig())); }
-        function loadLocal() { try { let s = JSON.parse(localStorage.getItem('chroma_cfg')); if (s && s.s) return s; } catch(e){} return { s:'rgb', t:30, o:'match', m:false, h:false, i:false }; }
+        function loadLocal() { try { let s = JSON.parse(localStorage.getItem('chroma_cfg')); if (s && s.s) return s; } catch(e){} return defaultCfg; }
         function clearUrl() { window.history.replaceState({}, document.title, window.location.pathname); }
 
         function checkUrl() {
             const p = new URLSearchParams(window.location.search);
-            if (p.has('duel')) {
-                st.isDuel = true;
-                st.duelData = { tr:p.get('tr'), tg:p.get('tg'), tb:p.get('tb'), or:p.get('or'), og:p.get('og'), ob:p.get('ob'), os:p.get('os') };
-                document.getElementById('duel-op-score').textContent = st.duelData.os + '%';
-                document.getElementById('duel-banner').style.display = 'block';
+            if (p.has('duel') && p.has('d')) {
+                try {
+                    const data = JSON.parse(atob(p.get('d')));
+                    st.isDuel = true; st.duelData = data;
+                    document.getElementById('duel-op-score').textContent = st.duelData.oS + '%'; document.getElementById('duel-banner').style.display = 'block';
+                } catch(e) { clearUrl(); }
                 return null;
             }
-            if (!p.has('s')) return null;
-            return { s:p.get('s'), t:parseInt(p.get('t')), o:p.get('o'), m:p.get('m')==='1', h:p.get('h')==='1', i:p.get('i')==='1' };
+            if (!p.has('share')) return null;
+            return { s:p.get('s'), t:parseInt(p.get('t')), o:p.get('o'), p:p.get('p')||'solid', m:p.get('m')==='1', h:p.get('h')==='1', i:p.get('i')==='1', tm:p.get('tm')==='1', mm:p.get('mm')==='1' };
         }
 
         function copyConfigUrl() {
-            const c = getUIConfig(); const qs = `?s=${c.s}&t=${c.t}&o=${c.o}&m=${c.m?1:0}&h=${c.h?1:0}&i=${c.i?1:0}`;
+            const c = getUIConfig(); const qs = `?share=1&s=${c.s}&t=${c.t}&o=${c.o}&p=${c.p}&m=${c.m?1:0}&h=${c.h?1:0}&i=${c.i?1:0}&tm=${c.tm?1:0}&mm=${c.mm?1:0}`;
             navigator.clipboard.writeText(window.location.origin + window.location.pathname + qs);
-            document.getElementById('btn-copy-config').innerHTML = '<span>Copied!</span>';
-            setTimeout(() => document.getElementById('btn-copy-config').innerHTML = 'Copy Config', 2000);
+            document.getElementById('btn-copy-config').innerHTML = '<span>Copied!</span>'; setTimeout(() => document.getElementById('btn-copy-config').innerHTML = 'Copy Config', 2000);
         }
 
         function acceptSharedConfig() { st.isViewingShared = false; document.getElementById('shared-banner').style.display = 'none'; saveLocal(); clearUrl(); }
         function discardSharedConfig() { st.isViewingShared = false; document.getElementById('shared-banner').style.display = 'none'; document.getElementById('duel-banner').style.display = 'none'; st.isDuel = false; setUIConfig(loadLocal()); clearUrl(); }
         document.querySelectorAll('#setup-screen input, #setup-screen select').forEach(el => el.addEventListener('change', () => { if(st.isViewingShared){ st.isViewingShared=false; document.getElementById('shared-banner').style.display='none'; clearUrl(); } saveLocal(); }));
 
-        function toggleInfo(show) { document.getElementById('info-modal').style.display = show ? 'block' : 'none'; }
-        
         function changeColorSpace() {
             if (st.suppressSave) return;
-            st.spaceId = document.querySelector('input[name="colorSpace"]:checked').value;
-            const cfg = spaces[st.spaceId];
+            st.spaceId = document.querySelector('input[name="colorSpace"]:checked').value; const cfg = spaces[st.spaceId];
             [1,2,3,4].forEach(n => {
                 const g = document.getElementById(`group-s${n}`);
-                if (cfg[`s${n}`]) {
-                    g.style.display = 'block';
-                    document.getElementById(`lbl-s${n}`).textContent = cfg[`s${n}`].lbl;
-                    const sl = document.getElementById(`slider-${n}`);
-                    sl.min = cfg[`s${n}`].min; sl.max = cfg[`s${n}`].max; sl.value = cfg[`s${n}`].val;
+                if (cfg[`s${n}`]) { g.style.display = 'block'; document.getElementById(`lbl-s${n}`).textContent = cfg[`s${n}`].lbl; const sl = document.getElementById(`slider-${n}`); sl.min = cfg[`s${n}`].min; sl.max = cfg[`s${n}`].max; 
                 } else { g.style.display = 'none'; }
             });
-            if(!document.getElementById('map-checkbox').checked) updateColor();
+            if(!document.getElementById('map-checkbox').checked && !document.getElementById('terminal-checkbox').checked) updateColor();
         }
 
         function mulberry32(a) { return function() { var t=a+=0x6D2B79F5; t=Math.imul(t^t>>>15,t|1); t^=t+Math.imul(t^t>>>7,t|61); return ((t^t>>>14)>>>0)/4294967296; } }
@@ -464,25 +617,35 @@
         function generateDailyConfigs() {
             const rng = getDailyRNG(0); const spaceList = ['rgb','hsl','oklab','oklch','cmyk'];
             document.getElementById('daily-challenges-list').innerHTML = '';
+            
             for (let i=1; i<=3; i++) {
-                const cfg = { id:i, space:spaceList[Math.floor(rng()*spaceList.length)], timer:[15,30,60][Math.floor(rng()*3)], objective:['match','complementary'][Math.floor(rng()*2)], isMap:rng()>0.7, isHardcore:false, isIllusion:rng()>0.6 };
-                if(!cfg.isMap) cfg.isHardcore = rng()>0.7;
+                let cfg = { id:i, objective:'match', isMap:false, isHardcore:false, isIllusion:false, isGradient:false, isTerminal:false, isMemory:false };
                 
-                let dScore = (cfg.space==='rgb'?3:cfg.space==='cmyk'?4:cfg.space==='oklab'?4:2) + (cfg.timer===15?2:cfg.timer===30?1:0) + (cfg.objective==='complementary'?2:0) - (cfg.isMap?3:0) + (cfg.isHardcore?5:0) + (cfg.isIllusion?2:0);
-                let dLbl = dScore<=3?'CASUAL':dScore<=6?'NORMAL':dScore<=9?'HARD':'EXTREME';
-                let dCol = dScore<=3?'#22c55e':dScore<=6?'#facc15':dScore<=9?'#f97316':'#ef4444';
+                if (i === 1) { cfg.space = rng()>0.5?'rgb':'hsl'; cfg.timer = rng()>0.5?60:30; cfg.isMap = rng()>0.5; } 
+                else if (i === 2) { cfg.space = ['oklab','oklch','cmyk'][Math.floor(rng()*3)]; cfg.timer = 30; cfg.isIllusion = rng()>0.5; cfg.isMemory = rng()>0.7; } 
+                else {
+                    cfg.space = spaceList[Math.floor(rng()*5)]; cfg.timer = rng()>0.5?15:30;
+                    const r = Math.floor(rng()*5);
+                    if(r===0) cfg.isHardcore=true; else if(r===1) cfg.isTerminal=true; else if(r===2) cfg.isGradient=true; else if(r===3) cfg.isMemory=true; else cfg.isIllusion=true;
+                }
+                
+                let dScore = (cfg.space==='rgb'?3:cfg.space==='cmyk'?4:cfg.space==='oklab'?4:2) + (cfg.timer===15?2:cfg.timer===30?1:0) - (cfg.isMap?3:0) + (cfg.isHardcore?5:0) + (cfg.isIllusion?2:0) + (cfg.isGradient?6:0) + (cfg.isTerminal?8:0) + (cfg.isMemory?4:0);
+                let dLbl = dScore<=3?'CASUAL':dScore<=6?'NORMAL':dScore<=10?'HARD':'EXTREME';
+                let dCol = dScore<=3?'#22c55e':dScore<=6?'#facc15':dScore<=10?'#f97316':'#ef4444';
                 
                 let mods = [];
+                if(cfg.isGradient) mods.push(`<span class="flag-item">${svgs.gradient} Gradient</span>`);
+                if(cfg.isTerminal) mods.push(`<span class="flag-item">${svgs.terminal} Terminal</span>`);
                 if(cfg.isMap) mods.push(`<span class="flag-item">${svgs.map} Map</span>`);
+                if(cfg.isMemory) mods.push(`<span class="flag-item">${svgs.memory} Memory</span>`);
                 if(cfg.isHardcore) mods.push(`<span class="flag-item">${svgs.blind} Blind</span>`);
                 if(cfg.isIllusion) mods.push(`<span class="flag-item">${svgs.illusion} Illusion</span>`);
-                if(cfg.objective==='complementary') mods.push(`<span class="flag-item">${svgs.complementary} Comp</span>`);
                 
                 const card = document.createElement('div'); card.className = 'daily-card';
                 card.innerHTML = `<div class="daily-card-title"><span>Ch 0${cfg.id}</span><div style="display:flex; gap:8px;"><span class="diff-badge" style="color:${dCol}; border-color:${dCol};">${dLbl}</span><span>${cfg.timer}s</span></div></div>
                                   <div class="daily-card-desc"><span style="font-weight:700; color:var(--text-main); font-size:0.7rem;">${cfg.space.toUpperCase()}</span></div>
                                   ${mods.length?`<div style="display:flex;gap:10px;margin-top:6px;color:var(--text-main);">${mods.join('')}</div>`:''}`;
-                card.onclick = () => { st.isDaily=true; st.dailyChallengeId=cfg.id; st.spaceId=cfg.space; st.timeLimit=cfg.timer; st.isMap=cfg.isMap; st.isHardcore=cfg.isHardcore; st.isIllusion=cfg.isIllusion; st.isComp=cfg.objective==='complementary'; setUIConfig({s:cfg.space,t:cfg.timer,o:cfg.objective,m:cfg.isMap,h:cfg.isHardcore,i:cfg.isIllusion}); executeGameStart(); };
+                card.onclick = () => { st.isDaily=true; st.dailyChallengeId=cfg.id; st.spaceId=cfg.space; st.timeLimit=cfg.timer; st.isMap=cfg.isMap; st.isHardcore=cfg.isHardcore; st.isIllusion=cfg.isIllusion; st.isComp=false; st.isGradient=cfg.isGradient; st.isTerminal=cfg.isTerminal; st.isMemory=cfg.isMemory; setUIConfig({s:cfg.space,t:cfg.timer,o:'match',p:cfg.isGradient?'gradient':'solid',m:cfg.isMap,h:cfg.isHardcore,i:cfg.isIllusion,tm:cfg.isTerminal,mm:cfg.isMemory}); executeGameStart(); };
                 document.getElementById('daily-challenges-list').appendChild(card);
             }
         }
@@ -494,82 +657,133 @@
             if(st.spaceId==='cmyk') return [100-v[0],100-v[1],100-v[2],100-v[3]];
         }
 
+        // --- 5. MAIN GAME LOOP ---
         function startFreeplay() {
             st.isDaily=false; st.isRush=false; const c = getUIConfig();
-            st.spaceId=c.s; st.timeLimit=c.t; st.isComp=c.o==='complementary'; st.isMap=c.m; st.isHardcore=c.h; st.isIllusion=c.i;
+            st.spaceId=c.s; st.timeLimit=c.t; st.isComp=c.o==='complementary'; st.isMap=c.m; st.isHardcore=c.h; st.isIllusion=c.i; st.isTerminal=c.tm; st.isGradient=c.p==='gradient'; st.isMemory=c.mm;
             document.getElementById('shared-banner').style.display='none'; executeGameStart();
         }
         function startRush() {
             st.isDaily=false; st.isRush=true; st.rushStreak=0; const c = getUIConfig();
-            st.spaceId=c.s; st.timeLimit=60; st.isComp=c.o==='complementary'; st.isMap=c.m; st.isHardcore=c.h; st.isIllusion=c.i;
+            st.spaceId=c.s; st.timeLimit=60; st.isComp=c.o==='complementary'; st.isMap=c.m; st.isHardcore=c.h; st.isIllusion=c.i; st.isTerminal=c.tm; st.isGradient=c.p==='gradient'; st.isMemory=c.mm;
             document.getElementById('shared-banner').style.display='none'; executeGameStart();
         }
         function acceptDuel() {
-            st.isDaily=false; st.isRush=false; st.timeLimit=30; st.spaceId='rgb'; st.isComp=false; st.isMap=false; st.isHardcore=false; st.isIllusion=false;
+            st.isDaily=false; st.isRush=false; 
+            setUIConfig(st.duelData.c); const c = getUIConfig();
+            st.spaceId=c.s; st.timeLimit=c.t; st.isComp=c.o==='complementary'; st.isMap=c.m; st.isHardcore=c.h; st.isIllusion=c.i; st.isTerminal=c.tm; st.isGradient=c.p==='gradient'; st.isMemory=c.mm;
             document.getElementById('duel-banner').style.display='none'; executeGameStart();
         }
-        
         function playAgain() {
-            if (st.isDaily) { executeGameStart(); } 
-            else if (st.isRush) { startRush(); } 
-            else if (st.isDuel) { acceptDuel(); } 
-            else { executeGameStart(); }
+            if (st.isRush) { startRush(); } else if (st.isDuel) { acceptDuel(); } else { executeGameStart(); }
         }
 
         function executeGameStart() {
+            if(st.timer) { clearInterval(st.timer); st.timer = null; }
+            if(st.memoryTimeout) { clearTimeout(st.memoryTimeout); st.memoryTimeout = null; }
+
             document.getElementById('setup-screen').classList.remove('active'); document.getElementById('daily-screen').classList.remove('active'); document.getElementById('results-screen').classList.remove('active');
             document.getElementById('main-color-boxes').style.display='flex'; document.getElementById('game-area').classList.add('active');
-            document.getElementById('standard-controls').style.display=st.isMap?'none':'block'; document.getElementById('cheater-controls').style.display=st.isMap?'block':'none';
-            document.getElementById('selector-dot').style.display=st.isMap?'block':'none';
-            document.getElementById('frame-opponent').style.display='none'; document.getElementById('btn-challenge').style.display='none';
+            
+            document.getElementById('cheater-controls').style.display = st.isMap ? 'block' : 'none'; document.getElementById('selector-dot').style.display = st.isMap ? 'block' : 'none';
+            document.getElementById('terminal-controls').style.display = st.isTerminal ? 'block' : 'none'; document.getElementById('standard-controls').style.display = (!st.isMap && !st.isTerminal) ? 'block' : 'none';
+            document.getElementById('grad-tabs').style.display = st.isGradient ? 'flex' : 'none'; document.getElementById('group-deg').style.display = st.isGradient ? 'block' : 'none';
 
-            let oTxt = "Match the Target";
-            if(st.isComp&&st.isHardcore) oTxt="Blind-Match Complement"; else if(st.isComp) oTxt="Match Complement"; else if(st.isHardcore) oTxt="Blind-Match Target";
-            document.getElementById('game-objective').textContent = oTxt;
+            document.getElementById('frame-opponent').style.display='none'; document.getElementById('btn-challenge').style.display='none';
 
             const rb = document.getElementById('rush-badge');
             if (st.isRush) { rb.style.display='flex'; document.getElementById('rush-streak').textContent=st.rushStreak; } else { rb.style.display='none'; }
 
-            changeColorSpace();
             initRoundColors();
+            changeColorSpace();
             
-            if(!st.timer) startTimer();
+            st.timeRemaining = st.timeLimit;
+            
+            let oTxt = st.isGradient ? "Match the Gradient" : "Match the Target";
+            if(st.isTerminal) oTxt = "Type the Code to Match";
+            else if(st.isComp&&st.isHardcore) oTxt="Blind-Match Complement"; 
+            else if(st.isComp) oTxt="Match Complement"; 
+            else if(st.isHardcore) oTxt="Blind-Match Target";
+
+            if(st.isMemory) {
+                document.getElementById('game-objective').textContent = "Memorize the Target!";
+                document.getElementById('game-objective').style.color = '#facc15';
+                
+                st.memoryTimeout = setTimeout(() => {
+                    document.getElementById('game-objective').textContent = st.isComp ? "Remake Complement from Memory!" : "Remake from Memory!";
+                    document.getElementById('game-objective').style.color = 'var(--accent)';
+                    const tBox = document.getElementById('target-color');
+                    tBox.style.background = 'var(--bg)'; tBox.style.textShadow = 'none'; tBox.textContent = '???';
+                }, 3000);
+            } else {
+                document.getElementById('game-objective').style.color = 'var(--accent)';
+                document.getElementById('game-objective').textContent = oTxt;
+            }
+
+            startTimer();
         }
 
         function initRoundColors() {
-            const rng = st.isDaily ? getDailyRNG(st.dailyChallengeId + st.rushStreak) : Math.random;
-            const ft = document.getElementById('frame-target'); const fu = document.getElementById('frame-user');
+            const rngWrapper = () => Math.random(); const rng = st.isDaily ? getDailyRNG(st.dailyChallengeId + st.rushStreak) : rngWrapper;
+            const ft = document.getElementById('frame-target'); const fu = document.getElementById('frame-user'); const c = spaces[st.spaceId];
             
-            if (st.isIllusion) {
-                ft.classList.add('active-illusion'); fu.classList.add('active-illusion');
-                ft.style.backgroundColor = `hsl(${Math.floor(rng()*360)},100%,50%)`; fu.style.backgroundColor = `hsl(${Math.floor(rng()*360)},100%,50%)`;
+            if (st.isIllusion) { ft.classList.add('active-illusion'); fu.classList.add('active-illusion'); ft.style.backgroundColor = `hsl(${Math.floor(rng()*360)},100%,50%)`; fu.style.backgroundColor = `hsl(${Math.floor(rng()*360)},100%,50%)`;
             } else { ft.classList.remove('active-illusion'); fu.classList.remove('active-illusion'); ft.style.backgroundColor = 'var(--border)'; fu.style.backgroundColor = 'var(--border)'; }
 
             const tBox = document.getElementById('target-color'); const tLbl = document.getElementById('target-label');
-            tBox.textContent = ''; tBox.style.textShadow = 'none';
+            tBox.textContent = ''; tBox.style.textShadow = 'none'; tBox.style.background = 'transparent';
 
             if (st.isDuel) {
-                st.targetRgb = { r:parseInt(st.duelData.tr), g:parseInt(st.duelData.tg), b:parseInt(st.duelData.tb) };
-                tBox.style.backgroundColor = `rgb(${st.targetRgb.r},${st.targetRgb.g},${st.targetRgb.b})`;
-                tLbl.textContent = 'Duel Target';
+                if (st.isGradient) {
+                    st.tGradA = st.duelData.gA; st.tGradB = st.duelData.gB; st.tDeg = st.duelData.gD;
+                    st.renderedTargetCss = `linear-gradient(${st.tDeg}deg, ${c.fmt(st.tGradA)}, ${c.fmt(st.tGradB)})`;
+                    tBox.style.background = st.renderedTargetCss; tLbl.textContent = 'Duel Gradient';
+                    st.cGradA = [1,2,3,4].map(n => c[`s${n}`]?c[`s${n}`].val:0); st.cGradB = [1,2,3,4].map(n => c[`s${n}`]?c[`s${n}`].val:0); st.cDeg = 180; document.getElementById('slider-deg').value = 180; document.getElementById('val-deg').textContent = 180;
+                    switchGradTab(0); updateColor();
+                } else {
+                    st.targetVals = st.duelData.tV; st.renderedTargetCss = c.fmt(st.targetVals); st.targetRgb = getRgbFromCss(st.renderedTargetCss);
+                    if(st.isHardcore) { tBox.style.background='var(--bg)'; tBox.textContent=st.renderedTargetCss; } else { tBox.style.background=st.renderedTargetCss; } tLbl.textContent = 'Duel Target';
+                    if (st.isTerminal) { document.getElementById('terminal-input').value = ''; document.getElementById('user-color').style.background = 'var(--bg)'; } 
+                    else { [1,2,3,4].forEach(n => { if(c[`s${n}`]) document.getElementById(`slider-${n}`).value = c[`s${n}`].val; }); updateColor(); }
+                }
             }
             else if (st.isMap) {
-                drawSpectrum();
-                const d = document.getElementById('spectrum-map').getContext('2d').getImageData(Math.floor(rng()*280), Math.floor(rng()*160), 1, 1).data;
-                st.targetRgb = { r:d[0], g:d[1], b:d[2] };
-                tBox.style.backgroundColor = `rgb(${d[0]},${d[1]},${d[2]})`; tLbl.textContent = 'Reference';
-            } else {
-                const c = spaces[st.spaceId];
+                drawSpectrum(); const d = document.getElementById('spectrum-map').getContext('2d').getImageData(Math.floor(rng()*280), Math.floor(rng()*160), 1, 1).data;
+                st.targetRgb = { r:d[0], g:d[1], b:d[2] }; st.renderedTargetCss = `rgb(${d[0]},${d[1]},${d[2]})`;
+                tBox.style.background = st.renderedTargetCss; tLbl.textContent = 'Reference';
+            }
+            else if (st.isGradient) {
+                let baseA = [1,2,3,4].map(n => c[`s${n}`] ? Math.floor(rng()*(c[`s${n}`].max-c[`s${n}`].min+1))+c[`s${n}`].min : 0);
+                let baseB = [1,2,3,4].map(n => c[`s${n}`] ? Math.floor(rng()*(c[`s${n}`].max-c[`s${n}`].min+1))+c[`s${n}`].min : 0);
+                st.tGradA = st.isComp ? calcComp(baseA) : baseA; st.tGradB = st.isComp ? calcComp(baseB) : baseB; st.tDeg = Math.floor(rng() * 360);
+                st.renderedTargetCss = `linear-gradient(${st.tDeg}deg, ${c.fmt(st.tGradA)}, ${c.fmt(st.tGradB)})`;
+                
+                if (st.isHardcore) { tBox.style.background='var(--bg)'; tBox.textContent=st.isComp?`linear-gradient(${st.tDeg}deg, ${c.fmt(baseA)}, ${c.fmt(baseB)})`:st.renderedTargetCss; }
+                else { tBox.style.background = st.renderedTargetCss; }
+                tLbl.textContent = st.isComp ? 'Base Grad' : 'Reference Grad';
+
+                st.cGradA = [1,2,3,4].map(n => c[`s${n}`]?c[`s${n}`].val:0); st.cGradB = [1,2,3,4].map(n => c[`s${n}`]?c[`s${n}`].val:0);
+                st.cDeg = 180; document.getElementById('slider-deg').value = 180; document.getElementById('val-deg').textContent = 180; switchGradTab(0); updateColor();
+            } 
+            else {
                 st.baseVals = [1,2,3,4].map(n => c[`s${n}`] ? Math.floor(rng()*(c[`s${n}`].max-c[`s${n}`].min+1))+c[`s${n}`].min : 0);
-                st.targetVals = st.isComp ? calcComp(st.baseVals) : st.baseVals;
+                let tVals;
+                if(st.isComp) {
+                    if(st.spaceId==='rgb') tVals = [255-st.baseVals[0], 255-st.baseVals[1], 255-st.baseVals[2]];
+                    else if(st.spaceId==='hsl'||st.spaceId==='oklch') tVals = [st.baseVals[0], st.baseVals[1], (st.baseVals[2]+180)%360];
+                    else if(st.spaceId==='oklab') tVals = [st.baseVals[0], -st.baseVals[1], -st.baseVals[2]];
+                    else if(st.spaceId==='cmyk') tVals = [100-st.baseVals[0], 100-st.baseVals[1], 100-st.baseVals[2], 100-st.baseVals[3]];
+                } else { tVals = st.baseVals; }
+                st.targetVals = tVals;
+
                 const bCss = c.fmt(st.baseVals); const tCss = c.fmt(st.targetVals);
-                st.targetRgb = getRgbFromCss(tCss);
-                if(st.isHardcore) { tBox.style.backgroundColor='var(--bg)'; tBox.textContent=st.isComp?bCss:tCss; }
-                else { tBox.style.backgroundColor=st.isComp?bCss:tCss; }
+                st.targetRgb = getRgbFromCss(tCss); st.renderedTargetCss = tCss;
+                
+                if(st.isHardcore) { tBox.style.background='var(--bg)'; tBox.textContent=st.isComp?bCss:tCss; } else { tBox.style.background=st.isComp?bCss:tCss; }
                 tLbl.textContent = st.isComp ? 'Base Color' : 'Reference';
                 
-                [1,2,3,4].forEach(n => { if(c[`s${n}`]) document.getElementById(`slider-${n}`).value = c[`s${n}`].val; });
-                updateColor();
+                if (st.isTerminal) { document.getElementById('terminal-input').value = ''; document.getElementById('user-color').style.background = 'var(--bg)'; } 
+                else { [1,2,3,4].forEach(n => { if(c[`s${n}`]) document.getElementById(`slider-${n}`).value = c[`s${n}`].val; }); updateColor(); }
             }
         }
 
@@ -584,56 +798,88 @@
             const r=sMap.getBoundingClientRect(); const x=Math.max(0,Math.min(e.clientX-r.left,r.width)); const y=Math.max(0,Math.min(e.clientY-r.top,r.height));
             document.getElementById('selector-dot').style.cssText=`display:block; left:${x}px; top:${y}px;`;
             const d=sMap.getContext('2d').getImageData(x*(sMap.width/r.width),y*(sMap.height/r.height),1,1).data;
-            st.currentRgb={r:d[0],g:d[1],b:d[2]}; document.getElementById('user-color').style.backgroundColor=`rgb(${d[0]},${d[1]},${d[2]})`;
+            st.currentRgb={r:d[0],g:d[1],b:d[2]}; st.renderedUserCss = `rgb(${d[0]},${d[1]},${d[2]})`; document.getElementById('user-color').style.background = st.renderedUserCss;
         }
         sMap.addEventListener('mousedown', handleMap); sMap.addEventListener('mousemove', e => { if(e.buttons===1) handleMap(e); });
 
+        function switchGradTab(idx) {
+            st.gradTab = idx; document.getElementById('tab-grad-a').classList.toggle('active', idx===0); document.getElementById('tab-grad-b').classList.toggle('active', idx===1);
+            const vals = idx === 0 ? st.cGradA : st.cGradB;
+            [1,2,3,4].forEach(n => { if(spaces[st.spaceId][`s${n}`]) { document.getElementById(`slider-${n}`).value = vals[n-1] || 0; document.getElementById(`val-s${n}`).textContent = (vals[n-1]||0).toString().padStart(3,'0'); } });
+        }
+
+        function updateTerminal() {
+            const str = document.getElementById('terminal-input').value; st.renderedUserCss = str; document.getElementById('user-color').style.background = str; st.currentRgb = getRgbFromCss(str);
+        }
+
         function updateColor() {
-            if(st.isMap) return; const c=spaces[st.spaceId]; st.currentVals=[];
-            [1,2,3,4].forEach(n => { if(c[`s${n}`]){ let v=parseInt(document.getElementById(`slider-${n}`).value); st.currentVals.push(v); document.getElementById(`val-s${n}`).textContent=v.toString().padStart(3,'0'); } });
-            const css = c.fmt(st.currentVals); document.getElementById('user-color').style.backgroundColor=css; st.currentRgb=getRgbFromCss(css);
-        }
-
-        function startTimer() {
-            document.getElementById('timer').textContent = st.timeLimit.toString().padStart(2, '0');
-            st.timer = setInterval(() => {
-                st.timeLimit--; document.getElementById('timer').textContent = st.timeLimit.toString().padStart(2, '0');
-                if (st.timeLimit <= 0) { lockIn(); }
-            }, 1000);
-        }
-
-        function calculateScore() {
-            const rM = (st.targetRgb.r+st.currentRgb.r)/2; const dr=st.targetRgb.r-st.currentRgb.r, dg=st.targetRgb.g-st.currentRgb.g, db=st.targetRgb.b-st.currentRgb.b;
-            const dist = Math.sqrt((2+rM/256)*dr*dr + 4*dg*dg + (2+(255-rM)/256)*db*db);
-            return Math.round(Math.pow(Math.max(0,1-(dist/764.83)),1.5)*100);
-        }
-
-        function lockIn() {
-            const score = calculateScore();
-            saveStats(score, st.currentRgb.r - st.targetRgb.r, st.currentRgb.g - st.targetRgb.g, st.currentRgb.b - st.targetRgb.b);
-
-            if (st.isRush && st.timeLimit > 0) {
-                if (score >= 90) {
-                    st.rushStreak++; st.timeLimit += (score >= 98 ? 10 : 5);
-                    document.getElementById('rush-streak').textContent = st.rushStreak;
-                    initRoundColors();
-                } else {
-                    st.finalScore = score;
-                    triggerEndScreen();
-                }
+            if(st.isMap || st.isTerminal) return; const c=spaces[st.spaceId]; 
+            if (st.isGradient) {
+                const vals = []; [1,2,3,4].forEach(n => { if(c[`s${n}`]){ let v=parseInt(document.getElementById(`slider-${n}`).value); vals.push(v); document.getElementById(`val-s${n}`).textContent=v.toString().padStart(3,'0'); } });
+                if (st.gradTab === 0) st.cGradA = vals; else st.cGradB = vals; st.cDeg = parseInt(document.getElementById('slider-deg').value); document.getElementById('val-deg').textContent = st.cDeg.toString().padStart(3,'0');
+                if (st.cGradA.length > 0 && st.cGradB.length > 0) { st.renderedUserCss = `linear-gradient(${st.cDeg}deg, ${c.fmt(st.cGradA)}, ${c.fmt(st.cGradB)})`; document.getElementById('user-color').style.background = st.renderedUserCss; }
             } else {
-                st.finalScore = score;
-                triggerEndScreen();
+                st.currentVals=[]; [1,2,3,4].forEach(n => { if(c[`s${n}`]){ let v=parseInt(document.getElementById(`slider-${n}`).value); st.currentVals.push(v); document.getElementById(`val-s${n}`).textContent=v.toString().padStart(3,'0'); } });
+                if (st.currentVals.length > 0) { st.renderedUserCss = c.fmt(st.currentVals); document.getElementById('user-color').style.background=st.renderedUserCss; st.currentRgb=getRgbFromCss(st.renderedUserCss); }
             }
         }
 
+        function startTimer() {
+            document.getElementById('timer').textContent = st.timeRemaining.toString().padStart(2, '0');
+            st.timer = setInterval(() => {
+                st.timeRemaining--; document.getElementById('timer').textContent = st.timeRemaining.toString().padStart(2, '0');
+                if (st.timeRemaining <= 0) { lockIn(); }
+            }, 1000);
+        }
+
+        function calcColorScore(c1, c2) {
+            const rM = (c1.r+c2.r)/2; const dr=c1.r-c2.r, dg=c1.g-c2.g, db=c1.b-c2.b;
+            const dist = Math.sqrt((2+rM/256)*dr*dr + 4*dg*dg + (2+(255-rM)/256)*db*db);
+            return Math.max(0,1-(dist/764.83));
+        }
+
+        function calculateScore() {
+            if (st.isGradient) {
+                const c = spaces[st.spaceId];
+                const tA = getRgbFromCss(c.fmt(st.tGradA)), tB = getRgbFromCss(c.fmt(st.tGradB)); const uA = getRgbFromCss(c.fmt(st.cGradA)), uB = getRgbFromCss(c.fmt(st.cGradB));
+                const score1 = (calcColorScore(tA, uA) + calcColorScore(tB, uB)) / 2; let aDiff1 = Math.abs(st.tDeg - st.cDeg) % 360; if(aDiff1 > 180) aDiff1 = 360 - aDiff1; const final1 = score1 * (0.8 + 0.2 * (1 - aDiff1/180));
+                const score2 = (calcColorScore(tA, uB) + calcColorScore(tB, uA)) / 2; let aDiff2 = Math.abs(st.tDeg - ((st.cDeg+180)%360)) % 360; if(aDiff2 > 180) aDiff2 = 360 - aDiff2; const final2 = score2 * (0.8 + 0.2 * (1 - aDiff2/180));
+                return Math.round(Math.pow(Math.max(final1, final2), 1.5) * 100);
+            } else { return Math.round(Math.pow(calcColorScore(st.targetRgb, st.currentRgb), 1.5) * 100); }
+        }
+
+        function lockIn() {
+            if (st.timer) { clearInterval(st.timer); st.timer = null; }
+            if (st.memoryTimeout) { clearTimeout(st.memoryTimeout); st.memoryTimeout = null; }
+
+            const score = calculateScore();
+            if (!st.isGradient) saveStats(score, st.currentRgb.r - st.targetRgb.r, st.currentRgb.g - st.targetRgb.g, st.currentRgb.b - st.targetRgb.b);
+            if (score >= 98) saveToPantheon(st.renderedTargetCss, st.renderedUserCss);
+
+            if (st.isRush && st.timeRemaining > 0) {
+                if (score >= 90) {
+                    st.rushStreak++; st.timeRemaining += (score >= 98 ? 10 : 5);
+                    document.getElementById('rush-streak').textContent = st.rushStreak;
+                    initRoundColors(); startTimer(); 
+                } else { st.finalScore = score; triggerEndScreen(); }
+            } else { st.finalScore = score; triggerEndScreen(); }
+        }
+
         function triggerEndScreen() {
-            clearInterval(st.timer); st.timer = null;
+            if (st.timer) { clearInterval(st.timer); st.timer = null; }
+            if (st.memoryTimeout) { clearTimeout(st.memoryTimeout); st.memoryTimeout = null; }
+            
             const tBox=document.getElementById('target-color'), ft=document.getElementById('frame-target'), fu=document.getElementById('frame-user');
             ft.classList.remove('active-illusion'); fu.classList.remove('active-illusion'); ft.style.backgroundColor='var(--border)'; fu.style.backgroundColor='var(--border)';
             
-            tBox.style.backgroundColor=`rgb(${st.targetRgb.r},${st.targetRgb.g},${st.targetRgb.b})`;
-            if(st.isHardcore||st.isComp){ tBox.style.textShadow='0 0 8px #000'; tBox.textContent=spaces[st.spaceId].fmt(st.targetVals); document.getElementById('target-label').textContent='True Target'; }
+            tBox.style.background = st.renderedTargetCss;
+            if(st.isHardcore || (st.isComp && !st.isGradient) || st.isMemory){ 
+                tBox.style.textShadow='0 0 8px #000'; 
+                tBox.textContent = st.isGradient ? '' : spaces[st.spaceId].fmt(st.targetVals); 
+                document.getElementById('target-label').textContent='True Target'; 
+            } else {
+                tBox.textContent = '';
+            }
 
             document.getElementById('game-area').classList.remove('active'); document.getElementById('results-screen').classList.add('active');
             document.getElementById('match-percentage').textContent = st.finalScore + '%';
@@ -642,50 +888,52 @@
             if(st.isRush) flags.push(`<span class="flag-item">${svgs.rush} Streak: ${st.rushStreak}</span>`);
             if(st.isDaily) flags.push(`<span class="flag-item">Daily #${st.dailyNum}</span>`);
             if(st.isDuel) flags.push(`<span class="flag-item">${svgs.duel} Duel</span>`);
-            if(st.isComp) flags.push(`<span class="flag-item">${svgs.complementary}</span>`);
-            if(st.isHardcore) flags.push(`<span class="flag-item">${svgs.blind}</span>`);
-            if(st.isMap) flags.push(`<span class="flag-item">${svgs.map}</span>`);
-            if(st.isIllusion) flags.push(`<span class="flag-item">${svgs.illusion}</span>`);
+            if(st.isGradient) flags.push(`<span class="flag-item">${svgs.gradient} Gradient</span>`);
+            if(st.isTerminal) flags.push(`<span class="flag-item">${svgs.terminal} Terminal</span>`);
+            if(st.isComp) flags.push(`<span class="flag-item">${svgs.complementary} Comp</span>`);
+            if(st.isMemory) flags.push(`<span class="flag-item">${svgs.memory} Memory</span>`);
+            if(st.isHardcore) flags.push(`<span class="flag-item">${svgs.blind} Blind</span>`);
+            if(st.isMap) flags.push(`<span class="flag-item">${svgs.map} Map</span>`);
+            if(st.isIllusion) flags.push(`<span class="flag-item">${svgs.illusion} Illusion</span>`);
             document.getElementById('status-text').innerHTML = flags.join('<span class="flag-sep">|</span>');
 
-            if (!st.isDaily && !st.isRush && !st.isDuel) document.getElementById('btn-challenge').style.display='flex';
+            if (!st.isDaily && !st.isRush && !st.isDuel && !st.isGradient) document.getElementById('btn-challenge').style.display='flex';
 
             if (st.isDuel) {
                 const fo = document.getElementById('frame-opponent');
                 fo.style.display = 'block'; fo.classList.remove('active-illusion'); fo.style.backgroundColor='var(--border)';
-                const oBox = document.getElementById('op-color');
-                oBox.style.backgroundColor = `rgb(${st.duelData.or},${st.duelData.og},${st.duelData.ob})`;
-                document.getElementById('op-label').textContent = `Opponent (${st.duelData.os}%)`;
-                
-                const win = st.finalScore > st.duelData.os;
+                const oBox = document.getElementById('op-color'); oBox.style.background = st.duelData.uC;
+                document.getElementById('op-label').textContent = `Opponent (${st.duelData.oS}%)`;
+                const win = st.finalScore > st.duelData.oS;
                 document.getElementById('match-percentage').innerHTML = `${st.finalScore}% <div style="font-size:1.5rem; color:${win?'#22c55e':'#ef4444'}; margin-top:10px; font-weight:800;">${win?'VICTORY':'DEFEAT'}</div>`;
             }
         }
 
         function shareDuel() {
-            const qs = `?duel=1&tr=${st.targetRgb.r}&tg=${st.targetRgb.g}&tb=${st.targetRgb.b}&or=${st.currentRgb.r}&og=${st.currentRgb.g}&ob=${st.currentRgb.b}&os=${st.finalScore}`;
-            navigator.clipboard.writeText(window.location.origin + window.location.pathname + qs);
+            const data = { c: getUIConfig(), tV: st.targetVals, gA: st.tGradA, gB: st.tGradB, gD: st.tDeg, uC: st.renderedUserCss, oS: st.finalScore };
+            const qs = `?duel=1&d=${btoa(JSON.stringify(data))}`; navigator.clipboard.writeText(window.location.origin + window.location.pathname + qs);
             document.getElementById('btn-challenge').innerHTML = '<span>Link Copied!</span>'; setTimeout(() => document.getElementById('btn-challenge').innerHTML = `${svgs.duel} <span>Challenge a Friend</span>`, 2000);
         }
 
         function shareScore() {
-            const dr=Math.abs(st.targetRgb.r-st.currentRgb.r), dg=Math.abs(st.targetRgb.g-st.currentRgb.g), db=Math.abs(st.targetRgb.b-st.currentRgb.b);
-            const gE = (d) => d<15?'🟩':d<40?'🟨':'🟥';
+            const getEmoji = (diff) => diff < 15 ? '🟩' : diff < 40 ? '🟨' : '🟥';
             let str = `Chroma ${st.isDaily?`Daily #${st.dailyNum}`:st.isRush?`Rush (Streak ${st.rushStreak})`:st.isDuel?'Duel':'Freeplay'} | ${st.finalScore}%\nMode: ${st.spaceId.toUpperCase()}`;
-            if(st.isComp) str+=' ☯'; if(st.isHardcore) str+=' 👁'; if(st.isIllusion) str+=' 🌀'; if(st.isMap) str+=' 🗺';
-            str += `\n[RGB] ${gE(dr)}${gE(dg)}${gE(db)}`;
+            if(st.isGradient) str+=' 🌈'; if(st.isTerminal) str+=' ⌨️'; if(st.isMemory) str+=' 🧠'; if(st.isComp) str+=' ☯'; if(st.isHardcore) str+=' 👁'; if(st.isIllusion) str+=' 🌀'; if(st.isMap) str+=' 🗺';
+            if(!st.isGradient) { const dr=Math.abs(st.targetRgb.r-st.currentRgb.r), dg=Math.abs(st.targetRgb.g-st.currentRgb.g), db=Math.abs(st.targetRgb.b-st.currentRgb.b); str += `\n[RGB] ${getEmoji(dr)}${getEmoji(dg)}${getEmoji(db)}`; }
             navigator.clipboard.writeText(str).then(() => { const b=document.getElementById('btn-share'); const o=b.innerHTML; b.innerHTML='<span>Copied!</span>'; setTimeout(()=>b.innerHTML=o,2000); });
         }
 
         function resetGame() {
-            document.getElementById('setup-screen').classList.add('active'); document.getElementById('results-screen').classList.remove('active');
-            document.getElementById('main-color-boxes').style.display='none';
+            if (st.timer) { clearInterval(st.timer); st.timer = null; }
+            if (st.memoryTimeout) { clearTimeout(st.memoryTimeout); st.memoryTimeout = null; }
+            document.getElementById('setup-screen').classList.add('active'); document.getElementById('results-screen').classList.remove('active'); document.getElementById('main-color-boxes').style.display='none';
             if (st.isDuel) { clearUrl(); st.isDuel=false; st.duelData=null; document.getElementById('match-percentage').innerHTML='0%'; }
             if (st.isViewingShared) document.getElementById('shared-banner').style.display='block';
             changeColorSpace();
         }
 
         window.onload = () => {
+            getDailyRNG(0)(); document.getElementById('daily-day-display').textContent = st.dailyNum;
             const c = checkUrl();
             if (st.isDuel) { } else if (c) { st.isViewingShared=true; setUIConfig(c); document.getElementById('shared-banner').style.display='block'; } else { setUIConfig(loadLocal()); }
         };
