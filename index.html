@@ -53,6 +53,7 @@
         .info-modal { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--card); z-index: 100; padding: 2rem; text-align: left; overflow-y: auto; border: 1px solid var(--border); }
         .info-modal h2 { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1rem; color: var(--accent); display: flex; justify-content: space-between; align-items: center; }
         .info-modal p { font-size: 0.65rem; color: var(--text-muted); margin-bottom: 0.8rem; line-height: 1.5; }
+        .info-modal h3 { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-main); margin: 1.5rem 0 0.8rem 0; border-bottom: 1px solid var(--border); padding-bottom: 4px; }
         .info-modal b { color: var(--text-main); }
         
         .pantheon-grid { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 1rem; margin-bottom: 1.5rem; max-height: 200px; overflow-y: auto; align-content: flex-start; }
@@ -219,7 +220,7 @@
             <div class="shared-banner-title">
                 <svg class="icon" viewBox="0 0 24 24"><path d="M14.5 17.5L3 6V3h3l11.5 11.5M13 19l6-6M16 16l4 4M19 21l2-2"></path></svg> Rivalry Duel
             </div>
-            <div class="shared-banner-text">You have been challenged! Your opponent scored <b id="duel-op-score" style="color:var(--text-main)"></b>. Their Ghost is active!</div>
+            <div class="shared-banner-text">You have been challenged! Your opponent scored <b id="duel-op-score" style="color:var(--text-main)"></b>. Can you beat it?</div>
             <div class="shared-banner-btns">
                 <button class="btn-duel" onclick="acceptDuel()">Accept Duel</button>
                 <button onclick="discardSharedConfig()">Flee</button>
@@ -271,18 +272,32 @@
         </div>
 
         <div class="info-modal" id="info-modal">
-            <h2>Game Modes <span style="font-size: 0.6rem; color: var(--text-muted); font-weight: normal; cursor:pointer;" onclick="toggleInfo(false)">[X]</span></h2>
+            <h2>Game Rules <span style="font-size: 0.6rem; color: var(--text-muted); font-weight: normal; cursor:pointer;" onclick="toggleInfo(false)">[X]</span></h2>
+            
+            <h3>Game Types</h3>
+            <p><b>Solid Color:</b> The classic match mode. Use sliders to match the reference.</p>
             <p><b>Hex-dle (Decoder):</b> 6 tries to guess the exact 6-character Hex Code (Wordle rules).</p>
-            <p><b>Color Telephone:</b> 10 rounds of Genetic Drift. Your match becomes the next round's target.</p>
-            <p><b>The Mixer (Midpoint):</b> Find the exact mathematical 50% midpoint between Color A and Color B.</p>
             <p><b>Haystack Acuity:</b> Grid vision test. Find the odd one out.</p>
-            <p><b>WCAG Contrast:</b> Achieve 4.5:1 (AA) minimum text contrast against the target.</p>
-            <p><b>Studio Mode:</b> Pure utility. No timer. Lock In exports your CSS.</p>
-            <p><b>Vision Simulator:</b> Apply medical colorblindness filters over the entire game.</p>
+            <p><b>Color Telephone:</b> 10 rounds of Genetic Drift. Your output becomes the next round's target.</p>
+            <p><b>The Mixer (Midpoint):</b> Find the exact mathematical 50% midpoint between Color A and Color B.</p>
+            <p><b>Gradient Matcher:</b> 2 Colors + Angle. The next dimension of matching.</p>
             <p><b>Palette Architect:</b> Base color is locked. Create exact harmonious schemes.</p>
-            <p><b>Gradient Matcher:</b> 2 Colors + Angle. The next dimension.</p>
-            <p><b>Ghost Replays (Duels):</b> When sharing Duel links, your slider movements are replayed to your opponent.</p>
+            <p><b>Studio Mode:</b> Pure utility. No timer. Lock In exports your CSS.</p>
+
+            <h3>Modifiers & Objectives</h3>
+            <p><b>WCAG Contrast:</b> Achieve 4.5:1 (AA) minimum text contrast against the target.</p>
+            <p><b>Complementary:</b> Find the exact mathematical opposite of the base color.</p>
+            <p><b>Visual Map:</b> Replaces sliders with a 2D color picker spectrum.</p>
+            <p><b>Blind Hardcore:</b> No visual reference. Rely entirely on the math code.</p>
+            <p><b>Terminal Mode:</b> No UI. Type raw CSS code from memory to match.</p>
+            <p><b>Memory Mode:</b> Target is visible for 3 seconds, then vanishes. Recall and recreate.</p>
+            <p><b>Illusion Framing:</b> Triggers the Albers Effect using violently contrasting borders.</p>
+            <p><b>Vision Simulator:</b> Apply medical colorblindness filters over the entire game.</p>
+            
+            <h3>Features</h3>
             <p><b>Daily Rush:</b> 60s survival. The sequence of colors is seeded globally every day.</p>
+            <p><b>Ghost Replays (Duels):</b> When sharing Duel links, your slider movements are replayed to your opponent.</p>
+            <p><b>CMYK Mode:</b> Subtractive ink mixing. Red + Green no longer makes Yellow.</p>
         </div>
 
         <div class="info-modal" id="stats-modal">
@@ -582,10 +597,10 @@
 
             if (isPal) {
                 const cur = document.querySelector('input[name="colorSpace"]:checked').value;
-                if (cur !== 'hsl' && cur !== 'oklch') { document.querySelector('input[name="colorSpace"][value="hsl"]').checked = true; changeColorSpace(); }
+                if (cur !== 'hsl' && cur !== 'oklch') { document.querySelector('input[name="colorSpace"][value="hsl"]').checked = true; window.changeColorSpace(); }
                 document.querySelector('input[name="colorSpace"][value="rgb"]').disabled = true; document.querySelector('input[name="colorSpace"][value="oklab"]').disabled = true; document.querySelector('input[name="colorSpace"][value="cmyk"]').disabled = true;
             } else if (isHex) {
-                document.querySelector('input[name="colorSpace"][value="rgb"]').checked = true; changeColorSpace();
+                document.querySelector('input[name="colorSpace"][value="rgb"]').checked = true; window.changeColorSpace();
                 document.querySelector('input[name="colorSpace"][value="hsl"]').disabled = true; document.querySelector('input[name="colorSpace"][value="oklab"]').disabled = true; document.querySelector('input[name="colorSpace"][value="oklch"]').disabled = true; document.querySelector('input[name="colorSpace"][value="cmyk"]').disabled = true;
             } else {
                 document.querySelector('input[name="colorSpace"][value="rgb"]').disabled = false; document.querySelector('input[name="colorSpace"][value="hsl"]').disabled = false; document.querySelector('input[name="colorSpace"][value="oklab"]').disabled = false; document.querySelector('input[name="colorSpace"][value="oklch"]').disabled = false; document.querySelector('input[name="colorSpace"][value="cmyk"]').disabled = false;
@@ -595,7 +610,7 @@
                 document.getElementById('terminal-checkbox').checked = false; document.getElementById('map-checkbox').checked = false;
             }
 
-            handleToggles();
+            window.handleToggles();
         }
 
         window.handleToggles = function() {
@@ -639,7 +654,7 @@
             if (document.querySelector(`input[name="colorSpace"][value="${c.s}"]`)) document.querySelector(`input[name="colorSpace"][value="${c.s}"]`).checked = true;
             document.getElementById('timer-select').value = c.t || 30; document.getElementById('objective-select').value = c.o || 'match'; document.getElementById('type-select').value = c.p || 'solid'; document.getElementById('palette-rule').value = c.pr || 'analogous'; document.getElementById('vision-select').value = c.v || 'normal';
             document.getElementById('map-checkbox').checked = c.m || false; document.getElementById('hardcore-checkbox').checked = c.h || false; document.getElementById('illusion-checkbox').checked = c.i || false; document.getElementById('terminal-checkbox').checked = c.tm || false; document.getElementById('memory-checkbox').checked = c.mm || false;
-            st.suppressSave = false; handleVision(); handleTypeChange(); changeColorSpace();
+            st.suppressSave = false; window.handleVision(); window.handleTypeChange(); window.changeColorSpace();
         }
 
         function saveLocal() { if (!st.suppressSave && !st.isViewingShared) localStorage.setItem('chroma_cfg', JSON.stringify(getUIConfig())); }
@@ -657,6 +672,16 @@
             if (!p.has('share')) return null;
             return { s:p.get('s'), t:parseInt(p.get('t')), o:p.get('o'), p:p.get('p')||'solid', pr:p.get('pr')||'analogous', v:p.get('v')||'normal', m:p.get('m')==='1', h:p.get('h')==='1', i:p.get('i')==='1', tm:p.get('tm')==='1', mm:p.get('mm')==='1' };
         }
+
+        window.copyConfigUrl = function() {
+            const c = getUIConfig(); const qs = `?share=1&s=${c.s}&t=${c.t}&o=${c.o}&p=${c.p}&pr=${c.pr}&v=${c.v}&m=${c.m?1:0}&h=${c.h?1:0}&i=${c.i?1:0}&tm=${c.tm?1:0}&mm=${c.mm?1:0}`;
+            navigator.clipboard.writeText(window.location.origin + window.location.pathname + qs);
+            document.getElementById('btn-copy-config').innerHTML = '<span>Copied!</span>'; setTimeout(() => document.getElementById('btn-copy-config').innerHTML = 'Copy Config', 2000);
+        }
+
+        window.acceptSharedConfig = function() { st.isViewingShared = false; document.getElementById('shared-banner').style.display = 'none'; saveLocal(); clearUrl(); }
+        window.discardSharedConfig = function() { st.isViewingShared = false; document.getElementById('shared-banner').style.display = 'none'; document.getElementById('duel-banner').style.display = 'none'; st.isDuel = false; setUIConfig(loadLocal()); clearUrl(); }
+        document.querySelectorAll('#setup-screen input, #setup-screen select').forEach(el => el.addEventListener('change', () => { if(st.isViewingShared){ st.isViewingShared=false; document.getElementById('shared-banner').style.display='none'; clearUrl(); } saveLocal(); }));
 
         window.changeColorSpace = function() {
             if (st.suppressSave) return;
@@ -724,6 +749,22 @@
             }
         }
 
+        function calcComp(v) {
+            if(st.spaceId==='rgb') return [255-v[0],255-v[1],255-v[2]];
+            if(st.spaceId==='hsl'||st.spaceId==='oklch') return [v[0],v[1],(v[2]+180)%360];
+            if(st.spaceId==='oklab') return [v[0],-v[1],-v[2]];
+            if(st.spaceId==='cmyk') return [100-v[0],100-v[1],100-v[2],100-v[3]];
+        }
+        
+        function calcPalette(baseVals, rule) {
+            const hIdx = st.spaceId === 'hsl' ? 0 : 2;
+            let c2 = [...baseVals], c3 = [...baseVals];
+            if (rule === 'analogous') { c2[hIdx] = (baseVals[hIdx] + 30) % 360; c3[hIdx] = (baseVals[hIdx] + 330) % 360; } 
+            else if (rule === 'triadic') { c2[hIdx] = (baseVals[hIdx] + 120) % 360; c3[hIdx] = (baseVals[hIdx] + 240) % 360; } 
+            else if (rule === 'split') { c2[hIdx] = (baseVals[hIdx] + 150) % 360; c3[hIdx] = (baseVals[hIdx] + 210) % 360; }
+            return [baseVals, c2, c3];
+        }
+
         // --- GHOST SYSTEM ---
         function recordGhost() {
             if (st.isMap || st.isTerminal || st.type === 'studio' || st.type === 'haystack' || st.type === 'hexdle') return; 
@@ -750,35 +791,28 @@
         // --- HEXDLE ENGINE ---
         function initHexdle() {
             const rng = st.isDaily ? getDailyRNG(st.dailyChallengeId + st.rushStreak) : () => Math.random();
-            st.hexTarget = [1,2,3].map(()=>Math.floor(rng()*256).toString(16).padStart(2,'0').toUpperCase()).join('');
-            st.targetRgb = hexToRgb(st.hexTarget);
-            st.renderedTargetCss = `#${st.hexTarget}`;
+            if(st.isDuel) { st.hexTarget = st.duelData.tH; } 
+            else { st.hexTarget = [1,2,3].map(()=>Math.floor(rng()*256).toString(16).padStart(2,'0').toUpperCase()).join(''); }
+            st.targetRgb = hexToRgb(st.hexTarget); st.renderedTargetCss = `#${st.hexTarget}`;
             st.hexGuesses = []; st.hexCurrentGuess = "";
             document.getElementById('target-color').style.background = st.renderedTargetCss;
             renderHexdle();
         }
 
         function renderHexdle() {
-            const board = document.getElementById('hexdle-board');
-            board.innerHTML = '';
-            
-            // Render 6 rows
+            const board = document.getElementById('hexdle-board'); board.innerHTML = '';
             for(let i=0; i<6; i++) {
                 const row = document.createElement('div'); row.className = 'hexdle-row';
                 const guess = i < st.hexGuesses.length ? st.hexGuesses[i] : i === st.hexGuesses.length ? st.hexCurrentGuess : "";
                 const isSubmitted = i < st.hexGuesses.length;
-                
                 let feedback = ['','','','','',''];
                 if (isSubmitted) {
                     let tArr = st.hexTarget.split(''); let gArr = guess.split('');
                     for(let j=0; j<6; j++) { if(gArr[j] === tArr[j]) { feedback[j] = 'hx-green'; tArr[j] = null; gArr[j] = null; } }
                     for(let j=0; j<6; j++) {
-                        if(gArr[j] !== null && tArr.includes(gArr[j])) {
-                            feedback[j] = 'hx-yellow'; tArr[tArr.indexOf(gArr[j])] = null;
-                        } else if (gArr[j] !== null) { feedback[j] = 'hx-gray'; }
+                        if(gArr[j] !== null && tArr.includes(gArr[j])) { feedback[j] = 'hx-yellow'; tArr[tArr.indexOf(gArr[j])] = null; } 
+                        else if (gArr[j] !== null) { feedback[j] = 'hx-gray'; }
                     }
-                    
-                    // Update keyboard
                     for(let j=0; j<6; j++) {
                         const keyEl = document.getElementById('hk-' + guess[j]);
                         if(feedback[j] === 'hx-green') { keyEl.classList.remove('hx-yellow'); keyEl.classList.add('hx-green'); }
@@ -786,12 +820,9 @@
                         else if(feedback[j] === 'hx-gray' && !keyEl.classList.contains('hx-green') && !keyEl.classList.contains('hx-yellow')) { keyEl.classList.add('hx-gray'); }
                     }
                 }
-
                 for(let j=0; j<6; j++) {
-                    const cell = document.createElement('div'); cell.className = `hexdle-cell ${feedback[j]}`;
-                    cell.textContent = guess[j] || "";
-                    if(isSubmitted) cell.style.color = '#fff';
-                    row.appendChild(cell);
+                    const cell = document.createElement('div'); cell.className = `hexdle-cell ${feedback[j]}`; cell.textContent = guess[j] || "";
+                    if(isSubmitted) cell.style.color = '#fff'; row.appendChild(cell);
                 }
                 board.appendChild(row);
             }
@@ -804,19 +835,13 @@
             else if (key === 'ENTER' || key === 'ENT') {
                 if (st.hexCurrentGuess.length === 6) {
                     st.hexGuesses.push(st.hexCurrentGuess);
-                    if (st.hexCurrentGuess === st.hexTarget || st.hexGuesses.length === 6) { window.lockIn(); } 
-                    else { st.hexCurrentGuess = ""; renderHexdle(); }
+                    if (st.hexCurrentGuess === st.hexTarget || st.hexGuesses.length === 6) { window.lockIn(); } else { st.hexCurrentGuess = ""; renderHexdle(); }
                 }
-            } 
-            else if (/^[0-9A-F]$/.test(key) && st.hexCurrentGuess.length < 6) { st.hexCurrentGuess += key; }
+            } else if (/^[0-9A-F]$/.test(key) && st.hexCurrentGuess.length < 6) { st.hexCurrentGuess += key; }
             renderHexdle();
         };
 
-        window.addEventListener('keydown', (e) => {
-            if(e.ctrlKey || e.metaKey || e.altKey) return;
-            window.handleHexKey(e.key);
-        });
-
+        window.addEventListener('keydown', (e) => { if(e.ctrlKey || e.metaKey || e.altKey) return; window.handleHexKey(e.key); });
 
         // --- MAIN GAME LOOP ---
         window.startFreeplay = function() {
@@ -835,7 +860,7 @@
             st.spaceId=c.s; st.timeLimit=c.t; st.isComp=c.o==='complementary'; st.isWcag=c.o==='wcag'; st.type=c.p; st.palRule=c.pr; st.vision=c.v; st.isMap=c.m; st.isHardcore=c.h; st.isIllusion=c.i; st.isTerminal=c.tm; st.isMemory=c.mm;
             document.getElementById('duel-banner').style.display='none'; executeGameStart();
         }
-        window.playAgain = function() { if (st.type === 'studio') { resetGame(); } else if (st.isRush) { startRush(); } else if (st.isDuel) { acceptDuel(); } else { executeGameStart(); } }
+        window.playAgain = function() { if (st.type === 'studio') { window.resetGame(); } else if (st.isRush) { window.startRush(); } else if (st.isDuel) { window.acceptDuel(); } else { window.executeGameStart(); } }
 
         window.executeGameStart = function() {
             st.memoryHidden = false; st.haystackCorrect = 0;
@@ -854,14 +879,13 @@
             const mainBoxes = document.getElementById('main-color-boxes'); const hsGrid = document.getElementById('haystack-grid'); const controls = document.getElementById('game-controls');
             const stdControls = document.getElementById('standard-controls'); const hexControls = document.getElementById('hexdle-controls'); const btnLock = document.getElementById('btn-lock');
 
-            // Reset Hexdle Keyboard Colors
             document.querySelectorAll('.hexdle-key').forEach(k => { k.classList.remove('hx-green','hx-yellow','hx-gray'); });
 
             if (st.type === 'haystack') {
                 mainBoxes.style.display = 'none'; hsGrid.style.display = 'grid'; controls.style.display = 'none';
             } else if (st.type === 'hexdle') {
                 mainBoxes.style.display = 'flex'; hsGrid.style.display = 'none'; controls.style.display = 'block'; stdControls.style.display = 'none'; hexControls.style.display = 'block'; btnLock.style.display = 'none'; document.getElementById('cheater-controls').style.display = 'none'; document.getElementById('terminal-controls').style.display = 'none';
-                document.getElementById('frame-user').style.display = 'none'; // No output box needed
+                document.getElementById('frame-user').style.display = 'none'; 
             } else {
                 mainBoxes.style.display = 'flex'; hsGrid.style.display = 'none'; controls.style.display = 'block'; stdControls.style.display = (!st.isMap && !st.isTerminal) ? 'block' : 'none'; hexControls.style.display = 'none'; btnLock.style.display = 'block';
                 document.getElementById('cheater-controls').style.display = st.isMap ? 'block' : 'none'; document.getElementById('selector-dot').style.display = st.isMap ? 'block' : 'none';
@@ -890,7 +914,7 @@
             const rb = document.getElementById('rush-badge');
             if (st.isRush) { rb.style.display='flex'; document.getElementById('rush-streak').textContent=st.rushStreak; } else { rb.style.display='none'; }
 
-            if (st.type === 'haystack') { initHaystack(); } else if (st.type === 'hexdle') { initHexdle(); } else { initRoundColors(); changeColorSpace(); }
+            if (st.type === 'haystack') { initHaystack(); } else if (st.type === 'hexdle') { initHexdle(); } else { initRoundColors(); window.changeColorSpace(); }
             
             if (st.type !== 'studio') {
                 let oTxt = st.type === 'haystack' ? "Find the Odd Color" : st.type === 'hexdle' ? "Decode the Hex" : st.type === 'gradient' ? "Match the Gradient" : st.type === 'palette' ? `Build ${st.palRule} Palette` : st.type === 'midpoint' ? "Find the Midpoint" : st.type === 'telephone' ? `Drift: Round ${st.teleRound}/10` : st.isWcag ? "Pass WCAG Contrast" : "Match the Target";
@@ -969,7 +993,7 @@
                     st.userNativeData = [bVals, [1,2,3,4].map(n=>c[`s${n}`]?c[`s${n}`].val:0), [1,2,3,4].map(n=>c[`s${n}`]?c[`s${n}`].val:0)];
                 }
                 st.userCssData = st.userNativeData.map(v => c.fmt(v)); st.userColorData = st.userCssData.map(css => getRgbFromCss(css)); st.renderedTargetCss = `linear-gradient(90deg, ${st.targetCssData.join(', ')})`;
-                st.uiTab = 1; switchUITab(1); window.updateColor();
+                st.uiTab = 1; window.switchUITab(1); window.updateColor();
             } 
             else if (st.type === 'gradient') {
                 tBox.style.display='flex'; uBox.style.display='flex'; tLbl.textContent = 'Reference Grad';
@@ -980,7 +1004,7 @@
                     while(!valid && attempts < 50) { baseA = [1,2,3,4].map(n => c[`s${n}`] ? Math.floor(rng()*(c[`s${n}`].max-c[`s${n}`].min+1))+c[`s${n}`].min : 0); baseB = [1,2,3,4].map(n => c[`s${n}`] ? Math.floor(rng()*(c[`s${n}`].max-c[`s${n}`].min+1))+c[`s${n}`].min : 0); st.tGradA = st.isComp ? calcComp(baseA) : baseA; st.tGradB = st.isComp ? calcComp(baseB) : baseB; const rgbA = getRgbFromCss(c.fmt(st.tGradA)); const rgbB = getRgbFromCss(c.fmt(st.tGradB)); valid = isGamutSafe([rgbA, rgbB]); st.tDeg = Math.floor(rng() * 360); attempts++; }
                     st.targetNativeData = [st.tGradA, st.tGradB]; st.renderedTargetCss = `linear-gradient(${st.tDeg}deg, ${c.fmt(st.targetNativeData[0])}, ${c.fmt(st.targetNativeData[1])})`; st.userNativeData = [[1,2,3,4].map(n=>c[`s${n}`]?c[`s${n}`].val:0), [1,2,3,4].map(n=>c[`s${n}`]?c[`s${n}`].val:0)];
                 }
-                st.uiTab = 0; document.getElementById('slider-deg').value = 180; document.getElementById('val-deg').textContent = 180; switchUITab(0); window.updateColor();
+                st.uiTab = 0; document.getElementById('slider-deg').value = 180; document.getElementById('val-deg').textContent = 180; window.switchUITab(0); window.updateColor();
             } 
             else if (st.type === 'midpoint') {
                 tBox.style.display='flex'; uBox.style.display='flex'; tLbl.textContent = 'Midpoint Match';
@@ -990,16 +1014,14 @@
                 } else {
                     let baseA = [1,2,3,4].map(n => c[`s${n}`] ? Math.floor(rng()*(c[`s${n}`].max-c[`s${n}`].min+1))+c[`s${n}`].min : 0);
                     let baseB = [1,2,3,4].map(n => c[`s${n}`] ? Math.floor(rng()*(c[`s${n}`].max-c[`s${n}`].min+1))+c[`s${n}`].min : 0);
-                    st.targetNativeData = [baseA, baseB];
-                    st.renderedTargetCss = `linear-gradient(90deg, ${c.fmt(baseA)} 50%, ${c.fmt(baseB)} 50%)`;
-                    st.targetVals = baseA.map((val, idx) => Math.round((val + baseB[idx]) / 2));
-                    st.targetRgb = getRgbFromCss(c.fmt(st.targetVals));
+                    st.targetNativeData = [baseA, baseB]; st.renderedTargetCss = `linear-gradient(90deg, ${c.fmt(baseA)} 50%, ${c.fmt(baseB)} 50%)`;
+                    st.targetVals = baseA.map((val, idx) => Math.round((val + baseB[idx]) / 2)); st.targetRgb = getRgbFromCss(c.fmt(st.targetVals));
                     [1,2,3,4].forEach(n => { if(c[`s${n}`]) document.getElementById(`slider-${n}`).value = c[`s${n}`].val; }); window.updateColor();
                 }
             }
             else { 
                 tBox.style.display='flex'; uBox.style.display='flex'; tLbl.textContent = st.isComp ? 'Base Color' : st.isWcag ? 'Background' : 'Reference';
-                if (st.isDuel) {
+                if (st.isDuel && st.type !== 'telephone') {
                     st.targetVals = st.duelData.tV; st.renderedTargetCss = c.fmt(st.targetVals); st.targetRgb = getRgbFromCss(st.renderedTargetCss);
                     if (st.isTerminal) { document.getElementById('terminal-input').value = ''; st.renderedUserCss = 'var(--bg)'; } 
                     else { [1,2,3,4].forEach(n => { if(c[`s${n}`]) document.getElementById(`slider-${n}`).value = c[`s${n}`].val; }); window.updateColor(); }
@@ -1017,8 +1039,10 @@
                     }
                     
                     if (st.type === 'telephone' && st.teleRound > 1) {
-                        // Inherit target from previous output
                         st.targetRgb = {...st.currentRgb}; st.renderedTargetCss = `rgb(${st.targetRgb.r}, ${st.targetRgb.g}, ${st.targetRgb.b})`; randomizeSliders();
+                    } else if (st.type === 'telephone' && st.isDuel) {
+                        st.targetVals = st.duelData.tV; st.renderedTargetCss = c.fmt(st.targetVals); st.targetRgb = getRgbFromCss(st.renderedTargetCss);
+                        st.teleHistory.push({...st.targetRgb}); [1,2,3,4].forEach(n => { if(c[`s${n}`]) document.getElementById(`slider-${n}`).value = c[`s${n}`].val; }); window.updateColor();
                     } else {
                         st.baseVals = bVals; st.targetVals = tVals; st.renderedTargetCss = tCss;
                         if(st.type === 'telephone') st.teleHistory.push({...st.targetRgb});
@@ -1097,10 +1121,10 @@
             if (st.ghostTimer) { clearInterval(st.ghostTimer); st.ghostTimer = null; }
 
             st.memoryHidden = false; 
-            if(st.type === 'telephone' && st.teleRound === 10) st.teleHistory.push({...st.currentRgb}); // Final push
+            if(st.type === 'telephone' && st.teleRound === 10) st.teleHistory.push({...st.currentRgb}); 
 
             const score = calculateScore();
-            if (st.type === 'solid') saveStats(score, st.currentRgb.r - st.targetRgb.r, st.currentRgb.g - st.targetRgb.g, st.currentRgb.b - st.targetRgb.b);
+            if (st.type === 'solid' && !st.isWcag) saveStats(score, st.currentRgb.r - st.targetRgb.r, st.currentRgb.g - st.targetRgb.g, st.currentRgb.b - st.targetRgb.b);
             if (score >= 98 && !st.isDuel && st.type !== 'haystack' && st.type !== 'hexdle') saveToPantheon(st.renderedTargetCss, st.renderedUserCss);
 
             if (st.isRush && st.timeRemaining > 0) {
@@ -1125,7 +1149,7 @@
             } else if (st.type === 'telephone') {
                 tBox.innerHTML=''; document.getElementById('target-label').textContent='Mutation History';
                 st.teleHistory.forEach(rgb => { const d = document.createElement('div'); d.style.flex='1'; d.style.height='100%'; d.style.background=`rgb(${rgb.r},${rgb.g},${rgb.b})`; tBox.appendChild(d); });
-                fu.style.display = 'none'; // Hide user box to focus on timeline
+                fu.style.display = 'none'; 
             } else {
                 tBox.style.background = st.renderedTargetCss;
                 if(st.isWcag) {
@@ -1163,12 +1187,15 @@
             if(st.vision!=='normal') flags.push(`<span class="flag-item" style="color:#ef4444;">👁 Colorblind</span>`);
             document.getElementById('status-text').innerHTML = flags.join('<span class="flag-sep">|</span>');
 
-            if (!st.isDaily && !st.isRush && !st.isDuel && !st.isTerminal && !st.isMap && st.type !== 'haystack') document.getElementById('btn-challenge').style.display='flex';
+            const un_duelable = ['haystack', 'studio'];
+            if (!st.isDaily && !st.isRush && !st.isDuel && !un_duelable.includes(st.type)) document.getElementById('btn-challenge').style.display='flex';
 
             if (st.isDuel) {
                 const fo = document.getElementById('frame-opponent'); fo.style.display = 'block'; fo.classList.remove('active-illusion'); fo.style.backgroundColor='var(--border)';
                 const oBox = document.getElementById('op-color'); 
                 if (st.type === 'palette') { oBox.innerHTML=''; for(let i=0; i<3; i++) { const d = document.createElement('div'); d.style.flex='1'; d.style.height='100%'; d.style.background=st.duelData.uC[i]; oBox.appendChild(d); }
+                } else if (st.type === 'telephone') {
+                    oBox.innerHTML=''; for(let i=0; i<st.duelData.gL.length; i++) { const d = document.createElement('div'); d.style.flex='1'; d.style.height='100%'; d.style.background=`rgb(${st.duelData.gL[i].r},${st.duelData.gL[i].g},${st.duelData.gL[i].b})`; oBox.appendChild(d); }
                 } else { oBox.style.background = st.duelData.uC; }
                 document.getElementById('op-label').textContent = `Opponent (${st.duelData.oS}%)`;
                 const win = st.finalScore > st.duelData.oS; document.getElementById('match-percentage').innerHTML = `${st.finalScore}% <div style="font-size:1.5rem; color:${win?'#22c55e':'#ef4444'}; margin-top:10px; font-weight:800;">${win?'VICTORY':'DEFEAT'}</div>`;
@@ -1176,7 +1203,8 @@
         }
 
         window.shareDuel = function() {
-            const data = { c: getUIConfig(), tV: (st.type==='solid'||st.type==='midpoint')?st.targetVals:null, tN: (st.type==='gradient'||st.type==='midpoint')?st.targetNativeData:null, tD: st.type==='gradient'?st.gradDeg:null, tC: st.type==='palette'?st.targetColorData:null, tCss: st.type==='palette'?st.targetCssData:null, uBase: st.type==='palette'?st.userNativeData[0]:null, uC: st.type==='palette'?st.userCssData:st.renderedUserCss, oS: st.finalScore, gL: st.ghostLog };
+            let teleArr = []; if(st.type==='telephone') teleArr = st.teleHistory;
+            const data = { c: getUIConfig(), tV: (st.type==='solid'||st.type==='midpoint'||st.type==='telephone')?st.targetVals:null, tN: (st.type==='gradient'||st.type==='midpoint')?st.targetNativeData:null, tD: st.type==='gradient'?st.gradDeg:null, tC: st.type==='palette'?st.targetColorData:null, tCss: st.type==='palette'?st.targetCssData:null, tH: st.type==='hexdle'?st.hexTarget:null, uBase: st.type==='palette'?st.userNativeData[0]:null, uC: st.type==='palette'?st.userCssData:st.renderedUserCss, oS: st.finalScore, gL: st.type==='telephone'?teleArr:st.ghostLog };
             const qs = `?duel=1&d=${btoa(JSON.stringify(data))}`; navigator.clipboard.writeText(window.location.origin + window.location.pathname + qs);
             document.getElementById('btn-challenge').innerHTML = '<span>Link Copied!</span>'; setTimeout(() => document.getElementById('btn-challenge').innerHTML = `${svgs.duel} <span>Challenge a Friend</span>`, 2000);
         }
@@ -1195,7 +1223,7 @@
             document.getElementById('setup-screen').classList.add('active'); document.getElementById('results-screen').classList.remove('active'); document.getElementById('main-color-boxes').style.display='none';
             if (st.isDuel) { clearUrl(); st.isDuel=false; st.duelData=null; document.getElementById('match-percentage').innerHTML='0%'; document.getElementById('duel-banner').style.display='none'; }
             if (st.isViewingShared) document.getElementById('shared-banner').style.display='block';
-            changeColorSpace();
+            window.changeColorSpace();
         }
 
         window.onload = () => {
