@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chroma | Master Edition</title>
     <script data-goatcounter="https://skaffa.goatcounter.com/count"
-        async src="//gc.zgo.at/count.js"></script>
+    async src="//gc.zgo.at/count.js"></script>
+    <title>Chroma | Master Edition</title>
     <style>
         :root {
             --bg: #0a0a0c; --card: #141417; --accent: #ffffff;
@@ -405,8 +405,8 @@
         const spaces = {
             rgb: { s1:{lbl:'R',min:0,max:255,val:128}, s2:{lbl:'G',min:0,max:255,val:128}, s3:{lbl:'B',min:0,max:255,val:128}, fmt:(v)=>`#${v[0].toString(16).padStart(2,'0')}${v[1].toString(16).padStart(2,'0')}${v[2].toString(16).padStart(2,'0')}`.toUpperCase() },
             hsl: { s1:{lbl:'H',min:0,max:360,val:180}, s2:{lbl:'S',min:0,max:100,val:50}, s3:{lbl:'L',min:0,max:100,val:50}, fmt:(v)=>`hsl(${v[0]}, ${v[1]}%, ${v[2]}%)` },
-            oklab: { s1:{lbl:'L',min:0,max:100,val:50}, s2:{lbl:'A',min:-100,max:100,val:0}, s3:{lbl:'B',min:-100,max:100,val:0}, fmt:(v)=>`oklab(${v[0]}% ${+(v[1]/100*0.4).toFixed(4)} ${+(v[2]/100*0.4).toFixed(4)})` },
-            oklch: { s1:{lbl:'L',min:0,max:100,val:50}, s2:{lbl:'C',min:0,max:100,val:50}, s3:{lbl:'H',min:0,max:360,val:180}, fmt:(v)=>`oklch(${v[0]}% ${+(v[1]/100*0.4).toFixed(4)} ${+(v[2]).toFixed(4)})` },
+            oklab: { s1:{lbl:'L',min:0,max:100,val:50}, s2:{lbl:'A',min:-100,max:100,val:0}, s3:{lbl:'B',min:-100,max:100,val:0}, fmt:(v)=>`oklab(${v[0]}% ${+(v[1]/100*0.2).toFixed(4)} ${+(v[2]/100*0.2).toFixed(4)})` },
+            oklch: { s1:{lbl:'L',min:0,max:100,val:50}, s2:{lbl:'C',min:0,max:100,val:50}, s3:{lbl:'H',min:0,max:360,val:180}, fmt:(v)=>`oklch(${v[0]}% ${+(v[1]/100*0.2).toFixed(4)} ${+(v[2]).toFixed(4)})` },
             cmyk: { s1:{lbl:'C',min:0,max:100,val:0}, s2:{lbl:'M',min:0,max:100,val:0}, s3:{lbl:'Y',min:0,max:100,val:0}, s4:{lbl:'K',min:0,max:100,val:0}, 
                 fmt:(v)=>{ let c=v[0]/100, m=v[1]/100, y=v[2]/100, k=v[3]/100; return `rgb(${Math.round(255*(1-c)*(1-k))}, ${Math.round(255*(1-m)*(1-k))}, ${Math.round(255*(1-y)*(1-k))})`; }
             }
@@ -435,6 +435,11 @@
         function getRgbFromCss(css) {
             hiddenCtx.clearRect(0,0,1,1); hiddenCtx.fillStyle = css; hiddenCtx.fillRect(0,0,1,1);
             const d = hiddenCtx.getImageData(0,0,1,1).data; return { r:d[0], g:d[1], b:d[2] };
+        }
+        
+        function isGamutSafe(rgbList) {
+            if (st.spaceId !== 'oklab' && st.spaceId !== 'oklch') return true;
+            return !rgbList.some(rgb => rgb.r===0 || rgb.r===255 || rgb.g===0 || rgb.g===255 || rgb.b===0 || rgb.b===255);
         }
 
         // --- SETTINGS & CONFIRM MODAL ---
@@ -622,6 +627,8 @@
         function discardSharedConfig() { st.isViewingShared = false; document.getElementById('shared-banner').style.display = 'none'; document.getElementById('duel-banner').style.display = 'none'; st.isDuel = false; setUIConfig(loadLocal()); clearUrl(); }
         document.querySelectorAll('#setup-screen input, #setup-screen select').forEach(el => el.addEventListener('change', () => { if(st.isViewingShared){ st.isViewingShared=false; document.getElementById('shared-banner').style.display='none'; clearUrl(); } saveLocal(); }));
 
+        function toggleInfo(show) { document.getElementById('info-modal').style.display = show ? 'block' : 'none'; }
+        
         function changeColorSpace() {
             if (st.suppressSave) return;
             st.spaceId = document.querySelector('input[name="colorSpace"]:checked').value; const cfg = spaces[st.spaceId];
@@ -852,10 +859,14 @@
                     st.targetColorData = st.duelData.tC; st.targetCssData = st.duelData.tCss;
                     st.userNativeData = [st.duelData.uBase, [1,2,3,4].map(n=>c[`s${n}`]?c[`s${n}`].val:0), [1,2,3,4].map(n=>c[`s${n}`]?c[`s${n}`].val:0)];
                 } else {
-                    const bVals = [1,2,3,4].map(n => c[`s${n}`] ? Math.floor(rng()*(c[`s${n}`].max-c[`s${n}`].min+1))+c[`s${n}`].min : 0);
-                    const palVals = calcPalette(bVals, st.palRule);
-                    st.targetCssData = palVals.map(v => c.fmt(v));
-                    st.targetColorData = st.targetCssData.map(css => getRgbFromCss(css));
+                    let valid = false; let attempts = 0; let bVals, palVals;
+                    while (!valid && attempts < 50) {
+                        bVals = [1,2,3,4].map(n => c[`s${n}`] ? Math.floor(rng()*(c[`s${n}`].max-c[`s${n}`].min+1))+c[`s${n}`].min : 0);
+                        palVals = calcPalette(bVals, st.palRule);
+                        st.targetCssData = palVals.map(v => c.fmt(v));
+                        st.targetColorData = st.targetCssData.map(css => getRgbFromCss(css));
+                        valid = isGamutSafe(st.targetColorData); attempts++;
+                    }
                     st.userNativeData = [bVals, [1,2,3,4].map(n=>c[`s${n}`]?c[`s${n}`].val:0), [1,2,3,4].map(n=>c[`s${n}`]?c[`s${n}`].val:0)];
                 }
                 st.userCssData = st.userNativeData.map(v => c.fmt(v));
@@ -870,12 +881,18 @@
                     st.renderedTargetCss = `linear-gradient(${st.gradDeg}deg, ${c.fmt(st.targetNativeData[0])}, ${c.fmt(st.targetNativeData[1])})`;
                     st.userNativeData = [[1,2,3,4].map(n=>c[`s${n}`]?c[`s${n}`].val:0), [1,2,3,4].map(n=>c[`s${n}`]?c[`s${n}`].val:0)];
                 } else {
-                    st.targetNativeData = [
-                        [1,2,3,4].map(n => c[`s${n}`] ? Math.floor(rng()*(c[`s${n}`].max-c[`s${n}`].min+1))+c[`s${n}`].min : 0),
-                        [1,2,3,4].map(n => c[`s${n}`] ? Math.floor(rng()*(c[`s${n}`].max-c[`s${n}`].min+1))+c[`s${n}`].min : 0)
-                    ];
-                    st.gradDeg = Math.floor(rng() * 360);
-                    st.renderedTargetCss = `linear-gradient(${st.gradDeg}deg, ${c.fmt(st.targetNativeData[0])}, ${c.fmt(st.targetNativeData[1])})`;
+                    let valid = false; let attempts = 0; let baseA, baseB;
+                    while(!valid && attempts < 50) {
+                        baseA = [1,2,3,4].map(n => c[`s${n}`] ? Math.floor(rng()*(c[`s${n}`].max-c[`s${n}`].min+1))+c[`s${n}`].min : 0);
+                        baseB = [1,2,3,4].map(n => c[`s${n}`] ? Math.floor(rng()*(c[`s${n}`].max-c[`s${n}`].min+1))+c[`s${n}`].min : 0);
+                        st.tGradA = st.isComp ? calcComp(baseA) : baseA;
+                        st.tGradB = st.isComp ? calcComp(baseB) : baseB;
+                        const rgbA = getRgbFromCss(c.fmt(st.tGradA)); const rgbB = getRgbFromCss(c.fmt(st.tGradB));
+                        valid = isGamutSafe([rgbA, rgbB]);
+                        st.tDeg = Math.floor(rng() * 360); attempts++;
+                    }
+                    st.targetNativeData = [st.tGradA, st.tGradB];
+                    st.renderedTargetCss = `linear-gradient(${st.tDeg}deg, ${c.fmt(st.targetNativeData[0])}, ${c.fmt(st.targetNativeData[1])})`;
                     st.userNativeData = [[1,2,3,4].map(n=>c[`s${n}`]?c[`s${n}`].val:0), [1,2,3,4].map(n=>c[`s${n}`]?c[`s${n}`].val:0)];
                 }
                 st.uiTab = 0; document.getElementById('slider-deg').value = 180; document.getElementById('val-deg').textContent = 180;
@@ -888,16 +905,19 @@
                     if (st.isTerminal) { document.getElementById('terminal-input').value = ''; st.renderedUserCss = 'var(--bg)'; } 
                     else { [1,2,3,4].forEach(n => { if(c[`s${n}`]) document.getElementById(`slider-${n}`).value = c[`s${n}`].val; }); updateColor(); }
                 } else {
-                    st.baseVals = [1,2,3,4].map(n => c[`s${n}`] ? Math.floor(rng()*(c[`s${n}`].max-c[`s${n}`].min+1))+c[`s${n}`].min : 0);
-                    let tVals;
-                    if(st.isComp) {
-                        if(st.spaceId==='rgb') tVals = [255-st.baseVals[0], 255-st.baseVals[1], 255-st.baseVals[2]];
-                        else if(st.spaceId==='hsl'||st.spaceId==='oklch') tVals = [st.baseVals[0], st.baseVals[1], (st.baseVals[2]+180)%360];
-                        else if(st.spaceId==='oklab') tVals = [st.baseVals[0], -st.baseVals[1], -st.baseVals[2]];
-                        else if(st.spaceId==='cmyk') tVals = [100-st.baseVals[0], 100-st.baseVals[1], 100-st.baseVals[2], 100-st.baseVals[3]];
-                    } else { tVals = st.baseVals; }
-                    st.targetVals = tVals;
-                    st.renderedTargetCss = c.fmt(st.targetVals); st.targetRgb = getRgbFromCss(st.renderedTargetCss);
+                    let valid = false; let attempts = 0; let bVals, tVals, tCss;
+                    while(!valid && attempts < 50) {
+                        bVals = [1,2,3,4].map(n => c[`s${n}`] ? Math.floor(rng()*(c[`s${n}`].max-c[`s${n}`].min+1))+c[`s${n}`].min : 0);
+                        if(st.isComp) {
+                            if(st.spaceId==='rgb') tVals = [255-bVals[0], 255-bVals[1], 255-bVals[2]];
+                            else if(st.spaceId==='hsl'||st.spaceId==='oklch') tVals = [bVals[0], bVals[1], (bVals[2]+180)%360];
+                            else if(st.spaceId==='oklab') tVals = [bVals[0], -bVals[1], -bVals[2]];
+                            else if(st.spaceId==='cmyk') tVals = [100-bVals[0], 100-bVals[1], 100-bVals[2], 100-bVals[3]];
+                        } else { tVals = bVals; }
+                        tCss = c.fmt(tVals); st.targetRgb = getRgbFromCss(tCss);
+                        valid = isGamutSafe([st.targetRgb]); attempts++;
+                    }
+                    st.baseVals = bVals; st.targetVals = tVals; st.renderedTargetCss = tCss;
                     
                     if (st.isTerminal) { document.getElementById('terminal-input').value = ''; st.renderedUserCss = 'var(--bg)'; } 
                     else { [1,2,3,4].forEach(n => { if(c[`s${n}`]) document.getElementById(`slider-${n}`).value = c[`s${n}`].val; }); updateColor(); }
@@ -930,7 +950,7 @@
         }
 
         function updateTerminal() {
-            st.renderedUserCss = document.getElementById('terminal-input').value; st.currentRgb = getRgbFromCss(st.renderedUserCss); renderBoxes();
+            const str = document.getElementById('terminal-input').value; st.renderedUserCss = str; document.getElementById('user-color').style.background = str; st.currentRgb = getRgbFromCss(str);
         }
 
         function updateColor() {
@@ -1037,7 +1057,7 @@
                 if (st.type === 'palette') {
                     oBox.innerHTML=''; for(let i=0; i<3; i++) { const d = document.createElement('div'); d.style.flex='1'; d.style.height='100%'; d.style.background=st.duelData.uC[i]; oBox.appendChild(d); }
                 } else { oBox.style.background = st.duelData.uC; }
-
+                
                 document.getElementById('op-label').textContent = `Opponent (${st.duelData.oS}%)`;
                 const win = st.finalScore > st.duelData.oS;
                 document.getElementById('match-percentage').innerHTML = `${st.finalScore}% <div style="font-size:1.5rem; color:${win?'#22c55e':'#ef4444'}; margin-top:10px; font-weight:800;">${win?'VICTORY':'DEFEAT'}</div>`;
