@@ -1,0 +1,20 @@
+the mutation history of color telephone is still completely inaccurate (it seems to be showing the random values that the sliders got set at after each Lock In).
+
+not all Share buttons' copied content contain the correct gamemode when clicking the share button.
+
+
+when challenging a friend for haystack, the same seed for order should be used (as with any game relying on randomness), and the % should be replaced by the score, which should also be used when sharing or challenging.
+
+the border of the "flee" button should not be white on hover
+
+
+
+
+
+studio mode - being a studio mode - is way too simple, containing only a color picker. and there is no way to go to home screen. we might need a global home button for when in games; when clicked an user is in actual game, it counts as a 0% for stats (or the actual match % they have upon going to home).
+
+
+ghost data should compress even more.
+
+
+isnt "luminance match" just another color matcher? or am i understanding this wrong?
