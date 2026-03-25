@@ -69,7 +69,6 @@
         .info-modal h3 { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-main); margin: 1.5rem 0 0.8rem 0; border-bottom: 1px solid var(--border); padding-bottom: 4px; }
         .info-modal b { color: var(--text-main); transition: color 0.3s; }
         
-        /* Highlight Rules inside Info */
         .info-modal p { font-size: 0.65rem; color: var(--text-muted); margin-bottom: 0.8rem; line-height: 1.5; transition: 0.3s; border-left: 2px solid transparent; padding-left: 6px; margin-left: -8px; }
         .info-modal p.highlight { color: var(--text-main); border-left-color: var(--accent); background: rgba(255, 255, 255, 0.05); padding: 8px; border-radius: 0 4px 4px 0; }
         .info-modal p.highlight b { color: var(--accent); }
@@ -115,9 +114,10 @@
         .color-box { width: 100%; aspect-ratio: 1.2/1; display: flex; align-items: center; justify-content: center; font-family: monospace; font-size: 0.7rem; font-weight: 600; text-align: center; letter-spacing: 0.05em; color: var(--text-main); overflow: hidden; border-radius: 2px; position: relative; transition: height 0.3s; }
         .color-box-label { display: block; padding: 10px 0; font-size: 0.65rem; font-weight: 600; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.1em; text-align: center; }
         
-        /* Special Hexdle Frame Adjustments */
-        .game-area.is-hexdle #frame-target { flex: none; width: 100%; height: 60px; max-height: 60px; margin-bottom: 0.5rem; }
-        .game-area.is-hexdle .color-box { aspect-ratio: unset; height: 100%; }
+        /* Special Hexdle Frames */
+        .color-boxes.is-hexdle { flex-direction: column; gap: 10px; }
+        .color-boxes.is-hexdle .illusion-frame { flex: none; width: 100%; }
+        .color-boxes.is-hexdle .color-box { aspect-ratio: unset; height: 2.5rem; }
         
         /* Special Grid UIs */
         .haystack-grid { display: grid; gap: 2px; width: 100%; aspect-ratio: 1/1; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; margin-bottom: 1.5rem; }
@@ -129,7 +129,7 @@
         .sort-block.selected { transform: scale(1.1); z-index: 10; filter: brightness(1.2); outline: 2px solid var(--accent); }
 
         /* Hexdle Board */
-        #hexdle-controls { margin-bottom: 1rem; }
+        #hexdle-controls { margin-bottom: 1.5rem; }
         .hexdle-row { display: flex; gap: 4px; margin-bottom: 4px; justify-content: center; }
         .hexdle-cell { width: 2.5rem; height: 2.5rem; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-family: monospace; font-size: 1.1rem; font-weight: bold; text-transform: uppercase; background: var(--bg); color: var(--text-main); border-radius: 2px; transition: 0.3s; }
         .hexdle-keyboard { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; max-width: 280px; margin: 0.5rem auto 0 auto; }
@@ -1103,7 +1103,9 @@
 
             document.getElementById('setup-screen').classList.remove('active'); document.getElementById('daily-screen').classList.remove('active'); document.getElementById('results-screen').classList.remove('active');
             document.getElementById('game-area').classList.add('active');
-            document.getElementById('game-area').className = 'game-area active ' + (st.type === 'hexdle' ? 'is-hexdle' : '');
+            
+            const mainBoxes = document.getElementById('main-color-boxes');
+            mainBoxes.className = 'color-boxes' + (st.type === 'hexdle' ? ' is-hexdle' : '');
             
             if (st.isDarkroom) document.body.classList.add('darkroom-active'); else document.body.classList.remove('darkroom-active');
 
@@ -1116,7 +1118,7 @@
             if (st.type === 'telephone') { document.querySelectorAll('.slider-value').forEach(el => el.style.visibility = 'hidden'); } 
             else { document.querySelectorAll('.slider-value').forEach(el => el.style.visibility = 'visible'); }
 
-            const mainBoxes = document.getElementById('main-color-boxes'); const hsGrid = document.getElementById('haystack-grid'); const controls = document.getElementById('game-controls');
+            const hsGrid = document.getElementById('haystack-grid'); const controls = document.getElementById('game-controls');
             const stdControls = document.getElementById('standard-controls'); const hexControls = document.getElementById('hexdle-controls'); const btnLock = document.getElementById('btn-lock');
             const sortGrid = document.getElementById('sort-grid');
 
@@ -1513,13 +1515,13 @@
         }
 
         window.triggerEndScreen = function() {
-            const tBox=document.getElementById('target-color'), ft=document.getElementById('frame-target'), fu=document.getElementById('frame-user');
+            const tBox=document.getElementById('target-color'); const uBox=document.getElementById('user-color'); const ft=document.getElementById('frame-target'); const fu=document.getElementById('frame-user');
             ft.classList.remove('active-illusion'); fu.classList.remove('active-illusion'); ft.style.backgroundColor='var(--border)'; fu.style.backgroundColor='var(--border)';
             
             document.getElementById('haystack-grid').style.display = 'none'; document.getElementById('hexdle-controls').style.display = 'none';
             document.getElementById('sort-grid').style.display = 'none'; 
             
-            document.getElementById('main-color-boxes').style.display = 'flex'; document.getElementById('frame-target').style.display = 'block'; document.getElementById('frame-user').style.flex = '1'; document.getElementById('frame-user').style.display = 'block';
+            document.getElementById('main-color-boxes').style.display = 'flex'; document.getElementById('frame-target').style.display = 'block'; fu.style.flex = '1'; fu.style.display = 'block';
 
             if (st.type === 'palette') {
                 tBox.innerHTML=''; for(let i=0; i<3; i++) { const d = document.createElement('div'); d.style.flex='1'; d.style.height='100%'; d.style.background=st.targetCssData[i]; tBox.appendChild(d); }
@@ -1530,8 +1532,8 @@
             } else if (st.type === 'sort') {
                 tBox.innerHTML=''; document.getElementById('target-label').textContent='Correct Order';
                 st.sortTarget.forEach(rgb => { const d = document.createElement('div'); d.style.flex='1'; d.style.height='100%'; d.style.background=`rgb(${rgb.r},${rgb.g},${rgb.b})`; tBox.appendChild(d); });
-                fu.innerHTML=''; document.querySelector('#frame-user .color-box-label').textContent='Your Order';
-                st.sortCurrent.forEach(rgb => { const d = document.createElement('div'); d.style.flex='1'; d.style.height='100%'; d.style.background=`rgb(${rgb.r},${rgb.g},${rgb.b})`; fu.appendChild(d); });
+                uBox.innerHTML=''; document.getElementById('user-label').textContent='Your Order';
+                st.sortCurrent.forEach(rgb => { const d = document.createElement('div'); d.style.flex='1'; d.style.height='100%'; d.style.background=`rgb(${rgb.r},${rgb.g},${rgb.b})`; uBox.appendChild(d); });
             } else if (st.type === 'midpoint') {
                 tBox.innerHTML = '';
                 const c1 = document.createElement('div'); c1.style.flex='1'; c1.style.height='100%'; c1.style.background = spaces[st.spaceId].fmt(st.targetNativeData[0]);
@@ -1630,11 +1632,16 @@
             if (st.timer) { clearInterval(st.timer); st.timer = null; }
             if (st.ghostTimer) { cancelAnimationFrame(st.ghostTimer); st.ghostTimer = null; }
             document.body.classList.remove('darkroom-active');
+            
+            // Clean up main UI state
             document.getElementById('setup-screen').classList.add('active'); 
             document.getElementById('results-screen').classList.remove('active'); 
             document.getElementById('game-area').classList.remove('active');
+            document.getElementById('game-area').className = 'game-area'; // Remove is-hexdle
             
+            // Explicitly clean up all special grid containers
             document.getElementById('main-color-boxes').style.display='none';
+            document.getElementById('main-color-boxes').className = 'color-boxes';
             document.getElementById('haystack-grid').style.display='none';
             document.getElementById('sort-grid').style.display='none';
             
