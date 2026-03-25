@@ -115,9 +115,10 @@
         .color-box-label { display: block; padding: 10px 0; font-size: 0.65rem; font-weight: 600; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.1em; text-align: center; }
         
         /* Special Hexdle Frames */
-        .color-boxes.is-hexdle { flex-direction: column; gap: 10px; }
+        .color-boxes.is-hexdle { flex-direction: column; gap: 10px; margin-bottom: 1rem; }
         .color-boxes.is-hexdle .illusion-frame { flex: none; width: 100%; }
-        .color-boxes.is-hexdle .color-box { aspect-ratio: unset; height: 2.5rem; }
+        .game-area.is-hexdle #frame-target { height: 3rem; margin-bottom: 0; padding: 0; border: none; }
+        .game-area.is-hexdle #target-color { aspect-ratio: unset; height: 100%; }
         
         /* Special Grid UIs */
         .haystack-grid { display: grid; gap: 2px; width: 100%; aspect-ratio: 1/1; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; margin-bottom: 1.5rem; }
@@ -125,14 +126,15 @@
         .haystack-cell:active { opacity: 0.7; }
         
         .sort-container { display: flex; width: 100%; height: 80px; gap: 2px; margin-bottom: 1.5rem; border-radius: 4px; overflow: hidden; border: 1px solid var(--border); }
-        .sort-block { flex: 1; height: 100%; cursor: pointer; transition: transform 0.2s, filter 0.2s; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.2); }
+        .sort-block { flex: 1; height: 100%; cursor: pointer; transition: transform 0.2s, filter 0.2s; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.2); display: flex; align-items: flex-end; justify-content: center; }
         .sort-block.selected { transform: scale(1.1); z-index: 10; filter: brightness(1.2); outline: 2px solid var(--accent); }
 
         /* Hexdle Board */
         #hexdle-controls { margin-bottom: 1.5rem; }
-        .hexdle-row { display: flex; gap: 4px; margin-bottom: 4px; justify-content: center; }
+        #hexdle-board { display: flex; flex-direction: column; gap: 4px; align-items: center; }
+        .hexdle-row { display: flex; gap: 4px; justify-content: center; }
         .hexdle-cell { width: 2.5rem; height: 2.5rem; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-family: monospace; font-size: 1.1rem; font-weight: bold; text-transform: uppercase; background: var(--bg); color: var(--text-main); border-radius: 2px; transition: 0.3s; }
-        .hexdle-keyboard { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; max-width: 280px; margin: 0.5rem auto 0 auto; }
+        .hexdle-keyboard { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; max-width: 280px; margin: 1rem auto 0 auto; }
         .hexdle-key { padding: 6px 10px; border: 1px solid var(--border); border-radius: 2px; background: var(--bg); color: var(--text-main); cursor: pointer; font-family: monospace; font-size: 0.75rem; font-weight: bold; text-transform: uppercase; flex-grow: 1; transition: 0.1s; display: flex; align-items: center; justify-content: center; }
         .hexdle-key:active { transform: scale(0.95); }
         .hx-green { background: #22c55e !important; color: #000 !important; border-color: #22c55e !important; }
@@ -219,19 +221,19 @@
     <div class="container">
         <h1>Chroma 
             <div class="header-btns">
-                <button class="header-btn" onclick="window.goHome()" title="Home">
+                <button class="header-btn" onclick="goHome()" title="Home">
                     <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
                 </button>
-                <button class="header-btn pantheon-btn" onclick="window.togglePantheon(true)" title="The Pantheon">
+                <button class="header-btn pantheon-btn" onclick="togglePantheon(true)" title="The Pantheon">
                     <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path></svg>
                 </button>
-                <button class="header-btn" onclick="window.toggleStats(true)" title="Analytics">
+                <button class="header-btn" onclick="toggleStats(true)" title="Analytics">
                     <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"></path></svg>
                 </button>
-                <button class="header-btn" onclick="window.toggleSettings(true)" title="Settings">
+                <button class="header-btn" onclick="toggleSettings(true)" title="Settings">
                     <svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1 0-2.83 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
                 </button>
-                <button class="header-btn" onclick="window.toggleInfo(true)" title="Info">
+                <button class="header-btn" onclick="toggleInfo(true)" title="Info">
                     <svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
                 </button>
             </div>
@@ -241,8 +243,8 @@
             <div class="shared-banner-title">Shared Configuration</div>
             <div class="shared-banner-text">Previewing a shared rule set. Save it as your default?</div>
             <div class="shared-banner-btns">
-                <button class="btn-save" onclick="window.acceptSharedConfig()">Save Config</button>
-                <button onclick="window.discardSharedConfig()">Discard</button>
+                <button class="btn-save" onclick="acceptSharedConfig()">Save Config</button>
+                <button onclick="discardSharedConfig()">Discard</button>
             </div>
         </div>
 
@@ -252,19 +254,19 @@
             </div>
             <div class="shared-banner-text">You have been challenged! Your opponent scored <b id="duel-op-score" style="color:var(--text-main)"></b>. Can you beat it?</div>
             <div class="shared-banner-btns">
-                <button class="btn-duel" onclick="window.acceptDuel()">Accept Duel</button>
-                <button onclick="window.discardSharedConfig()">Flee</button>
+                <button class="btn-duel" onclick="acceptDuel()">Accept Duel</button>
+                <button onclick="discardSharedConfig()">Flee</button>
             </div>
         </div>
 
         <div class="info-modal" id="settings-modal">
-            <h2>Settings <span style="font-size: 0.6rem; color: var(--text-muted); font-weight: normal; cursor:pointer;" onclick="window.toggleSettings(false)">[X]</span></h2>
+            <h2>Settings <span style="font-size: 0.6rem; color: var(--text-muted); font-weight: normal; cursor:pointer;" onclick="toggleSettings(false)">[X]</span></h2>
             <div style="margin-top: 1rem;">
-                <button onclick="window.triggerConfirm('Reset Theme to default White?', window.resetTheme)" style="margin-bottom: 8px;">Reset App Theme</button>
-                <button class="btn-danger" onclick="window.triggerConfirm('Reset Configuration to defaults?', window.resetConfig)">Reset Configuration</button>
-                <button class="btn-danger" onclick="window.triggerConfirm('Wipe your entire Pantheon gallery?', window.resetPantheon)">Clear Pantheon</button>
-                <button class="btn-danger" onclick="window.triggerConfirm('Delete all your analytics and stats?', window.resetAnalytics)">Clear Analytics</button>
-                <button class="btn-danger" onclick="window.triggerConfirm('WARNING: This will delete EVERYTHING and hard refresh the page. Continue?', window.resetAll)" style="margin-top: 1rem;">Factory Reset</button>
+                <button onclick="triggerConfirm('Reset Theme to default White?', resetTheme)" style="margin-bottom: 8px;">Reset App Theme</button>
+                <button class="btn-danger" onclick="triggerConfirm('Reset Configuration to defaults?', resetConfig)">Reset Configuration</button>
+                <button class="btn-danger" onclick="triggerConfirm('Wipe your entire Pantheon gallery?', resetPantheon)">Clear Pantheon</button>
+                <button class="btn-danger" onclick="triggerConfirm('Delete all your analytics and stats?', resetAnalytics)">Clear Analytics</button>
+                <button class="btn-danger" onclick="triggerConfirm('WARNING: This will delete EVERYTHING and hard refresh the page. Continue?', resetAll)" style="margin-top: 1rem;">Factory Reset</button>
             </div>
         </div>
 
@@ -273,8 +275,8 @@
                 <h3 style="color:#ef4444; margin-bottom: 1rem; font-size:0.8rem; text-transform:uppercase;">Confirm Action</h3>
                 <p id="confirm-msg" style="font-size:0.7rem; margin-bottom: 1.5rem;"></p>
                 <div style="display:flex; gap:10px;">
-                    <button style="border-color:#ef4444; color:#ef4444;" onclick="window.executeConfirm()">Confirm</button>
-                    <button onclick="window.closeConfirm()">Cancel</button>
+                    <button style="border-color:#ef4444; color:#ef4444;" onclick="executeConfirm()">Confirm</button>
+                    <button onclick="closeConfirm()">Cancel</button>
                 </div>
             </div>
         </div>
@@ -283,11 +285,11 @@
             <h2>Export Code <span style="font-size: 0.6rem; color: var(--text-muted); font-weight: normal; cursor:pointer;" onclick="document.getElementById('export-modal').style.display='none'">[X]</span></h2>
             <p>Your studio creation formatted as CSS Variables.</p>
             <textarea id="export-textarea" readonly></textarea>
-            <button onclick="window.copyExport()">Copy to Clipboard</button>
+            <button onclick="copyExport()">Copy to Clipboard</button>
         </div>
 
         <div class="info-modal" id="pantheon-modal">
-            <h2>The Pantheon <span style="font-size: 0.6rem; color: var(--text-muted); font-weight: normal; cursor:pointer;" onclick="window.togglePantheon(false)">[X]</span></h2>
+            <h2>The Pantheon <span style="font-size: 0.6rem; color: var(--text-muted); font-weight: normal; cursor:pointer;" onclick="togglePantheon(false)">[X]</span></h2>
             <p style="text-transform: none;">Every configuration you score <b>98%+</b> on is permanently immortalized here. Click a swatch to reveal its metadata.</p>
             <div class="pantheon-grid" id="pantheon-grid"></div>
             
@@ -302,7 +304,7 @@
         </div>
 
         <div class="info-modal" id="info-modal">
-            <h2>Game Rules <span style="font-size: 0.6rem; color: var(--text-muted); font-weight: normal; cursor:pointer;" onclick="window.toggleInfo(false)">[X]</span></h2>
+            <h2>Game Rules <span style="font-size: 0.6rem; color: var(--text-muted); font-weight: normal; cursor:pointer;" onclick="toggleInfo(false)">[X]</span></h2>
             
             <h3>Game Types</h3>
             <p data-rule="type-solid"><b>Solid Color:</b> The classic match mode. Use sliders to match the reference.</p>
@@ -334,7 +336,7 @@
         </div>
 
         <div class="info-modal" id="stats-modal">
-            <h2>Your Analytics <span style="font-size: 0.6rem; color: var(--text-muted); font-weight: normal; cursor:pointer;" onclick="window.toggleStats(false)">[X]</span></h2>
+            <h2>Your Analytics <span style="font-size: 0.6rem; color: var(--text-muted); font-weight: normal; cursor:pointer;" onclick="toggleStats(false)">[X]</span></h2>
             <div class="stats-grid">
                 <div class="stat-card"><div class="stat-val" id="st-games">0</div><div class="stat-lbl">Total Games Played</div></div>
                 <div class="stat-card"><div class="stat-val" id="st-acc">0%</div><div class="stat-lbl">Avg Accuracy</div></div>
@@ -350,15 +352,15 @@
 
         <div class="game-setup active" id="setup-screen">
             <div class="space-selector" id="space-selector">
-                <label><input type="radio" name="colorSpace" value="rgb" checked onchange="window.changeColorSpace()"><span class="radio-label">RGB</span></label>
-                <label><input type="radio" name="colorSpace" value="hsl" onchange="window.changeColorSpace()"><span class="radio-label">HSL</span></label>
-                <label><input type="radio" name="colorSpace" value="oklab" onchange="window.changeColorSpace()"><span class="radio-label">OKLAB</span></label>
-                <label><input type="radio" name="colorSpace" value="oklch" onchange="window.changeColorSpace()"><span class="radio-label">OKLCH</span></label>
-                <label><input type="radio" name="colorSpace" value="cmyk" onchange="window.changeColorSpace()"><span class="radio-label">CMYK</span></label>
+                <label><input type="radio" name="colorSpace" value="rgb" checked onchange="changeColorSpace()"><span class="radio-label">RGB</span></label>
+                <label><input type="radio" name="colorSpace" value="hsl" onchange="changeColorSpace()"><span class="radio-label">HSL</span></label>
+                <label><input type="radio" name="colorSpace" value="oklab" onchange="changeColorSpace()"><span class="radio-label">OKLAB</span></label>
+                <label><input type="radio" name="colorSpace" value="oklch" onchange="changeColorSpace()"><span class="radio-label">OKLCH</span></label>
+                <label><input type="radio" name="colorSpace" value="cmyk" onchange="changeColorSpace()"><span class="radio-label">CMYK</span></label>
             </div>
 
             <div class="config-grid">
-                <select id="type-select" onchange="window.handleTypeChange()">
+                <select id="type-select" onchange="handleTypeChange()">
                     <option value="solid" selected>Solid Color</option>
                     <option value="luminance">Luminance Match (Brightness)</option>
                     <option value="hexdle">Hex-dle (Decoder)</option>
@@ -370,18 +372,18 @@
                     <option value="palette">Palette Architect</option>
                     <option value="studio">Studio (Export Utility)</option>
                 </select>
-                <select id="vision-select" onchange="window.handleVision()">
+                <select id="vision-select" onchange="handleVision()">
                     <option value="normal" selected>Normal Vision</option>
                     <option value="protanopia">Protanopia (Red-Blind)</option>
                     <option value="deuteranopia">Deuteranopia (Green-Blind)</option>
                     <option value="tritanopia">Tritanopia (Blue-Blind)</option>
                 </select>
-                <select id="palette-rule" style="display:none;" onchange="window.handleToggles()">
+                <select id="palette-rule" style="display:none;" onchange="handleToggles()">
                     <option value="analogous" selected>Analogous</option>
                     <option value="triadic">Triadic</option>
                     <option value="split">Split-Comp</option>
                 </select>
-                <select id="telephone-rounds" style="display:none;" onchange="window.handleToggles()">
+                <select id="telephone-rounds" style="display:none;" onchange="handleToggles()">
                     <option value="5">5 ROUNDS</option>
                     <option value="10" selected>10 ROUNDS</option>
                     <option value="20">20 ROUNDS</option>
@@ -400,45 +402,45 @@
             
             <div class="toggles-container">
                 <label class="mode-toggle" id="lbl-map">
-                    <input type="checkbox" id="map-checkbox" onchange="window.handleToggles()">
+                    <input type="checkbox" id="map-checkbox" onchange="handleToggles()">
                     <div class="toggle-switch"></div> <span class="color-box-label" style="padding:0;">Visual Map</span>
                 </label>
                 <label class="mode-toggle" id="lbl-hardcore">
-                    <input type="checkbox" id="hardcore-checkbox" onchange="window.handleToggles()">
+                    <input type="checkbox" id="hardcore-checkbox" onchange="handleToggles()">
                     <div class="toggle-switch"></div> <span class="color-box-label" style="padding:0;">Blind Hardcore</span>
                 </label>
                 <label class="mode-toggle" id="lbl-terminal">
-                    <input type="checkbox" id="terminal-checkbox" onchange="window.handleToggles()">
+                    <input type="checkbox" id="terminal-checkbox" onchange="handleToggles()">
                     <div class="toggle-switch"></div> <span class="color-box-label" style="padding:0;">Terminal Mode</span>
                 </label>
                 <label class="mode-toggle" id="lbl-memory">
-                    <input type="checkbox" id="memory-checkbox" onchange="window.handleToggles()">
+                    <input type="checkbox" id="memory-checkbox" onchange="handleToggles()">
                     <div class="toggle-switch"></div> <span class="color-box-label" style="padding:0;">Memory Mode</span>
                 </label>
                 <label class="mode-toggle" id="lbl-illusion">
-                    <input type="checkbox" id="illusion-checkbox" onchange="window.handleToggles()">
+                    <input type="checkbox" id="illusion-checkbox" onchange="handleToggles()">
                     <div class="toggle-switch"></div> <span class="color-box-label" style="padding:0;">Illusion Framing</span>
                 </label>
                 <label class="mode-toggle" id="lbl-darkroom">
-                    <input type="checkbox" id="darkroom-checkbox" onchange="window.handleToggles()">
+                    <input type="checkbox" id="darkroom-checkbox" onchange="handleToggles()">
                     <div class="toggle-switch"></div> <span class="color-box-label" style="padding:0;">Darkroom Mode</span>
                 </label>
             </div>
 
             <div class="btn-group">
-                <button onclick="window.startFreeplay()">Play / Start</button>
-                <button class="btn-rush" onclick="window.startRush()">Chroma Rush</button>
+                <button onclick="startFreeplay()">Play / Start</button>
+                <button class="btn-rush" onclick="startRush()">Chroma Rush</button>
             </div>
             <div class="btn-group">
-                <button class="btn-daily" onclick="window.toggleDailyMenu(true)">Play Daily</button>
-                <button style="border-color:var(--text-muted); color:var(--text-muted);" id="btn-copy-config" onclick="window.copyConfigUrl()">Copy Config</button>
+                <button class="btn-daily" onclick="toggleDailyMenu(true)">Play Daily</button>
+                <button style="border-color:var(--text-muted); color:var(--text-muted);" id="btn-copy-config" onclick="copyConfigUrl()">Copy Config</button>
             </div>
         </div>
 
         <div class="daily-menu" id="daily-screen">
             <h2 style="font-size:0.7rem; text-transform:uppercase; color:var(--text-muted); margin-bottom:1.5rem; letter-spacing:0.2em;">Global Daily Challenges &mdash; Day <span id="daily-day-display"></span></h2>
             <div id="daily-challenges-list" style="margin-bottom: 2rem;"></div>
-            <button onclick="window.toggleDailyMenu(false)">Back to Menu</button>
+            <button onclick="toggleDailyMenu(false)">Back to Menu</button>
         </div>
 
         <div class="color-boxes" id="main-color-boxes" style="display: none;">
@@ -477,7 +479,7 @@
                     <div class="hexdle-keyboard" id="hexdle-keyboard">
                         <script>
                             const keys = ['0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','DEL','ENT'];
-                            keys.forEach(k => document.write(`<div class="hexdle-key" id="hk-${k}" onclick="window.handleHexKey('${k}')">${k}</div>`));
+                            keys.forEach(k => document.write(`<div class="hexdle-key" id="hk-${k}" onclick="handleHexKey('${k}')">${k}</div>`));
                         </script>
                     </div>
                 </div>
@@ -485,7 +487,7 @@
                 <div id="terminal-controls" style="display: none;">
                     <div class="terminal-input-wrapper">
                         <span class="terminal-prompt">&gt;</span>
-                        <input type="text" id="terminal-input" placeholder="e.g. #FF4500 or hsl(180, 50%, 50%)" spellcheck="false" autocomplete="off" oninput="window.updateTerminal()">
+                        <input type="text" id="terminal-input" placeholder="e.g. #FF4500 or hsl(180, 50%, 50%)" spellcheck="false" autocomplete="off" oninput="updateTerminal()">
                     </div>
                 </div>
 
@@ -496,16 +498,16 @@
                 <div id="standard-controls">
                     <div class="tabs-container" id="ui-tabs" style="display:none;"></div>
 
-                    <div class="slider-group" id="group-deg" style="display:none;"><div class="slider-header"><span>Rotation (Deg)</span><span class="slider-value" id="val-deg">180</span></div><input type="range" id="slider-deg" min="0" max="360" value="180" oninput="window.updateColor()"><div class="ghost-thumb" id="g-deg"></div></div>
-                    <div class="slider-group" id="group-s1"><div class="slider-header"><span id="lbl-s1">CH 1</span><span class="slider-value" id="val-s1">0</span></div><input type="range" id="slider-1" oninput="window.updateColor()"><div class="ghost-thumb" id="g-1"></div></div>
-                    <div class="slider-group" id="group-s2"><div class="slider-header"><span id="lbl-s2">CH 2</span><span class="slider-value" id="val-s2">0</span></div><input type="range" id="slider-2" oninput="window.updateColor()"><div class="ghost-thumb" id="g-2"></div></div>
-                    <div class="slider-group" id="group-s3"><div class="slider-header"><span id="lbl-s3">CH 3</span><span class="slider-value" id="val-s3">0</span></div><input type="range" id="slider-3" oninput="window.updateColor()"><div class="ghost-thumb" id="g-3"></div></div>
-                    <div class="slider-group" id="group-s4" style="display:none;"><div class="slider-header"><span id="lbl-s4">CH 4</span><span class="slider-value" id="val-s4">0</span></div><input type="range" id="slider-4" oninput="window.updateColor()"><div class="ghost-thumb" id="g-4"></div></div>
+                    <div class="slider-group" id="group-deg" style="display:none;"><div class="slider-header"><span>Rotation (Deg)</span><span class="slider-value" id="val-deg">180</span></div><input type="range" id="slider-deg" min="0" max="360" value="180" oninput="updateColor()"><div class="ghost-thumb" id="g-deg"></div></div>
+                    <div class="slider-group" id="group-s1"><div class="slider-header"><span id="lbl-s1">CH 1</span><span class="slider-value" id="val-s1">0</span></div><input type="range" id="slider-1" oninput="updateColor()"><div class="ghost-thumb" id="g-1"></div></div>
+                    <div class="slider-group" id="group-s2"><div class="slider-header"><span id="lbl-s2">CH 2</span><span class="slider-value" id="val-s2">0</span></div><input type="range" id="slider-2" oninput="updateColor()"><div class="ghost-thumb" id="g-2"></div></div>
+                    <div class="slider-group" id="group-s3"><div class="slider-header"><span id="lbl-s3">CH 3</span><span class="slider-value" id="val-s3">0</span></div><input type="range" id="slider-3" oninput="updateColor()"><div class="ghost-thumb" id="g-3"></div></div>
+                    <div class="slider-group" id="group-s4" style="display:none;"><div class="slider-header"><span id="lbl-s4">CH 4</span><span class="slider-value" id="val-s4">0</span></div><input type="range" id="slider-4" oninput="updateColor()"><div class="ghost-thumb" id="g-4"></div></div>
                 </div>
                 
                 <div id="lock-btn-container" style="display:flex; gap:10px;">
-                    <button class="btn-lock" id="btn-lock" onclick="window.lockIn()">Lock In</button>
-                    <button class="btn-exit-studio" id="btn-exit-studio" style="display:none;" onclick="window.goHome()">Exit Studio</button>
+                    <button class="btn-lock" id="btn-lock" onclick="lockIn()">Lock In</button>
+                    <button class="btn-exit-studio" id="btn-exit-studio" style="display:none;" onclick="goHome()">Exit Studio</button>
                 </div>
             </div>
         </div>
@@ -515,19 +517,19 @@
             <div class="status-text" id="status-text"></div>
             
             <div style="display: flex; flex-direction: column; gap: 10px;">
-                <button class="btn-duel" id="btn-challenge" onclick="window.shareDuel()" style="display:none;">
+                <button class="btn-duel" id="btn-challenge" onclick="shareDuel()" style="display:none;">
                     <svg class="icon" viewBox="0 0 24 24"><path d="M14.5 17.5L3 6V3h3l11.5 11.5M13 19l6-6M16 16l4 4M19 21l2-2"></path></svg>
                     <span>Challenge a Friend</span>
                 </button>
-                <button class="btn-share" id="btn-share" onclick="window.shareScore()">
+                <button class="btn-share" id="btn-share" onclick="shareScore()">
                     <svg class="icon" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
                     <span>Share Result</span>
                 </button>
-                <button onclick="window.playAgain()">
+                <button onclick="playAgain()">
                     <svg class="icon" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><polyline points="3 3 3 8 8 8"></polyline></svg>
                     <span>Play Again</span>
                 </button>
-                <button onclick="window.resetGame()">Menu</button>
+                <button onclick="resetGame()">Menu</button>
             </div>
         </div>
     </div>
@@ -540,7 +542,7 @@
 
     <script>
         // --- GLOBAL COMPRESSION UTILITIES ---
-        window.compressData = async function(dataObj) {
+        async function compressData(dataObj) {
             const str = JSON.stringify(dataObj);
             const stream = new Blob([str]).stream().pipeThrough(new CompressionStream('deflate-raw'));
             const buffer = await new Response(stream).arrayBuffer();
@@ -549,7 +551,7 @@
             return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); 
         }
 
-        window.decompressData = async function(b64) {
+        async function decompressData(b64) {
             b64 = b64.replace(/-/g, '+').replace(/_/g, '/');
             const pad = b64.length % 4; if(pad) b64 += '='.repeat(4 - pad);
             const binary = atob(b64); const bytes = new Uint8Array(binary.length);
@@ -559,13 +561,13 @@
         }
 
         // --- GLOBALS ---
-        window.typeNames = {
+        const typeNames = {
             solid: "Solid Color", luminance: "Luminance Match", hexdle: "Hex-dle", haystack: "Haystack",
             sort: "Color Sort", telephone: "Telephone", midpoint: "Midpoint", gradient: "Gradient Matcher",
             palette: "Palette", studio: "Studio Mode"
         };
 
-        window.toggleInfo = function(show) { 
+        function toggleInfo(show) { 
             const modal = document.getElementById('info-modal');
             modal.style.display = show ? 'block' : 'none'; 
             
@@ -602,13 +604,13 @@
             }
         };
         
-        window.toggleSettings = function(show) { document.getElementById('settings-modal').style.display = show ? 'block' : 'none'; }
+        function toggleSettings(show) { document.getElementById('settings-modal').style.display = show ? 'block' : 'none'; }
         
-        window.goHome = function() {
+        function goHome() {
             if (document.getElementById('game-area').classList.contains('active') && st.type !== 'studio') {
-                window.saveStats(0, 255, 255, 255);
+                saveStats(0, 255, 255, 255);
             }
-            window.resetGame();
+            resetGame();
         }
 
         const svgs = {
@@ -666,49 +668,49 @@
         const hiddenCtx = document.createElement('canvas').getContext('2d', { willReadFrequently: true });
         hiddenCtx.canvas.width = 1; hiddenCtx.canvas.height = 1;
 
-        window.getRgbFromCss = function(css) {
+        function getRgbFromCss(css) {
             hiddenCtx.clearRect(0,0,1,1); hiddenCtx.fillStyle = css; hiddenCtx.fillRect(0,0,1,1);
             const d = hiddenCtx.getImageData(0,0,1,1).data; return { r:d[0], g:d[1], b:d[2] };
         }
-        window.hexToRgb = function(hex) { return { r: parseInt(hex.slice(0,2),16), g: parseInt(hex.slice(2,4),16), b: parseInt(hex.slice(4,6),16) }; }
+        function hexToRgb(hex) { return { r: parseInt(hex.slice(0,2),16), g: parseInt(hex.slice(2,4),16), b: parseInt(hex.slice(4,6),16) }; }
         
-        window.isGamutSafe = function(rgbList) {
+        function isGamutSafe(rgbList) {
             if (st.spaceId !== 'oklab' && st.spaceId !== 'oklch') return true;
             return !rgbList.some(rgb => rgb.r===0 || rgb.r===255 || rgb.g===0 || rgb.g===255 || rgb.b===0 || rgb.b===255);
         }
 
         // --- WCAG CONTRAST MATH ---
-        window.getLuminance = function(r, g, b) {
+        function getLuminance(r, g, b) {
             let a = [r, g, b].map(v => { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); });
             return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
         }
-        window.getContrast = function(c1, c2) {
-            let l1 = window.getLuminance(c1.r, c1.g, c1.b); let l2 = window.getLuminance(c2.r, c2.g, c2.b);
+        function getContrast(c1, c2) {
+            let l1 = getLuminance(c1.r, c1.g, c1.b); let l2 = getLuminance(c2.r, c2.g, c2.b);
             return (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
         }
 
         // --- APP THEME & VISION ---
-        window.initTheme = function() { const t = localStorage.getItem('chroma_theme'); if(t) document.documentElement.style.setProperty('--accent', t); }
-        window.setTheme = function(color) { document.documentElement.style.setProperty('--accent', color); localStorage.setItem('chroma_theme', color); window.togglePantheon(false); }
-        window.resetTheme = function() { document.documentElement.style.setProperty('--accent', '#ffffff'); localStorage.removeItem('chroma_theme'); window.toggleSettings(false); }
-        window.handleVision = function() { st.vision = document.getElementById('vision-select').value; document.body.className = st.vision; window.saveLocal(); }
+        function initTheme() { const t = localStorage.getItem('chroma_theme'); if(t) document.documentElement.style.setProperty('--accent', t); }
+        function setTheme(color) { document.documentElement.style.setProperty('--accent', color); localStorage.setItem('chroma_theme', color); togglePantheon(false); }
+        function resetTheme() { document.documentElement.style.setProperty('--accent', '#ffffff'); localStorage.removeItem('chroma_theme'); toggleSettings(false); }
+        function handleVision() { st.vision = document.getElementById('vision-select').value; document.body.className = st.vision; saveLocal(); }
 
         let currentConfirmCallback = null;
-        window.triggerConfirm = function(msg, callback) {
+        function triggerConfirm(msg, callback) {
             currentConfirmCallback = callback; document.getElementById('confirm-msg').textContent = msg; document.getElementById('confirm-modal').style.display = 'flex';
         }
-        window.closeConfirm = function() { document.getElementById('confirm-modal').style.display = 'none'; currentConfirmCallback = null; }
-        window.executeConfirm = function() { if(currentConfirmCallback) currentConfirmCallback(); window.closeConfirm(); }
+        function closeConfirm() { document.getElementById('confirm-modal').style.display = 'none'; currentConfirmCallback = null; }
+        function executeConfirm() { if(currentConfirmCallback) currentConfirmCallback(); closeConfirm(); }
 
-        window.resetConfig = function() { localStorage.removeItem('chroma_cfg'); window.setUIConfig(defaultCfg); window.toggleSettings(false); }
-        window.resetPantheon = function() { localStorage.removeItem('chroma_pantheon_v2'); window.toggleSettings(false); }
-        window.resetAnalytics = function() { localStorage.removeItem('chroma_stats_v2'); window.toggleSettings(false); }
-        window.resetAll = function() { localStorage.clear(); window.location.href = window.location.pathname; }
+        function resetConfig() { localStorage.removeItem('chroma_cfg'); setUIConfig(defaultCfg); toggleSettings(false); }
+        function resetPantheon() { localStorage.removeItem('chroma_pantheon_v2'); toggleSettings(false); }
+        function resetAnalytics() { localStorage.removeItem('chroma_stats_v2'); toggleSettings(false); }
+        function resetAll() { localStorage.clear(); window.location.href = window.location.pathname; }
 
-        window.loadPantheon = function() { return JSON.parse(localStorage.getItem('chroma_pantheon_v2')) || []; }
-        window.saveToPantheon = function(tCss, uCss) {
+        function loadPantheon() { return JSON.parse(localStorage.getItem('chroma_pantheon_v2')) || []; }
+        function saveToPantheon(tCss, uCss) {
             if (st.type === 'studio' || st.type === 'haystack' || st.type === 'hexdle' || st.type === 'sort') return;
-            let p = window.loadPantheon();
+            let p = loadPantheon();
             const entry = {
                 tCss, uCss, date: new Date().toLocaleDateString(),
                 cfg: { space: st.spaceId.toUpperCase(), type: st.type.charAt(0).toUpperCase() + st.type.slice(1), obj: st.type==='palette'?st.palRule:(st.isComp?'Complementary':st.isWcag?'WCAG':'Match'), mods: [st.isMap?'Map':'', st.isHardcore?'Blind':'', st.isTerminal?'Terminal':'', st.isIllusion?'Illusion':'', st.isMemory?'Memory':'', st.isDarkroom?'Darkroom':'', st.vision!=='normal'?st.vision:''].filter(Boolean).join(', ') || 'None' }
@@ -716,41 +718,41 @@
             p.unshift(entry); localStorage.setItem('chroma_pantheon_v2', JSON.stringify(p));
         }
         
-        window.togglePantheon = function(show) {
+        function togglePantheon(show) {
             const m = document.getElementById('pantheon-modal');
             if (show) {
                 document.getElementById('pantheon-details').style.display = 'none';
-                const grid = document.getElementById('pantheon-grid'); const p = window.loadPantheon();
+                const grid = document.getElementById('pantheon-grid'); const p = loadPantheon();
                 grid.innerHTML = p.length === 0 ? '<div class="empty-pantheon">Achieve 98% or higher precision to immortalize colors here.</div>' : '';
                 p.forEach(entry => {
                     const el = document.createElement('div'); el.className = 'pantheon-swatch';
                     if (entry.cfg.type === 'Gradient' || entry.cfg.type === 'Palette') { el.style.background = entry.tCss; } 
                     else { el.style.background = `linear-gradient(135deg, ${entry.tCss} 50%, ${entry.uCss} 50%)`; }
-                    el.onclick = () => window.showPantheonDetails(entry); grid.appendChild(el);
+                    el.onclick = () => showPantheonDetails(entry); grid.appendChild(el);
                 });
             }
             m.style.display = show ? 'block' : 'none';
         }
-        window.showPantheonDetails = function(e) {
+        function showPantheonDetails(e) {
             document.getElementById('pantheon-details').style.display = 'block';
             document.getElementById('pd-target').textContent = e.tCss; document.getElementById('pd-user').textContent = e.uCss;
             document.getElementById('pd-space').textContent = `${e.cfg.space} (${e.cfg.type})`; document.getElementById('pd-mods').textContent = e.cfg.mods; document.getElementById('pd-date').textContent = e.date;
             const btn = document.getElementById('btn-set-theme');
-            if (e.cfg.type === 'Solid') { btn.style.display = 'block'; btn.onclick = () => window.setTheme(e.tCss); } else { btn.style.display = 'none'; }
+            if (e.cfg.type === 'Solid') { btn.style.display = 'block'; btn.onclick = () => setTheme(e.tCss); } else { btn.style.display = 'none'; }
         }
 
         // --- STATS SYSTEM ---
-        window.loadStats = function() { return JSON.parse(localStorage.getItem('chroma_stats_v2')) || { games:0, scoreSum:0, errR:0, errG:0, errB:0, streak:0 }; }
-        window.saveStats = function(score, dr, dg, db) {
+        function loadStats() { return JSON.parse(localStorage.getItem('chroma_stats_v2')) || { games:0, scoreSum:0, errR:0, errG:0, errB:0, streak:0 }; }
+        function saveStats(score, dr, dg, db) {
             if (st.type === 'studio') return;
-            let s = window.loadStats(); s.games++; s.scoreSum += score; s.errR += dr; s.errG += dg; s.errB += db;
+            let s = loadStats(); s.games++; s.scoreSum += score; s.errR += dr; s.errG += dg; s.errB += db;
             if (st.isRush && st.rushStreak > s.streak) s.streak = st.rushStreak;
             localStorage.setItem('chroma_stats_v2', JSON.stringify(s));
         }
-        window.toggleStats = function(show) {
+        function toggleStats(show) {
             const m = document.getElementById('stats-modal');
             if (show) {
-                let s = window.loadStats();
+                let s = loadStats();
                 document.getElementById('st-games').textContent = s.games; document.getElementById('st-acc').textContent = s.games > 0 ? Math.round(s.scoreSum/s.games) + '%' : '0%'; document.getElementById('st-streak').textContent = s.streak;
                 if (s.games > 0) {
                     let avgR = s.errR/s.games, avgG = s.errG/s.games, avgB = s.errB/s.games;
@@ -769,7 +771,7 @@
         }
 
         // --- UI CONFIG ---
-        window.handleTypeChange = function() {
+        function handleTypeChange() {
             const t = document.getElementById('type-select').value;
             const isGrad = t === 'gradient'; const isPal = t === 'palette'; const isStud = t === 'studio'; const isHay = t === 'haystack'; const isHex = t === 'hexdle'; const isTele = t === 'telephone'; const isMid = t === 'midpoint'; const isSort = t === 'sort'; const isLum = t === 'luminance';
             
@@ -780,19 +782,27 @@
 
             if (isPal) {
                 const cur = document.querySelector('input[name="colorSpace"]:checked').value;
-                if (cur !== 'hsl' && cur !== 'oklch') { document.querySelector('input[name="colorSpace"][value="hsl"]').checked = true; window.changeColorSpace(); }
+                if (cur !== 'hsl' && cur !== 'oklch') { document.querySelector('input[name="colorSpace"][value="hsl"]').checked = true; changeColorSpace(); }
                 document.querySelector('input[name="colorSpace"][value="rgb"]').disabled = true; document.querySelector('input[name="colorSpace"][value="oklab"]').disabled = true; document.querySelector('input[name="colorSpace"][value="cmyk"]').disabled = true;
             } else if (isHex || isSort) {
-                document.querySelector('input[name="colorSpace"][value="rgb"]').checked = true; window.changeColorSpace();
+                document.querySelector('input[name="colorSpace"][value="rgb"]').checked = true; changeColorSpace();
                 document.querySelector('input[name="colorSpace"][value="hsl"]').disabled = true; document.querySelector('input[name="colorSpace"][value="oklab"]').disabled = true; document.querySelector('input[name="colorSpace"][value="oklch"]').disabled = true; document.querySelector('input[name="colorSpace"][value="cmyk"]').disabled = true;
             } else {
                 document.querySelector('input[name="colorSpace"][value="rgb"]').disabled = false; document.querySelector('input[name="colorSpace"][value="hsl"]').disabled = false; document.querySelector('input[name="colorSpace"][value="oklab"]').disabled = false; document.querySelector('input[name="colorSpace"][value="oklch"]').disabled = false; document.querySelector('input[name="colorSpace"][value="cmyk"]').disabled = false;
             }
 
-            window.handleToggles();
+            if (isStud || isHay || isHex || isMid || isTele || isSort) {
+                document.getElementById('terminal-checkbox').checked = false; document.getElementById('map-checkbox').checked = false;
+            }
+            if (isStud) {
+                document.getElementById('hardcore-checkbox').checked = false; document.getElementById('memory-checkbox').checked = false;
+                document.getElementById('illusion-checkbox').checked = false; document.getElementById('darkroom-checkbox').checked = false;
+            }
+
+            handleToggles();
         }
 
-        window.handleToggles = function() {
+        function handleToggles() {
             if(st.suppressSave) return;
             const t = document.getElementById('type-select').value;
             const isMulti = t === 'gradient' || t === 'palette'; const isStud = t === 'studio'; const isHay = t === 'haystack'; const isHex = t === 'hexdle'; const isTele = t === 'telephone'; const isMid = t === 'midpoint'; const isSort = t === 'sort'; const isLum = t === 'luminance';
@@ -827,10 +837,10 @@
 
             const sel = document.getElementById('space-selector');
             sel.style.opacity = (mapChk.checked || isHay || isHex || isSort) ? '0.3' : '1'; sel.style.pointerEvents = (mapChk.checked || isHay || isHex || isSort) ? 'none' : 'auto';
-            window.saveLocal();
+            saveLocal();
         }
 
-        window.getUIConfig = function() {
+        function getUIConfig() {
             const mChk = document.getElementById('map-checkbox');
             const hChk = document.getElementById('hardcore-checkbox');
             const tmChk = document.getElementById('terminal-checkbox');
@@ -845,29 +855,29 @@
             };
         }
 
-        window.setUIConfig = function(c) {
+        function setUIConfig(c) {
             st.suppressSave = true;
             if (document.querySelector(`input[name="colorSpace"][value="${c.s}"]`)) document.querySelector(`input[name="colorSpace"][value="${c.s}"]`).checked = true;
             document.getElementById('timer-select').value = c.t || 30; document.getElementById('objective-select').value = c.o || 'match'; document.getElementById('type-select').value = c.p || 'solid'; document.getElementById('palette-rule').value = c.pr || 'analogous'; document.getElementById('vision-select').value = c.v || 'normal'; document.getElementById('telephone-rounds').value = c.tr || 10;
             document.getElementById('map-checkbox').checked = c.m || false; document.getElementById('hardcore-checkbox').checked = c.h || false; document.getElementById('illusion-checkbox').checked = c.i || false; document.getElementById('terminal-checkbox').checked = c.tm || false; document.getElementById('memory-checkbox').checked = c.mm || false; document.getElementById('darkroom-checkbox').checked = c.dk || false;
-            st.suppressSave = false; window.handleVision(); window.handleTypeChange(); window.changeColorSpace();
+            st.suppressSave = false; handleVision(); handleTypeChange(); changeColorSpace();
         }
 
-        window.saveLocal = function() { if (!st.suppressSave && !st.isViewingShared) localStorage.setItem('chroma_cfg', JSON.stringify(window.getUIConfig())); }
-        window.loadLocal = function() { try { let s = JSON.parse(localStorage.getItem('chroma_cfg')); if (s && s.s) return s; } catch(e){} return defaultCfg; }
-        window.clearUrl = function() { window.history.replaceState({}, document.title, window.location.pathname); }
+        function saveLocal() { if (!st.suppressSave && !st.isViewingShared) localStorage.setItem('chroma_cfg', JSON.stringify(getUIConfig())); }
+        function loadLocal() { try { let s = JSON.parse(localStorage.getItem('chroma_cfg')); if (s && s.s) return s; } catch(e){} return defaultCfg; }
+        function clearUrl() { window.history.replaceState({}, document.title, window.location.pathname); }
 
-        window.copyConfigUrl = function() {
-            const c = window.getUIConfig(); const qs = `?share=1&s=${c.s}&t=${c.t}&o=${c.o}&p=${c.p}&pr=${c.pr}&v=${c.v}&tr=${c.tr}&m=${c.m?1:0}&h=${c.h?1:0}&i=${c.i?1:0}&tm=${c.tm?1:0}&mm=${c.mm?1:0}&dk=${c.dk?1:0}`;
+        function copyConfigUrl() {
+            const c = getUIConfig(); const qs = `?share=1&s=${c.s}&t=${c.t}&o=${c.o}&p=${c.p}&pr=${c.pr}&v=${c.v}&tr=${c.tr}&m=${c.m?1:0}&h=${c.h?1:0}&i=${c.i?1:0}&tm=${c.tm?1:0}&mm=${c.mm?1:0}&dk=${c.dk?1:0}`;
             navigator.clipboard.writeText(window.location.origin + window.location.pathname + qs);
             document.getElementById('btn-copy-config').innerHTML = '<span>Copied!</span>'; setTimeout(() => document.getElementById('btn-copy-config').innerHTML = 'Copy Config', 2000);
         }
 
-        window.acceptSharedConfig = function() { st.isViewingShared = false; document.getElementById('shared-banner').style.display = 'none'; window.saveLocal(); window.clearUrl(); }
-        window.discardSharedConfig = function() { st.isViewingShared = false; document.getElementById('shared-banner').style.display = 'none'; document.getElementById('duel-banner').style.display = 'none'; st.isDuel = false; window.setUIConfig(window.loadLocal()); window.clearUrl(); }
-        document.querySelectorAll('#setup-screen input, #setup-screen select').forEach(el => el.addEventListener('change', () => { if(st.isViewingShared){ st.isViewingShared=false; document.getElementById('shared-banner').style.display='none'; window.clearUrl(); } window.saveLocal(); }));
+        function acceptSharedConfig() { st.isViewingShared = false; document.getElementById('shared-banner').style.display = 'none'; saveLocal(); clearUrl(); }
+        function discardSharedConfig() { st.isViewingShared = false; document.getElementById('shared-banner').style.display = 'none'; document.getElementById('duel-banner').style.display = 'none'; st.isDuel = false; setUIConfig(loadLocal()); clearUrl(); }
+        document.querySelectorAll('#setup-screen input, #setup-screen select').forEach(el => el.addEventListener('change', () => { if(st.isViewingShared){ st.isViewingShared=false; document.getElementById('shared-banner').style.display='none'; clearUrl(); } saveLocal(); }));
 
-        window.changeColorSpace = function() {
+        function changeColorSpace() {
             if (st.suppressSave) return;
             st.spaceId = document.querySelector('input[name="colorSpace"]:checked').value; const cfg = spaces[st.spaceId];
             [1,2,3,4].forEach(n => {
@@ -875,21 +885,21 @@
                 if (cfg[`s${n}`]) { g.style.display = 'block'; document.getElementById(`lbl-s${n}`).textContent = cfg[`s${n}`].lbl; const sl = document.getElementById(`slider-${n}`); sl.min = cfg[`s${n}`].min; sl.max = cfg[`s${n}`].max; 
                 } else { g.style.display = 'none'; }
             });
-            if(!document.getElementById('map-checkbox').checked && !document.getElementById('terminal-checkbox').checked && document.getElementById('type-select').value !== 'haystack' && document.getElementById('type-select').value !== 'hexdle') window.updateColor();
+            if(!document.getElementById('map-checkbox').checked && !document.getElementById('terminal-checkbox').checked && document.getElementById('type-select').value !== 'haystack' && document.getElementById('type-select').value !== 'hexdle') updateColor();
         }
 
-        window.mulberry32 = function(a) { return function() { var t=a+=0x6D2B79F5; t=Math.imul(t^t>>>15,t|1); t^=t+Math.imul(t^t>>>7,t|61); return ((t^t>>>14)>>>0)/4294967296; } }
-        window.getDailyRNG = function(offset = 0) { const start = new Date('2026-03-23T00:00:00Z'); st.dailyNum = Math.floor((new Date() - start)/86400000)+1; return window.mulberry32(st.dailyNum*42+offset); }
+        function mulberry32(a) { return function() { var t=a+=0x6D2B79F5; t=Math.imul(t^t>>>15,t|1); t^=t+Math.imul(t^t>>>7,t|61); return ((t^t>>>14)>>>0)/4294967296; } }
+        function getDailyRNG(offset = 0) { const start = new Date('2026-03-23T00:00:00Z'); st.dailyNum = Math.floor((new Date() - start)/86400000)+1; return mulberry32(st.dailyNum*42+offset); }
 
-        window.toggleDailyMenu = function(show) {
+        function toggleDailyMenu(show) {
             if (show) {
                 document.getElementById('shared-banner').style.display='none'; document.getElementById('duel-banner').style.display='none';
-                window.generateDailyConfigs(); document.getElementById('setup-screen').classList.remove('active'); document.getElementById('daily-screen').classList.add('active');
+                generateDailyConfigs(); document.getElementById('setup-screen').classList.remove('active'); document.getElementById('daily-screen').classList.add('active');
             } else { document.getElementById('daily-screen').classList.remove('active'); document.getElementById('setup-screen').classList.add('active'); }
         }
 
-        window.generateDailyConfigs = function() {
-            const rng = window.getDailyRNG(0); const spaceList = ['rgb','hsl','oklab','oklch','cmyk'];
+        function generateDailyConfigs() {
+            const rng = getDailyRNG(0); const spaceList = ['rgb','hsl','oklab','oklch','cmyk'];
             document.getElementById('daily-challenges-list').innerHTML = '';
             
             for (let i=1; i<=4; i++) {
@@ -931,20 +941,20 @@
                                   ${mods.length?`<div style="display:flex;gap:10px;margin-top:6px;color:var(--text-main);">${mods.join('')}</div>`:''}`;
                 card.onclick = () => { 
                     st.isDaily=true; st.dailyChallengeId=cfg.id; st.spaceId=cfg.space; st.timeLimit=cfg.timer; st.isMap=cfg.isMap; st.isHardcore=cfg.isHardcore; st.isIllusion=cfg.isIllusion; st.isComp=false; st.isWcag=cfg.objective==='wcag'; st.type=cfg.type; st.palRule='analogous'; st.vision=cfg.vision; st.isTerminal=cfg.isTerminal; st.isMemory=cfg.isMemory; st.isDarkroom=cfg.isDarkroom; st.isRush=cfg.isRush; st.rushStreak=0;
-                    window.setUIConfig({s:cfg.space,t:cfg.timer,o:cfg.objective,p:cfg.type,pr:'analogous',v:cfg.vision,m:cfg.isMap,h:cfg.isHardcore,i:cfg.isIllusion,tm:cfg.isTerminal,mm:cfg.isMemory,dk:cfg.isDarkroom}); window.executeGameStart(); 
+                    setUIConfig({s:cfg.space,t:cfg.timer,o:cfg.objective,p:cfg.type,pr:'analogous',v:cfg.vision,m:cfg.isMap,h:cfg.isHardcore,i:cfg.isIllusion,tm:cfg.isTerminal,mm:cfg.isMemory,dk:cfg.isDarkroom}); executeGameStart(); 
                 };
                 document.getElementById('daily-challenges-list').appendChild(card);
             }
         }
 
-        window.calcComp = function(v) {
+        function calcComp(v) {
             if(st.spaceId==='rgb') return [255-v[0],255-v[1],255-v[2]];
             if(st.spaceId==='hsl'||st.spaceId==='oklch') return [v[0],v[1],(v[2]+180)%360];
             if(st.spaceId==='oklab') return [v[0],-v[1],-v[2]];
             if(st.spaceId==='cmyk') return [100-v[0],100-v[1],100-v[2],100-v[3]];
         }
         
-        window.calcPalette = function(baseVals, rule) {
+        function calcPalette(baseVals, rule) {
             const hIdx = st.spaceId === 'hsl' ? 0 : 2;
             let c2 = [...baseVals], c3 = [...baseVals];
             if (rule === 'analogous') { c2[hIdx] = (baseVals[hIdx] + 30) % 360; c3[hIdx] = (baseVals[hIdx] + 330) % 360; } 
@@ -954,7 +964,7 @@
         }
 
         // --- GHOST SYSTEM (NUCLEAR COMPRESSION) ---
-        window.recordGhost = function() {
+        function recordGhost() {
             const mapDisabled = document.getElementById('map-checkbox').disabled || !document.getElementById('map-checkbox').checked;
             const termDisabled = document.getElementById('terminal-checkbox').disabled || !document.getElementById('terminal-checkbox').checked;
             
@@ -974,7 +984,7 @@
             }
         }
 
-        window.playbackGhost = function() {
+        function playbackGhost() {
             if (!st.isDuel || !st.duelData || !st.parsedGhostLog || st.parsedGhostLog.length === 0) return;
             const elapsed = Date.now() - st.ghostStart; 
             const gL = st.parsedGhostLog; 
@@ -1003,21 +1013,21 @@
                 } else { ghost.style.display = 'none'; }
             });
 
-            if (st.timer && elapsed <= gL[gL.length-1].ms) { st.ghostTimer = requestAnimationFrame(window.playbackGhost); }
+            if (st.timer && elapsed <= gL[gL.length-1].ms) { st.ghostTimer = requestAnimationFrame(playbackGhost); }
         }
 
         // --- HEXDLE ENGINE ---
-        window.initHexdle = function() {
+        function initHexdle() {
             const rng = (st.isDaily || st.isDuel) ? window.getDailyRNG(st.dailyChallengeId + st.rushStreak + (st.isDuel ? st.duelData.tSeed : st.gameSeed)) : () => Math.random();
             if(st.isDuel && st.duelData.tH) { st.hexTarget = st.duelData.tH; } 
             else { st.hexTarget = [1,2,3].map(()=>Math.floor(rng()*256).toString(16).padStart(2,'0').toUpperCase()).join(''); }
-            st.targetRgb = window.hexToRgb(st.hexTarget); st.renderedTargetCss = `#${st.hexTarget}`;
+            st.targetRgb = hexToRgb(st.hexTarget); st.renderedTargetCss = `#${st.hexTarget}`;
             st.hexGuesses = []; st.hexCurrentGuess = "";
             document.getElementById('target-color').style.background = st.renderedTargetCss;
-            window.renderHexdle();
+            renderHexdle();
         }
 
-        window.renderHexdle = function() {
+        function renderHexdle() {
             const board = document.getElementById('hexdle-board'); board.innerHTML = '';
             for(let i=0; i<6; i++) {
                 const row = document.createElement('div'); row.className = 'hexdle-row';
@@ -1046,7 +1056,7 @@
             }
         }
 
-        window.handleHexKey = function(key) {
+        function handleHexKey(key) {
             if (st.type !== 'hexdle' || !document.getElementById('game-area').classList.contains('active')) return;
             key = key.toUpperCase();
             if (key === 'BACKSPACE' || key === 'DEL' || key === 'DELETE') { st.hexCurrentGuess = st.hexCurrentGuess.slice(0, -1); } 
@@ -1055,37 +1065,37 @@
                     st.hexGuesses.push(st.hexCurrentGuess);
                     if (st.hexCurrentGuess === st.hexTarget || st.hexGuesses.length === 6) { 
                         const lastGuess = st.hexGuesses[st.hexGuesses.length - 1];
-                        st.currentRgb = window.hexToRgb(lastGuess);
+                        st.currentRgb = hexToRgb(lastGuess);
                         st.renderedUserCss = `#${lastGuess}`;
-                        window.lockIn(); 
-                    } else { st.hexCurrentGuess = ""; window.renderHexdle(); }
+                        lockIn(); 
+                    } else { st.hexCurrentGuess = ""; renderHexdle(); }
                 }
             } else if (/^[0-9A-F]$/.test(key) && st.hexCurrentGuess.length < 6) { st.hexCurrentGuess += key; }
-            window.renderHexdle();
+            renderHexdle();
         };
 
-        window.addEventListener('keydown', (e) => { if(e.ctrlKey || e.metaKey || e.altKey) return; window.handleHexKey(e.key); });
+        window.addEventListener('keydown', (e) => { if(e.ctrlKey || e.metaKey || e.altKey) return; handleHexKey(e.key); });
 
         // --- MAIN GAME LOOP ---
-        window.startFreeplay = function() {
-            st.isDaily=false; st.isRush=false; const c = window.getUIConfig();
+        function startFreeplay() {
+            st.isDaily=false; st.isRush=false; const c = getUIConfig();
             st.spaceId=c.s; st.timeLimit=c.t; st.isComp=c.o==='complementary'; st.isWcag=c.o==='wcag'; st.type=c.p; st.palRule=c.pr; st.vision=c.v; st.isMap=c.m; st.isHardcore=c.h; st.isIllusion=c.i; st.isTerminal=c.tm; st.isMemory=c.mm; st.isDarkroom=c.dk; st.teleMax=c.tr;
-            document.getElementById('shared-banner').style.display='none'; window.executeGameStart();
+            document.getElementById('shared-banner').style.display='none'; executeGameStart();
         }
-        window.startRush = function() {
-            st.isDaily=false; st.isRush=true; st.rushStreak=0; const c = window.getUIConfig();
+        function startRush() {
+            st.isDaily=false; st.isRush=true; st.rushStreak=0; const c = getUIConfig();
             st.spaceId=c.s; st.timeLimit=60; st.isComp=c.o==='complementary'; st.isWcag=c.o==='wcag'; st.type=c.p; st.palRule=c.pr; st.vision=c.v; st.isMap=c.m; st.isHardcore=c.h; st.isIllusion=c.i; st.isTerminal=c.tm; st.isMemory=c.mm; st.isDarkroom=c.dk; st.teleMax=c.tr;
-            document.getElementById('shared-banner').style.display='none'; window.executeGameStart();
+            document.getElementById('shared-banner').style.display='none'; executeGameStart();
         }
-        window.acceptDuel = function() {
+        function acceptDuel() {
             st.isDaily=false; st.isRush=false; 
-            window.setUIConfig(st.duelData.c); const c = window.getUIConfig();
+            setUIConfig(st.duelData.c); const c = getUIConfig();
             st.spaceId=c.s; st.timeLimit=c.t; st.isComp=c.o==='complementary'; st.isWcag=c.o==='wcag'; st.type=c.p; st.palRule=c.pr; st.vision=c.v; st.isMap=c.m; st.isHardcore=c.h; st.isIllusion=c.i; st.isTerminal=c.tm; st.isMemory=c.mm; st.isDarkroom=c.dk; st.teleMax=c.tr;
-            document.getElementById('duel-banner').style.display='none'; window.executeGameStart();
+            document.getElementById('duel-banner').style.display='none'; executeGameStart();
         }
-        window.playAgain = function() { if (st.type === 'studio') { window.resetGame(); } else if (st.isRush) { window.startRush(); } else if (st.isDuel) { window.acceptDuel(); } else { window.executeGameStart(); } }
+        function playAgain() { if (st.type === 'studio') { resetGame(); } else if (st.isRush) { startRush(); } else if (st.isDuel) { acceptDuel(); } else { executeGameStart(); } }
 
-        window.executeGameStart = function() {
+        function executeGameStart() {
             st.memoryHidden = false; st.haystackCorrect = 0;
             if(st.timer) { clearInterval(st.timer); st.timer = null; }
             if(st.memoryTimeout) { clearTimeout(st.memoryTimeout); st.memoryTimeout = null; }
@@ -1103,13 +1113,10 @@
 
             document.getElementById('setup-screen').classList.remove('active'); document.getElementById('daily-screen').classList.remove('active'); document.getElementById('results-screen').classList.remove('active');
             document.getElementById('game-area').classList.add('active');
-            
-            const mainBoxes = document.getElementById('main-color-boxes');
-            mainBoxes.className = 'color-boxes' + (st.type === 'hexdle' ? ' is-hexdle' : '');
+            document.getElementById('main-color-boxes').className = 'color-boxes' + (st.type === 'hexdle' ? ' is-hexdle' : '');
             
             if (st.isDarkroom) document.body.classList.add('darkroom-active'); else document.body.classList.remove('darkroom-active');
 
-            // Force dynamic modifiers check
             st.isMap = document.getElementById('map-checkbox').checked && !document.getElementById('map-checkbox').disabled;
             st.isHardcore = document.getElementById('hardcore-checkbox').checked && !document.getElementById('hardcore-checkbox').disabled;
             st.isTerminal = document.getElementById('terminal-checkbox').checked && !document.getElementById('terminal-checkbox').disabled;
@@ -1118,7 +1125,7 @@
             if (st.type === 'telephone') { document.querySelectorAll('.slider-value').forEach(el => el.style.visibility = 'hidden'); } 
             else { document.querySelectorAll('.slider-value').forEach(el => el.style.visibility = 'visible'); }
 
-            const hsGrid = document.getElementById('haystack-grid'); const controls = document.getElementById('game-controls');
+            const mainBoxes = document.getElementById('main-color-boxes'); const hsGrid = document.getElementById('haystack-grid'); const controls = document.getElementById('game-controls');
             const stdControls = document.getElementById('standard-controls'); const hexControls = document.getElementById('hexdle-controls'); const btnLock = document.getElementById('btn-lock');
             const sortGrid = document.getElementById('sort-grid');
 
@@ -1138,10 +1145,10 @@
             const tabs = document.getElementById('ui-tabs');
             if (st.type === 'gradient') {
                 tabs.style.display = 'flex'; document.getElementById('group-deg').style.display = 'block';
-                tabs.innerHTML = `<button class="ui-tab active" id="tab-0" onclick="window.switchUITab(0)">Color A</button><button class="ui-tab" id="tab-1" onclick="window.switchUITab(1)">Color B</button>`;
+                tabs.innerHTML = `<button class="ui-tab active" id="tab-0" onclick="switchUITab(0)">Color A</button><button class="ui-tab" id="tab-1" onclick="switchUITab(1)">Color B</button>`;
             } else if (st.type === 'palette') {
                 tabs.style.display = 'flex'; document.getElementById('group-deg').style.display = 'none';
-                tabs.innerHTML = `<button class="ui-tab" style="opacity:0.5; pointer-events:none;">Base</button><button class="ui-tab active" id="tab-1" onclick="window.switchUITab(1)">Color 2</button><button class="ui-tab" id="tab-2" onclick="window.switchUITab(2)">Color 3</button>`;
+                tabs.innerHTML = `<button class="ui-tab" style="opacity:0.5; pointer-events:none;">Base</button><button class="ui-tab active" id="tab-1" onclick="switchUITab(1)">Color 2</button><button class="ui-tab" id="tab-2" onclick="switchUITab(2)">Color 3</button>`;
             } else { tabs.style.display = 'none'; document.getElementById('group-deg').style.display = 'none'; }
 
             document.getElementById('frame-opponent').style.display='none'; document.getElementById('btn-challenge').style.display='none';
@@ -1159,7 +1166,7 @@
             const rb = document.getElementById('rush-badge');
             if (st.isRush) { rb.style.display='flex'; document.getElementById('rush-streak').textContent=st.rushStreak; } else { rb.style.display='none'; }
 
-            if (st.type === 'haystack') { window.initHaystack(); } else if (st.type === 'hexdle') { window.initHexdle(); } else { window.initRoundColors(); window.changeColorSpace(); }
+            if (st.type === 'haystack') { initHaystack(); } else if (st.type === 'hexdle') { initHexdle(); } else { initRoundColors(); changeColorSpace(); }
             
             if (st.type !== 'studio') {
                 let oTxt = st.type === 'haystack' ? "Find the Odd Color" : st.type === 'hexdle' ? "Decode the Hex" : st.type === 'sort' ? "Unscramble Gradient" : st.type === 'gradient' ? "Match the Gradient" : st.type === 'palette' ? `Build ${st.palRule} Palette` : st.type === 'midpoint' ? "Find the Midpoint" : st.type === 'luminance' ? "Match the Brightness" : st.type === 'telephone' ? `Drift: Round ${st.teleRound}/${st.teleMax}` : st.isWcag ? "Pass WCAG Contrast" : "Match the Target";
@@ -1169,30 +1176,30 @@
                     document.getElementById('game-objective').textContent = "Memorize the Target!"; document.getElementById('game-objective').style.color = '#facc15';
                     st.memoryTimeout = setTimeout(() => {
                         st.memoryHidden = true; document.getElementById('game-objective').textContent = st.isComp ? "Remake Complement from Memory!" : "Remake from Memory!";
-                        document.getElementById('game-objective').style.color = 'var(--accent)'; window.renderBoxes();
+                        document.getElementById('game-objective').style.color = 'var(--accent)'; renderBoxes();
                     }, 3000);
                 } else { document.getElementById('game-objective').style.color = 'var(--accent)'; document.getElementById('game-objective').textContent = oTxt; }
 
-                if(st.type !== 'hexdle' && st.type !== 'sort') { st.timeRemaining = st.timeLimit; window.startTimer(); }
+                if(st.type !== 'hexdle' && st.type !== 'sort') { st.timeRemaining = st.timeLimit; startTimer(); }
                 
                 if (st.isDuel && st.duelData.gL && st.duelData.gL.length > 0) {
                     let absTime = 0; st.parsedGhostLog = [];
                     for (let i = 0; i < st.duelData.gL.length; i += 7) {
-                        absTime += st.duelData.gL.charCodeAt(i);
-                        st.parsedGhostLog.push({ ms: absTime, t: st.duelData.gL.charCodeAt(i+1), d: st.duelData.gL.charCodeAt(i+2), v: [st.duelData.gL.charCodeAt(i+3), st.duelData.gL.charCodeAt(i+4), st.duelData.gL.charCodeAt(i+5), st.duelData.gL.charCodeAt(i+6)] });
+                        absTime += st.duelData.gL[i];
+                        st.parsedGhostLog.push({ ms: absTime, t: st.duelData.gL[i+1], d: st.duelData.gL[i+2], v: [st.duelData.gL[i+3], st.duelData.gL[i+4], st.duelData.gL[i+5], st.duelData.gL[i+6]] });
                     }
-                    st.ghostTimer = requestAnimationFrame(window.playbackGhost);
+                    st.ghostTimer = requestAnimationFrame(playbackGhost);
                 }
             }
         }
 
-        window.initHaystack = function() {
-            const rng = (st.isDaily || st.isDuel) ? window.getDailyRNG(st.dailyChallengeId + st.rushStreak + st.haystackCorrect + (st.isDuel ? st.duelData.tSeed : st.gameSeed)) : () => Math.random();
+        function initHaystack() {
+            const rng = (st.isDaily || st.isDuel) ? getDailyRNG(st.dailyChallengeId + st.rushStreak + st.haystackCorrect + (st.isDuel ? st.duelData.tSeed : st.gameSeed)) : () => Math.random();
             st.haystackLevel = st.haystackCorrect;
             const gridEl = document.getElementById('haystack-grid');
             
             let size = Math.min(10, 2 + Math.floor(st.haystackLevel / 3));
-            let diff = Math.max(18, 60 - (st.haystackLevel * 3)); 
+            let diff = Math.max(25, 70 - (st.haystackLevel * 4)); // Bottom out at 25 diff
             
             gridEl.style.gridTemplateColumns = `repeat(${size}, 1fr)`; gridEl.style.gridTemplateRows = `repeat(${size}, 1fr)`;
             gridEl.innerHTML = '';
@@ -1209,22 +1216,22 @@
                     cell.onclick = () => {
                         st.haystackCorrect++; st.timeRemaining += 2;
                         if(st.isRush) { st.rushStreak++; document.getElementById('rush-streak').textContent = st.rushStreak; }
-                        window.initHaystack();
+                        initHaystack();
                     };
                 } else {
                     cell.style.background = `rgb(${r}, ${g}, ${b})`;
-                    cell.onclick = () => { st.timeRemaining -= 5; document.getElementById('timer').textContent = st.timeRemaining.toString().padStart(2, '0'); if (st.timeRemaining <= 0) window.lockIn(); };
+                    cell.onclick = () => { st.timeRemaining -= 5; document.getElementById('timer').textContent = st.timeRemaining.toString().padStart(2, '0'); if (st.timeRemaining <= 0) lockIn(); };
                 }
                 gridEl.appendChild(cell);
             }
         }
 
-        window.buildFlexBoxes = function(containerId, count) {
+        function buildFlexBoxes(containerId, count) {
             const container = document.getElementById(containerId); container.innerHTML = '';
             for(let i=0; i<count; i++) { const box = document.createElement('div'); box.style.flex = '1'; box.style.height = '100%'; container.appendChild(box); }
         }
 
-        window.renderBoxes = function() {
+        function renderBoxes() {
             const tBox = document.getElementById('target-color'); const uBox = document.getElementById('user-color');
 
             if (st.type !== 'studio' && st.type !== 'hexdle' && st.type !== 'sort') {
@@ -1256,17 +1263,17 @@
             }
         }
 
-        window.randomizeSliders = function() {
+        function randomizeSliders() {
             const c = spaces[st.spaceId];
             [1,2,3,4].forEach(n => {
                 const sl = document.getElementById(`slider-${n}`);
                 if(c[`s${n}`]) sl.value = Math.floor(Math.random() * (parseInt(sl.max) - parseInt(sl.min) + 1)) + parseInt(sl.min);
             });
-            window.updateColor();
+            updateColor();
         }
 
-        window.initRoundColors = function() {
-            const rngWrapper = () => Math.random(); const rng = st.isDaily ? window.getDailyRNG(st.dailyChallengeId + st.rushStreak) : rngWrapper;
+        function initRoundColors() {
+            const rngWrapper = () => Math.random(); const rng = st.isDaily ? getDailyRNG(st.dailyChallengeId + st.rushStreak) : rngWrapper;
             const ft = document.getElementById('frame-target'); const fu = document.getElementById('frame-user'); const c = spaces[st.spaceId];
             
             if (st.isIllusion && st.type !== 'luminance') { ft.classList.add('active-illusion'); fu.classList.add('active-illusion'); ft.style.backgroundColor = `hsl(${Math.floor(rng()*360)},100%,50%)`; fu.style.backgroundColor = `hsl(${Math.floor(rng()*360)},100%,50%)`;
@@ -1276,16 +1283,16 @@
             tBox.textContent = ''; uBox.textContent = ''; tBox.style.textShadow = 'none';
 
             if (st.type === 'palette') {
-                window.buildFlexBoxes('target-color', 3); window.buildFlexBoxes('user-color', 3); tLbl.textContent = 'Reference Palette';
+                buildFlexBoxes('target-color', 3); buildFlexBoxes('user-color', 3); tLbl.textContent = 'Reference Palette';
                 if (st.isDuel) {
                     st.targetColorData = st.duelData.tC; st.targetCssData = st.duelData.tCss; st.userNativeData = [st.duelData.uBase, [1,2,3,4].map(n=>c[`s${n}`]?c[`s${n}`].val:0), [1,2,3,4].map(n=>c[`s${n}`]?c[`s${n}`].val:0)];
                 } else {
                     let valid = false; let attempts = 0; let bVals, palVals;
-                    while (!valid && attempts < 50) { bVals = [1,2,3,4].map(n => c[`s${n}`] ? Math.floor(rng()*(c[`s${n}`].max-c[`s${n}`].min+1))+c[`s${n}`].min : 0); palVals = window.calcPalette(bVals, st.palRule); st.targetCssData = palVals.map(v => c.fmt(v)); st.targetColorData = st.targetCssData.map(css => window.getRgbFromCss(css)); valid = window.isGamutSafe(st.targetColorData); attempts++; }
+                    while (!valid && attempts < 50) { bVals = [1,2,3,4].map(n => c[`s${n}`] ? Math.floor(rng()*(c[`s${n}`].max-c[`s${n}`].min+1))+c[`s${n}`].min : 0); palVals = calcPalette(bVals, st.palRule); st.targetCssData = palVals.map(v => c.fmt(v)); st.targetColorData = st.targetCssData.map(css => getRgbFromCss(css)); valid = isGamutSafe(st.targetColorData); attempts++; }
                     st.userNativeData = [bVals, [1,2,3,4].map(n=>c[`s${n}`]?c[`s${n}`].val:0), [1,2,3,4].map(n=>c[`s${n}`]?c[`s${n}`].val:0)];
                 }
-                st.userCssData = st.userNativeData.map(v => c.fmt(v)); st.userColorData = st.userCssData.map(css => window.getRgbFromCss(css)); st.renderedTargetCss = `linear-gradient(90deg, ${st.targetCssData.join(', ')})`;
-                st.uiTab = 1; window.switchUITab(1); window.updateColor();
+                st.userCssData = st.userNativeData.map(v => c.fmt(v)); st.userColorData = st.userCssData.map(css => getRgbFromCss(css)); st.renderedTargetCss = `linear-gradient(90deg, ${st.targetCssData.join(', ')})`;
+                st.uiTab = 1; switchUITab(1); updateColor();
             } 
             else if (st.type === 'gradient') {
                 tBox.style.display='flex'; uBox.style.display='flex'; tLbl.textContent = 'Reference Grad';
@@ -1293,40 +1300,40 @@
                     st.targetNativeData = st.duelData.tN; st.gradDeg = st.duelData.tD; st.renderedTargetCss = `linear-gradient(${st.gradDeg}deg, ${c.fmt(st.targetNativeData[0])}, ${c.fmt(st.targetNativeData[1])})`; st.userNativeData = [[1,2,3,4].map(n=>c[`s${n}`]?c[`s${n}`].val:0), [1,2,3,4].map(n=>c[`s${n}`]?c[`s${n}`].val:0)];
                 } else {
                     let valid = false; let attempts = 0; let baseA, baseB;
-                    while(!valid && attempts < 50) { baseA = [1,2,3,4].map(n => c[`s${n}`] ? Math.floor(rng()*(c[`s${n}`].max-c[`s${n}`].min+1))+c[`s${n}`].min : 0); baseB = [1,2,3,4].map(n => c[`s${n}`] ? Math.floor(rng()*(c[`s${n}`].max-c[`s${n}`].min+1))+c[`s${n}`].min : 0); st.tGradA = st.isComp ? window.calcComp(baseA) : baseA; st.tGradB = st.isComp ? window.calcComp(baseB) : baseB; const rgbA = window.getRgbFromCss(c.fmt(st.tGradA)); const rgbB = window.getRgbFromCss(c.fmt(st.tGradB)); valid = window.isGamutSafe([rgbA, rgbB]); st.tDeg = Math.floor(rng() * 360); attempts++; }
+                    while(!valid && attempts < 50) { baseA = [1,2,3,4].map(n => c[`s${n}`] ? Math.floor(rng()*(c[`s${n}`].max-c[`s${n}`].min+1))+c[`s${n}`].min : 0); baseB = [1,2,3,4].map(n => c[`s${n}`] ? Math.floor(rng()*(c[`s${n}`].max-c[`s${n}`].min+1))+c[`s${n}`].min : 0); st.tGradA = st.isComp ? calcComp(baseA) : baseA; st.tGradB = st.isComp ? calcComp(baseB) : baseB; const rgbA = getRgbFromCss(c.fmt(st.tGradA)); const rgbB = getRgbFromCss(c.fmt(st.tGradB)); valid = isGamutSafe([rgbA, rgbB]); st.tDeg = Math.floor(rng() * 360); attempts++; }
                     st.targetNativeData = [st.tGradA, st.tGradB]; st.renderedTargetCss = `linear-gradient(${st.tDeg}deg, ${c.fmt(st.targetNativeData[0])}, ${c.fmt(st.targetNativeData[1])})`; st.userNativeData = [[1,2,3,4].map(n=>c[`s${n}`]?c[`s${n}`].val:0), [1,2,3,4].map(n=>c[`s${n}`]?c[`s${n}`].val:0)];
                 }
-                st.uiTab = 0; document.getElementById('slider-deg').value = 180; document.getElementById('val-deg').textContent = 180; window.switchUITab(0); window.updateColor();
+                st.uiTab = 0; document.getElementById('slider-deg').value = 180; document.getElementById('val-deg').textContent = 180; switchUITab(0); updateColor();
             } 
             else if (st.type === 'midpoint') {
                 tBox.style.display='flex'; uBox.style.display='flex'; tLbl.textContent = 'Midpoint Match';
                 if (st.isDuel) {
-                    st.targetNativeData = st.duelData.tN; st.targetVals = st.duelData.tV; st.renderedTargetCss = `linear-gradient(90deg, ${c.fmt(st.targetNativeData[0])} 50%, ${c.fmt(st.targetNativeData[1])} 50%)`; st.targetRgb = window.getRgbFromCss(c.fmt(st.targetVals));
-                    [1,2,3,4].forEach(n => { if(c[`s${n}`]) document.getElementById(`slider-${n}`).value = c[`s${n}`].val; }); window.updateColor();
+                    st.targetNativeData = st.duelData.tN; st.targetVals = st.duelData.tV; st.renderedTargetCss = `linear-gradient(90deg, ${c.fmt(st.targetNativeData[0])} 50%, ${c.fmt(st.targetNativeData[1])} 50%)`; st.targetRgb = getRgbFromCss(c.fmt(st.targetVals));
+                    [1,2,3,4].forEach(n => { if(c[`s${n}`]) document.getElementById(`slider-${n}`).value = c[`s${n}`].val; }); updateColor();
                 } else {
                     let baseA = [1,2,3,4].map(n => c[`s${n}`] ? Math.floor(rng()*(c[`s${n}`].max-c[`s${n}`].min+1))+c[`s${n}`].min : 0);
                     let baseB = [1,2,3,4].map(n => c[`s${n}`] ? Math.floor(rng()*(c[`s${n}`].max-c[`s${n}`].min+1))+c[`s${n}`].min : 0);
                     st.targetNativeData = [baseA, baseB]; st.renderedTargetCss = `linear-gradient(90deg, ${c.fmt(baseA)} 50%, ${c.fmt(baseB)} 50%)`;
-                    st.targetVals = baseA.map((val, idx) => Math.round((val + baseB[idx]) / 2)); st.targetRgb = window.getRgbFromCss(c.fmt(st.targetVals));
-                    [1,2,3,4].forEach(n => { if(c[`s${n}`]) document.getElementById(`slider-${n}`).value = c[`s${n}`].val; }); window.updateColor();
+                    st.targetVals = baseA.map((val, idx) => Math.round((val + baseB[idx]) / 2)); st.targetRgb = getRgbFromCss(c.fmt(st.targetVals));
+                    [1,2,3,4].forEach(n => { if(c[`s${n}`]) document.getElementById(`slider-${n}`).value = c[`s${n}`].val; }); updateColor();
                 }
             }
             else if (st.type === 'sort') {
                 if (st.isDuel) { st.sortTarget = st.duelData.sT; st.sortCurrent = [...st.duelData.sC]; } 
                 else {
                     const rgb1 = { r: Math.floor(rng()*256), g: Math.floor(rng()*256), b: Math.floor(rng()*256) }; const rgb2 = { r: Math.floor(rng()*256), g: Math.floor(rng()*256), b: Math.floor(rng()*256) };
-                    st.sortTarget = window.generateSortGradient(rgb1, rgb2, 8); let inner = st.sortTarget.slice(1, 7);
+                    st.sortTarget = generateSortGradient(rgb1, rgb2, 8); let inner = st.sortTarget.slice(1, 7);
                     for (let i = inner.length - 1; i > 0; i--) { const j = Math.floor(rng() * (i + 1)); [inner[i], inner[j]] = [inner[j], inner[i]]; }
                     st.sortCurrent = [st.sortTarget[0], ...inner, st.sortTarget[7]];
                 }
-                st.sortSelectedIdx = -1; window.renderSortGrid();
+                st.sortSelectedIdx = -1; renderSortGrid();
             }
             else { 
                 tBox.style.display='flex'; uBox.style.display='flex'; tLbl.textContent = st.isComp ? 'Base Color' : st.isWcag ? 'Background' : 'Reference';
                 if (st.isDuel && st.type !== 'telephone') {
-                    st.targetVals = st.duelData.tV; st.renderedTargetCss = c.fmt(st.targetVals); st.targetRgb = window.getRgbFromCss(st.renderedTargetCss);
+                    st.targetVals = st.duelData.tV; st.renderedTargetCss = c.fmt(st.targetVals); st.targetRgb = getRgbFromCss(st.renderedTargetCss);
                     if (st.isTerminal) { document.getElementById('terminal-input').value = ''; st.renderedUserCss = 'var(--bg)'; } 
-                    else { [1,2,3,4].forEach(n => { if(c[`s${n}`]) document.getElementById(`slider-${n}`).value = c[`s${n}`].val; }); window.updateColor(); }
+                    else { [1,2,3,4].forEach(n => { if(c[`s${n}`]) document.getElementById(`slider-${n}`).value = c[`s${n}`].val; }); updateColor(); }
                 } else {
                     let valid = false; let attempts = 0; let bVals, tVals, tCss;
                     while(!valid && attempts < 50) {
@@ -1337,42 +1344,42 @@
                             else if(st.spaceId==='oklab') tVals = [bVals[0], -bVals[1], -bVals[2]];
                             else if(st.spaceId==='cmyk') tVals = [100-bVals[0], 100-bVals[1], 100-bVals[2], 100-bVals[3]];
                         } else { tVals = bVals; }
-                        tCss = c.fmt(tVals); st.targetRgb = window.getRgbFromCss(tCss); valid = window.isGamutSafe([st.targetRgb]); attempts++;
+                        tCss = c.fmt(tVals); st.targetRgb = getRgbFromCss(tCss); valid = isGamutSafe([st.targetRgb]); attempts++;
                     }
                     
                     if (st.type === 'telephone' && st.teleRound > 1) {
-                        st.targetRgb = {...st.currentRgb}; st.renderedTargetCss = `rgb(${st.targetRgb.r}, ${st.targetRgb.g}, ${st.targetRgb.b})`; window.randomizeSliders();
+                        st.targetRgb = {...st.currentRgb}; st.renderedTargetCss = `rgb(${st.targetRgb.r}, ${st.targetRgb.g}, ${st.targetRgb.b})`; randomizeSliders();
                     } else if (st.type === 'telephone' && st.isDuel) {
-                        st.targetVals = st.duelData.tV; st.renderedTargetCss = c.fmt(st.targetVals); st.targetRgb = window.getRgbFromCss(st.renderedTargetCss);
+                        st.targetVals = st.duelData.tV; st.renderedTargetCss = c.fmt(st.targetVals); st.targetRgb = getRgbFromCss(st.renderedTargetCss);
                         if(st.teleRound === 1) { st.teleHistory = [{...st.targetRgb}]; }
-                        [1,2,3,4].forEach(n => { if(c[`s${n}`]) document.getElementById(`slider-${n}`).value = c[`s${n}`].val; }); window.updateColor();
+                        [1,2,3,4].forEach(n => { if(c[`s${n}`]) document.getElementById(`slider-${n}`).value = c[`s${n}`].val; }); updateColor();
                     } else {
                         st.baseVals = bVals; st.targetVals = tVals; st.renderedTargetCss = tCss;
                         if(st.type === 'telephone' && st.teleRound === 1) { st.teleHistory = [{...st.targetRgb}]; }
                         if (st.isTerminal) { document.getElementById('terminal-input').value = ''; st.renderedUserCss = 'var(--bg)'; } 
-                        else { [1,2,3,4].forEach(n => { if(c[`s${n}`]) document.getElementById(`slider-${n}`).value = c[`s${n}`].val; }); window.updateColor(); }
+                        else { [1,2,3,4].forEach(n => { if(c[`s${n}`]) document.getElementById(`slider-${n}`).value = c[`s${n}`].val; }); updateColor(); }
                     }
                 }
             }
-            window.renderBoxes();
+            renderBoxes();
         }
 
-        window.drawSpectrum = function() {
+        function drawSpectrum() {
             const ctx = document.getElementById('spectrum-map').getContext('2d'); const w=ctx.canvas.width=ctx.canvas.clientWidth; const h=ctx.canvas.height=ctx.canvas.clientHeight;
             const gs=Math.floor(w*0.1); let grd=ctx.createLinearGradient(0,0,0,h); grd.addColorStop(0,'#fff'); grd.addColorStop(1,'#000'); ctx.fillStyle=grd; ctx.fillRect(0,0,gs,h);
             for(let x=gs;x<w;x++){ let g=ctx.createLinearGradient(0,0,0,h); g.addColorStop(0,'#fff'); g.addColorStop(0.5,`hsl(${((x-gs)/(w-gs))*360},100%,50%)`); g.addColorStop(1,'#000'); ctx.fillStyle=g; ctx.fillRect(x,0,1,h); }
         }
 
         const sMap = document.getElementById('spectrum-map');
-        window.handleMap = function(e) {
+        function handleMap(e) {
             const r=sMap.getBoundingClientRect(); const x=Math.max(0,Math.min(e.clientX-r.left,r.width)); const y=Math.max(0,Math.min(e.clientY-r.top,r.height));
             document.getElementById('selector-dot').style.cssText=`display:block; left:${x}px; top:${y}px;`;
             const d=sMap.getContext('2d').getImageData(x*(sMap.width/r.width),y*(sMap.height/r.height),1,1).data;
-            st.currentRgb={r:d[0],g:d[1],b:d[2]}; st.renderedUserCss = `rgb(${d[0]},${d[1]},${d[2]})`; window.renderBoxes();
+            st.currentRgb={r:d[0],g:d[1],b:d[2]}; st.renderedUserCss = `rgb(${d[0]},${d[1]},${d[2]})`; renderBoxes();
         }
-        sMap.addEventListener('mousedown', window.handleMap); sMap.addEventListener('mousemove', e => { if(e.buttons===1) window.handleMap(e); });
+        sMap.addEventListener('mousedown', handleMap); sMap.addEventListener('mousemove', e => { if(e.buttons===1) handleMap(e); });
 
-        window.generateSortGradient = function(c1, c2, steps) {
+        function generateSortGradient(c1, c2, steps) {
             let arr = [];
             for(let i=0; i<steps; i++) {
                 let r = Math.round(c1.r + (c2.r - c1.r) * (i / (steps-1)));
@@ -1382,33 +1389,33 @@
             } return arr;
         }
 
-        window.handleSortClick = function(idx) {
+        function handleSortClick(idx) {
             if (st.type !== 'sort' || !document.getElementById('game-area').classList.contains('active')) return;
             if (st.sortSelectedIdx === -1) { st.sortSelectedIdx = idx; } 
             else { const temp = st.sortCurrent[idx]; st.sortCurrent[idx] = st.sortCurrent[st.sortSelectedIdx]; st.sortCurrent[st.sortSelectedIdx] = temp; st.sortSelectedIdx = -1; }
-            window.renderSortGrid();
+            renderSortGrid();
         }
 
-        window.renderSortGrid = function() {
+        function renderSortGrid() {
             const grid = document.getElementById('sort-grid'); grid.innerHTML = '';
             st.sortCurrent.forEach((rgb, i) => {
                 const block = document.createElement('div'); block.className = 'sort-block' + (st.sortSelectedIdx === i ? ' selected' : '');
                 block.style.background = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
-                if (i !== 0 && i !== 7) { block.onclick = () => window.handleSortClick(i); } 
+                if (i !== 0 && i !== 7) { block.onclick = () => handleSortClick(i); } 
                 else { block.innerHTML = '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;opacity:0.3;font-size:0.6rem;">🔒</div>'; block.style.cursor = 'not-allowed'; }
                 grid.appendChild(block);
             });
         }
 
-        window.switchUITab = function(idx) {
+        function switchUITab(idx) {
             st.uiTab = idx; document.querySelectorAll('.ui-tab').forEach((el, i) => { if(!el.hasAttribute('style')) el.classList.toggle('active', i === idx); });
             const vals = st.userNativeData[idx]; [1,2,3,4].forEach(n => { if(spaces[st.spaceId][`s${n}`]) { document.getElementById(`slider-${n}`).value = vals[n-1] || 0; document.getElementById(`val-s${n}`).textContent = (vals[n-1]||0).toString().padStart(3,'0'); } });
-            window.recordGhost();
+            recordGhost();
         }
 
-        window.updateTerminal = function() { const str = document.getElementById('terminal-input').value; st.renderedUserCss = str; document.getElementById('user-color').style.background = str; st.currentRgb = window.getRgbFromCss(str); window.renderBoxes(); }
+        function updateTerminal() { const str = document.getElementById('terminal-input').value; st.renderedUserCss = str; document.getElementById('user-color').style.background = str; st.currentRgb = getRgbFromCss(str); renderBoxes(); }
 
-        window.updateColor = function() {
+        function updateColor() {
             if(st.isMap || st.isTerminal || st.type === 'haystack' || st.type === 'sort' || st.type === 'hexdle') return; 
             const c=spaces[st.spaceId]; 
             const vals = []; [1,2,3,4].forEach(n => { if(c[`s${n}`]){ let v=parseInt(document.getElementById(`slider-${n}`).value); vals.push(v); document.getElementById(`val-s${n}`).textContent=v.toString().padStart(3,'0'); } });
@@ -1419,55 +1426,55 @@
                     st.cDeg = parseInt(document.getElementById('slider-deg').value); document.getElementById('val-deg').textContent = st.cDeg.toString().padStart(3,'0');
                     if (st.userNativeData[0].length && st.userNativeData[1].length) { st.renderedUserCss = `linear-gradient(${st.cDeg}deg, ${c.fmt(st.userNativeData[0])}, ${c.fmt(st.userNativeData[1])})`; }
                 } else {
-                    st.userCssData[st.uiTab] = c.fmt(vals); st.userColorData[st.uiTab] = window.getRgbFromCss(st.userCssData[st.uiTab]); st.renderedUserCss = `linear-gradient(90deg, ${st.userCssData.join(', ')})`;
+                    st.userCssData[st.uiTab] = c.fmt(vals); st.userColorData[st.uiTab] = getRgbFromCss(st.userCssData[st.uiTab]); st.renderedUserCss = `linear-gradient(90deg, ${st.userCssData.join(', ')})`;
                 }
-            } else { st.currentVals=vals; st.renderedUserCss = c.fmt(st.currentVals); st.currentRgb=window.getRgbFromCss(st.renderedUserCss); }
-            window.renderBoxes(); window.recordGhost();
+            } else { st.currentVals=vals; st.renderedUserCss = c.fmt(st.currentVals); st.currentRgb=getRgbFromCss(st.renderedUserCss); }
+            renderBoxes(); recordGhost();
         }
 
-        window.startTimer = function() {
+        function startTimer() {
             document.getElementById('timer').textContent = st.timeRemaining.toString().padStart(2, '0');
             st.timer = setInterval(() => {
                 st.timeRemaining--; document.getElementById('timer').textContent = st.timeRemaining.toString().padStart(2, '0');
-                if (st.timeRemaining <= 0) { window.lockIn(); }
+                if (st.timeRemaining <= 0) { lockIn(); }
             }, 1000);
         }
 
-        window.calcColorScore = function(c1, c2) {
+        function calcColorScore(c1, c2) {
             const rM = (c1.r+c2.r)/2; const dr=c1.r-c2.r, dg=c1.g-c2.g, db=c1.b-c2.b;
             const dist = Math.sqrt((2+rM/256)*dr*dr + 4*dg*dg + (2+(255-rM)/256)*db*db); return Math.max(0,1-(dist/764.83));
         }
 
-        window.calculateScore = function() {
+        function calculateScore() {
             if (st.type === 'haystack') {
                 return Math.min(100, Math.round((st.haystackCorrect / 15) * 100)); 
             } else if (st.type === 'hexdle') {
                 if (st.hexCurrentGuess === st.hexTarget) return [100, 95, 85, 75, 60, 50][st.hexGuesses.length - 1];
-                return Math.round(Math.pow(window.calcColorScore(st.targetRgb, st.currentRgb), 1.5) * 100);
+                return Math.round(Math.pow(calcColorScore(st.targetRgb, st.currentRgb), 1.5) * 100);
             } else if (st.isWcag) {
-                const ratio = window.getContrast(st.targetRgb, st.currentRgb);
+                const ratio = getContrast(st.targetRgb, st.currentRgb);
                 if (ratio >= 4.5) return 100; return Math.max(0, Math.round((ratio / 4.5) * 100));
             } else if (st.type === 'luminance') {
-                const l1 = window.getLuminance(st.targetRgb.r, st.targetRgb.g, st.targetRgb.b);
-                const l2 = window.getLuminance(st.currentRgb.r, st.currentRgb.g, st.currentRgb.b);
+                const l1 = getLuminance(st.targetRgb.r, st.targetRgb.g, st.targetRgb.b);
+                const l2 = getLuminance(st.currentRgb.r, st.currentRgb.g, st.currentRgb.b);
                 return Math.max(0, 100 - Math.round(Math.abs(l1 - l2) * 200));
             } else if (st.type === 'palette') {
-                const s1 = window.calcColorScore(st.targetColorData[1], st.userColorData[1]); const s2 = window.calcColorScore(st.targetColorData[2], st.userColorData[2]); return Math.round(Math.pow((s1+s2)/2, 1.5) * 100);
+                const s1 = calcColorScore(st.targetColorData[1], st.userColorData[1]); const s2 = calcColorScore(st.targetColorData[2], st.userColorData[2]); return Math.round(Math.pow((s1+s2)/2, 1.5) * 100);
             } else if (st.type === 'gradient') {
                 const c = spaces[st.spaceId];
-                const tA = window.getRgbFromCss(c.fmt(st.targetNativeData[0])), tB = window.getRgbFromCss(c.fmt(st.targetNativeData[1])); const uA = window.getRgbFromCss(c.fmt(st.userNativeData[0])), uB = window.getRgbFromCss(c.fmt(st.userNativeData[1]));
-                const score1 = (window.calcColorScore(tA, uA) + window.calcColorScore(tB, uB)) / 2; let aDiff1 = Math.abs(st.gradDeg - st.cDeg) % 360; if(aDiff1 > 180) aDiff1 = 360 - aDiff1; const final1 = score1 * (0.8 + 0.2 * (1 - aDiff1/180));
-                const score2 = (window.calcColorScore(tA, uB) + window.calcColorScore(tB, uA)) / 2; let aDiff2 = Math.abs(st.gradDeg - ((st.cDeg+180)%360)) % 360; if(aDiff2 > 180) aDiff2 = 360 - aDiff2; const final2 = score2 * (0.8 + 0.2 * (1 - aDiff2/180));
+                const tA = getRgbFromCss(c.fmt(st.targetNativeData[0])), tB = getRgbFromCss(c.fmt(st.targetNativeData[1])); const uA = getRgbFromCss(c.fmt(st.userNativeData[0])), uB = getRgbFromCss(c.fmt(st.userNativeData[1]));
+                const score1 = (calcColorScore(tA, uA) + calcColorScore(tB, uB)) / 2; let aDiff1 = Math.abs(st.gradDeg - st.cDeg) % 360; if(aDiff1 > 180) aDiff1 = 360 - aDiff1; const final1 = score1 * (0.8 + 0.2 * (1 - aDiff1/180));
+                const score2 = (calcColorScore(tA, uB) + calcColorScore(tB, uA)) / 2; let aDiff2 = Math.abs(st.gradDeg - ((st.cDeg+180)%360)) % 360; if(aDiff2 > 180) aDiff2 = 360 - aDiff2; const final2 = score2 * (0.8 + 0.2 * (1 - aDiff2/180));
                 return Math.round(Math.pow(Math.max(final1, final2), 1.5) * 100);
             } else if (st.type === 'telephone') {
-                return Math.round(Math.pow(window.calcColorScore(st.teleHistory[0], st.teleHistory[st.teleHistory.length-1]), 1.5) * 100);
+                return Math.round(Math.pow(calcColorScore(st.teleHistory[0], st.teleHistory[st.teleHistory.length-1]), 1.5) * 100);
             } else if (st.type === 'sort') {
-                let sortDist = 0; for (let i = 1; i < 7; i++) { sortDist += window.calcColorScore(st.sortTarget[i], st.sortCurrent[i]); }
+                let sortDist = 0; for (let i = 1; i < 7; i++) { sortDist += calcColorScore(st.sortTarget[i], st.sortCurrent[i]); }
                 return Math.round(Math.pow((sortDist / 6), 1.5) * 100);
-            } else { return Math.round(Math.pow(window.calcColorScore(st.targetRgb, st.currentRgb), 1.5) * 100); }
+            } else { return Math.round(Math.pow(calcColorScore(st.targetRgb, st.currentRgb), 1.5) * 100); }
         }
 
-        window.buildCodeExport = function() {
+        function buildCodeExport() {
             let css = `:root {\n`;
             if (st.type === 'palette') { css += `  --color-base: ${st.userCssData[0]};\n  --color-2: ${st.userCssData[1]};\n  --color-3: ${st.userCssData[2]};\n`; } 
             else if (st.type === 'gradient') { css += `  --gradient-main: ${st.renderedUserCss};\n`; } 
@@ -1475,22 +1482,25 @@
             css += `}`; return css;
         }
 
-        window.copyExport = function() {
+        function copyExport() {
             navigator.clipboard.writeText(document.getElementById('export-textarea').value);
             document.getElementById('export-modal').style.display='none';
         }
 
-        window.lockIn = function() {
+        function lockIn() {
+            const btn = document.getElementById('btn-lock');
+            btn.disabled = true; setTimeout(() => btn.disabled = false, 300);
+
             if (st.type === 'studio') {
-                const ex = document.getElementById('export-modal'); document.getElementById('export-textarea').value = window.buildCodeExport();
+                const ex = document.getElementById('export-modal'); document.getElementById('export-textarea').value = buildCodeExport();
                 ex.style.display = 'block'; return;
             }
             if (st.type === 'telephone' && st.teleRound < st.teleMax && st.timeRemaining > 0) {
                 if (st.timer) clearInterval(st.timer);
                 st.teleHistory.push({...st.currentRgb}); st.teleRound++; document.getElementById('game-objective').textContent = `Drift: Round ${st.teleRound}/${st.teleMax}`;
                 st.targetRgb = {...st.currentRgb}; st.targetVals = [...st.currentVals]; st.renderedTargetCss = st.renderedUserCss;
-                window.randomizeSliders(); window.renderBoxes();
-                st.timeRemaining = st.timeLimit; window.startTimer(); return;
+                randomizeSliders(); renderBoxes();
+                st.timeRemaining = st.timeLimit; startTimer(); return;
             }
 
             if (st.timer) { clearInterval(st.timer); st.timer = null; }
@@ -1500,22 +1510,22 @@
             st.memoryHidden = false; document.body.classList.remove('darkroom-active');
             if(st.type === 'telephone' && st.teleRound === st.teleMax) st.teleHistory.push({...st.currentRgb}); 
 
-            const score = window.calculateScore();
-            if (st.type === 'solid' && !st.isWcag) window.saveStats(score, st.currentRgb.r - st.targetRgb.r, st.currentRgb.g - st.targetRgb.g, st.currentRgb.b - st.targetRgb.b);
-            if (score >= 98 && !st.isDuel && st.type !== 'haystack' && st.type !== 'hexdle' && st.type !== 'sort' && st.type !== 'telephone') window.saveToPantheon(st.renderedTargetCss, st.renderedUserCss);
+            const score = calculateScore();
+            if (st.type === 'solid' && !st.isWcag) saveStats(score, st.currentRgb.r - st.targetRgb.r, st.currentRgb.g - st.targetRgb.g, st.currentRgb.b - st.targetRgb.b);
+            if (score >= 98 && !st.isDuel && st.type !== 'haystack' && st.type !== 'hexdle' && st.type !== 'sort' && st.type !== 'telephone') saveToPantheon(st.renderedTargetCss, st.renderedUserCss);
 
             if (st.isRush && st.timeRemaining > 0) {
                 if (score >= 90 || (st.type === 'haystack' && st.timeRemaining > 0)) { 
                     if(st.type !== 'haystack') { st.rushStreak++; st.timeRemaining += (score >= 98 ? 10 : 5); } 
                     document.getElementById('rush-streak').textContent = st.rushStreak;
                     if (st.isDarkroom) document.body.classList.add('darkroom-active');
-                    if(st.type === 'haystack') window.initHaystack(); else window.initRoundColors(); window.startTimer(); 
-                } else { st.finalScore = score; window.triggerEndScreen(); }
-            } else { st.finalScore = score; window.triggerEndScreen(); }
+                    if(st.type === 'haystack') initHaystack(); else initRoundColors(); startTimer(); 
+                } else { st.finalScore = score; triggerEndScreen(); }
+            } else { st.finalScore = score; triggerEndScreen(); }
         }
 
-        window.triggerEndScreen = function() {
-            const tBox=document.getElementById('target-color'); const uBox=document.getElementById('user-color'); const ft=document.getElementById('frame-target'); const fu=document.getElementById('frame-user');
+        function triggerEndScreen() {
+            const tBox=document.getElementById('target-color'), ft=document.getElementById('frame-target'), uBox=document.getElementById('user-color'), fu=document.getElementById('frame-user');
             ft.classList.remove('active-illusion'); fu.classList.remove('active-illusion'); ft.style.backgroundColor='var(--border)'; fu.style.backgroundColor='var(--border)';
             
             document.getElementById('haystack-grid').style.display = 'none'; document.getElementById('hexdle-controls').style.display = 'none';
@@ -1527,143 +1537,15 @@
                 tBox.innerHTML=''; for(let i=0; i<3; i++) { const d = document.createElement('div'); d.style.flex='1'; d.style.height='100%'; d.style.background=st.targetCssData[i]; tBox.appendChild(d); }
             } else if (st.type === 'telephone') {
                 tBox.innerHTML=''; document.getElementById('target-label').textContent='Mutation History';
-                st.teleHistory.forEach(rgb => { const d = document.createElement('div'); d.style.flex='1'; d.style.height='100%'; d.style.background=`rgb(${rgb.r},${rgb.g},${rgb.b})`; tBox.appendChild(d); });
+                st.teleHistory.forEach((rgb, idx) => { 
+                    const d = document.createElement('div'); d.style.flex='1'; d.style.height='100%'; d.style.background=`rgb(${rgb.r},${rgb.g},${rgb.b})`; 
+                    d.style.display='flex'; d.style.alignItems='flex-end'; d.style.justifyContent='center';
+                    d.innerHTML = `<span style="font-size:0.5rem; background:rgba(0,0,0,0.5); padding:2px; color:#fff; border-radius:1px; margin-bottom:2px;">R${idx+1}</span>`;
+                    tBox.appendChild(d); 
+                });
                 fu.style.display = 'none'; 
             } else if (st.type === 'sort') {
                 tBox.innerHTML=''; document.getElementById('target-label').textContent='Correct Order';
                 st.sortTarget.forEach(rgb => { const d = document.createElement('div'); d.style.flex='1'; d.style.height='100%'; d.style.background=`rgb(${rgb.r},${rgb.g},${rgb.b})`; tBox.appendChild(d); });
                 uBox.innerHTML=''; document.getElementById('user-label').textContent='Your Order';
-                st.sortCurrent.forEach(rgb => { const d = document.createElement('div'); d.style.flex='1'; d.style.height='100%'; d.style.background=`rgb(${rgb.r},${rgb.g},${rgb.b})`; uBox.appendChild(d); });
-            } else if (st.type === 'midpoint') {
-                tBox.innerHTML = '';
-                const c1 = document.createElement('div'); c1.style.flex='1'; c1.style.height='100%'; c1.style.background = spaces[st.spaceId].fmt(st.targetNativeData[0]);
-                const cm = document.createElement('div'); cm.style.flex='1.5'; cm.style.height='100%'; cm.style.background = spaces[st.spaceId].fmt(st.targetVals);
-                const c2 = document.createElement('div'); c2.style.flex='1'; c2.style.height='100%'; c2.style.background = spaces[st.spaceId].fmt(st.targetNativeData[1]);
-                tBox.appendChild(c1); tBox.appendChild(cm); tBox.appendChild(c2);
-                document.getElementById('target-label').textContent = 'Color A | True Midpoint | Color B';
-            } else {
-                tBox.style.background = st.renderedTargetCss;
-                if(st.isWcag) {
-                    tBox.innerHTML = `<span style="font-size:1.8rem; font-family:sans-serif; color:${st.renderedUserCss};">Aa</span><div style="position:absolute; bottom:4px; font-size:0.5rem; text-shadow:none; color:${st.renderedUserCss};">Actual Ratio: ${window.getContrast(st.targetRgb, st.currentRgb).toFixed(2)}:1</div>`;
-                } else if(st.isHardcore || (st.isComp && st.type === 'solid') || st.isMemory || st.type === 'luminance'){ 
-                    tBox.style.textShadow='0 0 8px #000'; tBox.textContent = st.type==='gradient' ? '' : spaces[st.spaceId].fmt(st.targetVals); document.getElementById('target-label').textContent='True Target'; 
-                } else if (st.type === 'haystack') {
-                    tBox.style.background = 'var(--bg)'; tBox.textContent = `Score: ${st.haystackCorrect}`; document.getElementById('target-label').textContent='Tiles Found'; fu.style.display = 'none';
-                } else if (st.type === 'hexdle') {
-                    tBox.style.textShadow='0 0 8px #000'; tBox.textContent = st.renderedTargetCss; document.getElementById('target-label').textContent='True Target';
-                    document.getElementById('user-color').style.background = st.renderedUserCss; document.getElementById('user-color').textContent = st.renderedUserCss; document.getElementById('user-color').style.textShadow='0 0 8px #000';
-                } else { tBox.textContent = ''; }
-            }
-
-            document.getElementById('game-area').classList.remove('active'); document.getElementById('results-screen').classList.add('active');
-            document.getElementById('match-percentage').textContent = st.finalScore + '%';
-
-            let flags = [`<span class="flag-item">${st.spaceId.toUpperCase()}</span>`];
-            if(st.isRush) flags.push(`<span class="flag-item">${svgs.rush} Streak: ${st.rushStreak}</span>`);
-            if(st.isDaily) flags.push(`<span class="flag-item">Daily #${st.dailyNum}</span>`);
-            if(st.isDuel) flags.push(`<span class="flag-item">${svgs.duel} Duel</span>`);
-            if(st.type==='gradient') flags.push(`<span class="flag-item">${svgs.gradient} Gradient</span>`);
-            if(st.type==='palette') flags.push(`<span class="flag-item">${svgs.palette} Palette</span>`);
-            if(st.type==='haystack') flags.push(`<span class="flag-item">${svgs.haystack} Haystack</span>`);
-            if(st.type==='hexdle') flags.push(`<span class="flag-item">${svgs.hexdle} Hexdle</span>`);
-            if(st.type==='telephone') flags.push(`<span class="flag-item">${svgs.telephone} Telephone</span>`);
-            if(st.type==='midpoint') flags.push(`<span class="flag-item">${svgs.midpoint} Midpoint</span>`);
-            if(st.type==='sort') flags.push(`<span class="flag-item">${svgs.sort} Color Sort</span>`);
-            if(st.type==='luminance') flags.push(`<span class="flag-item">${svgs.luminance} Luminance</span>`);
-            if(st.isWcag) flags.push(`<span class="flag-item">${svgs.wcag} WCAG</span>`);
-            if(st.isTerminal) flags.push(`<span class="flag-item">${svgs.terminal} Terminal</span>`);
-            if(st.isComp) flags.push(`<span class="flag-item">${svgs.complementary} Comp</span>`);
-            if(st.isMemory) flags.push(`<span class="flag-item">${svgs.memory} Memory</span>`);
-            if(st.isDarkroom) flags.push(`<span class="flag-item">${svgs.darkroom} Darkroom</span>`);
-            if(st.isHardcore) flags.push(`<span class="flag-item">${svgs.blind} Blind</span>`);
-            if(st.isMap) flags.push(`<span class="flag-item">${svgs.map} Map</span>`);
-            if(st.isIllusion) flags.push(`<span class="flag-item">${svgs.illusion} Illusion</span>`);
-            if(st.vision!=='normal') flags.push(`<span class="flag-item" style="color:#ef4444;">👁 Colorblind</span>`);
-            document.getElementById('status-text').innerHTML = flags.join('<span class="flag-sep">|</span>');
-
-            const un_duelable = ['studio'];
-            if (!st.isDaily && !st.isRush && !st.isDuel && !un_duelable.includes(st.type)) document.getElementById('btn-challenge').style.display='flex';
-
-            if (st.isDuel) {
-                const fo = document.getElementById('frame-opponent'); fo.style.display = 'block'; fo.classList.remove('active-illusion'); fo.style.backgroundColor='var(--border)';
-                const oBox = document.getElementById('op-color'); 
-                if (st.type === 'palette') { oBox.innerHTML=''; for(let i=0; i<3; i++) { const d = document.createElement('div'); d.style.flex='1'; d.style.height='100%'; d.style.background=st.duelData.uC[i]; oBox.appendChild(d); }
-                } else if (st.type === 'telephone') {
-                    oBox.innerHTML=''; 
-                    if (st.duelData.gL && st.duelData.gL.length) {
-                        for(let i=0; i<st.duelData.gL.length; i+=3) { const d = document.createElement('div'); d.style.flex='1'; d.style.height='100%'; d.style.background=`rgb(${st.duelData.gL.charCodeAt(i)},${st.duelData.gL.charCodeAt(i+1)},${st.duelData.gL.charCodeAt(i+2)})`; oBox.appendChild(d); }
-                    }
-                } else if (st.type === 'sort') {
-                    oBox.innerHTML=''; st.duelData.sC.forEach(rgb => { const d = document.createElement('div'); d.style.flex='1'; d.style.height='100%'; d.style.background=`rgb(${rgb.r},${rgb.g},${rgb.b})`; oBox.appendChild(d); });
-                } else { oBox.style.background = st.duelData.uC; }
-                document.getElementById('op-label').textContent = `Opponent (${st.duelData.oS}%)`;
-                const win = st.finalScore > st.duelData.oS; document.getElementById('match-percentage').innerHTML = `${st.finalScore}% <div style="font-size:1.5rem; color:${win?'#22c55e':'#ef4444'}; margin-top:10px; font-weight:800;">${win?'VICTORY':'DEFEAT'}</div>`;
-            }
-            window.toggleInfo(false); 
-        }
-
-        window.shareDuel = async function() {
-            const btn = document.getElementById('btn-challenge');
-            const orig = btn.innerHTML; btn.textContent = 'Compressing...';
-            try {
-                let packedData = [];
-                if (st.type === 'telephone') {
-                    let str = ""; st.teleHistory.forEach(rgb => { str += String.fromCharCode(rgb.r, rgb.g, rgb.b); }); packedData = str;
-                } else if (st.parsedGhostLog && st.parsedGhostLog.length) {
-                    packedData = st.parsedGhostLog;
-                }
-
-                const data = { c: window.getUIConfig(), tSeed: st.type==='haystack'?st.gameSeed:null, tV: (st.type==='solid'||st.type==='midpoint'||st.type==='telephone'||st.type==='luminance')?st.targetVals:null, tN: (st.type==='gradient'||st.type==='midpoint')?st.targetNativeData:null, tD: st.type==='gradient'?st.gradDeg:null, tC: st.type==='palette'?st.targetColorData:null, tCss: st.type==='palette'?st.targetCssData:null, tH: st.type==='hexdle'?st.hexTarget:null, sT: st.type==='sort'?st.sortTarget:null, sC: st.type==='sort'?st.sortCurrent:null, uBase: st.type==='palette'?st.userNativeData[0]:null, uC: st.type==='palette'?st.userCssData:st.renderedUserCss, oS: st.finalScore, gL: packedData };
-                const b64 = await window.compressData(data); const qs = `?duel=1&d=${b64}`;
-                navigator.clipboard.writeText(window.location.origin + window.location.pathname + qs);
-                btn.innerHTML = '<span>Link Copied!</span>'; setTimeout(() => btn.innerHTML = orig, 2000);
-            } catch (e) { btn.textContent = 'Error!'; setTimeout(() => btn.innerHTML = orig, 2000); }
-        }
-
-        window.shareScore = function() {
-            const getEmoji = (diff) => diff < 15 ? '🟩' : diff < 40 ? '🟨' : '🟥';
-            let str = `Chroma ${st.isDaily?`Daily #${st.dailyNum}`:st.isRush?`Rush (Streak ${st.rushStreak})`:st.isDuel?'Duel':'Freeplay'} | ${window.typeNames[st.type]} | ${st.finalScore}%\n`;
-            if(st.type==='gradient') str+='🌈'; if(st.type==='palette') str+='🎨'; if(st.type==='haystack') str+='🔲'; if(st.type==='hexdle') str+='🧩'; if(st.type==='telephone') str+='☎️'; if(st.type==='midpoint') str+='⚖️'; if(st.type==='sort') str+='📊'; if(st.type==='luminance') str+='💡'; if(st.isTerminal) str+='⌨️'; if(st.isMemory) str+='🧠'; if(st.isComp) str+='☯'; if(st.isWcag) str+='Aa'; if(st.isHardcore) str+='👁'; if(st.isDarkroom) str+='📸'; if(st.vision!=='normal') str+='🕶'; if(st.isIllusion) str+='🌀'; if(st.isMap) str+='🗺';
-            if((st.type==='solid' || st.type==='midpoint' || st.type==='luminance') && !st.isWcag) { const dr=Math.abs(st.targetRgb.r-st.currentRgb.r), dg=Math.abs(st.targetRgb.g-st.currentRgb.g), db=Math.abs(st.targetRgb.b-st.currentRgb.b); str += `\n[RGB] ${getEmoji(dr)}${getEmoji(dg)}${getEmoji(db)}`; }
-            navigator.clipboard.writeText(str).then(() => { const b=document.getElementById('btn-share'); const o=b.innerHTML; b.innerHTML='<span>Copied!</span>'; setTimeout(()=>b.innerHTML=o,2000); });
-        }
-
-        window.resetGame = function() {
-            if (st.timer) { clearInterval(st.timer); st.timer = null; }
-            if (st.ghostTimer) { cancelAnimationFrame(st.ghostTimer); st.ghostTimer = null; }
-            document.body.classList.remove('darkroom-active');
-            
-            // Clean up main UI state
-            document.getElementById('setup-screen').classList.add('active'); 
-            document.getElementById('results-screen').classList.remove('active'); 
-            document.getElementById('game-area').classList.remove('active');
-            document.getElementById('game-area').className = 'game-area'; // Remove is-hexdle
-            
-            // Explicitly clean up all special grid containers
-            document.getElementById('main-color-boxes').style.display='none';
-            document.getElementById('main-color-boxes').className = 'color-boxes';
-            document.getElementById('haystack-grid').style.display='none';
-            document.getElementById('sort-grid').style.display='none';
-            
-            if (st.isDuel) { window.clearUrl(); st.isDuel=false; st.duelData=null; document.getElementById('match-percentage').innerHTML='0%'; document.getElementById('duel-banner').style.display='none'; }
-            if (st.isViewingShared) document.getElementById('shared-banner').style.display='block';
-            window.changeColorSpace();
-        }
-
-        window.onload = async () => {
-            window.initTheme(); window.getDailyRNG(0)(); document.getElementById('daily-day-display').textContent = st.dailyNum;
-            const p = new URLSearchParams(window.location.search);
-            if (p.has('duel') && p.has('d')) {
-                try { 
-                    st.duelData = await window.decompressData(p.get('d')); 
-                    st.isDuel = true; document.getElementById('duel-op-score').textContent = st.duelData.oS + '%'; 
-                    document.getElementById('duel-banner').style.display = 'block';
-                } catch(e) { window.clearUrl(); window.setUIConfig(window.loadLocal()); }
-            } else if (p.has('share')) {
-                st.isViewingShared = true; document.getElementById('shared-banner').style.display='block';
-                window.setUIConfig({ s:p.get('s'), t:parseInt(p.get('t')), o:p.get('o'), p:p.get('p')||'solid', pr:p.get('pr')||'analogous', v:p.get('v')||'normal', tr:parseInt(p.get('tr'))||10, m:p.get('m')==='1', h:p.get('h')==='1', i:p.get('i')==='1', tm:p.get('tm')==='1', mm:p.get('mm')==='1', dk:p.get('dk')==='1' });
-            } else { window.setUIConfig(window.loadLocal()); }
-        };
-    </script>
-</body>
-</html>
+                st.sortCurrent.forEach(rgb => { const d = document.createElement('
