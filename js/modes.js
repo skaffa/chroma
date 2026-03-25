@@ -1,4 +1,3 @@
-// --- HEXDLE ENGINE ---
 function initHexdle() {
     const rng = (st.isDaily || st.isDuel) ? getDailyRNG(st.dailyChallengeId + st.rushStreak + (st.isDuel ? st.duelData.tSeed : st.gameSeed)) : () => Math.random();
     if(st.isDuel && st.duelData.tH) { st.hexTarget = st.duelData.tH; } 
@@ -54,11 +53,8 @@ function handleHexKey(key) {
         }
     } else if (/^[0-9A-F]$/.test(key) && st.hexCurrentGuess.length < 6) { st.hexCurrentGuess += key; }
     renderHexdle();
-};
+}
 
-window.addEventListener('keydown', (e) => { if(e.ctrlKey || e.metaKey || e.altKey) return; handleHexKey(e.key); });
-
-// --- HAYSTACK ENGINE ---
 function initHaystack() {
     const rng = (st.isDaily || st.isDuel) ? getDailyRNG(st.dailyChallengeId + st.rushStreak + st.haystackCorrect + (st.isDuel ? st.duelData.tSeed : st.gameSeed)) : () => Math.random();
     st.haystackLevel = st.haystackCorrect;
@@ -92,7 +88,6 @@ function initHaystack() {
     }
 }
 
-// --- COLOR SORT ENGINE ---
 function generateSortGradient(c1, c2, steps) {
     let arr = [];
     for(let i=0; i<steps; i++) {
@@ -121,7 +116,6 @@ function renderSortGrid() {
     });
 }
 
-// --- SPECTRUM MAP ENGINE ---
 function drawSpectrum() {
     const ctx = document.getElementById('spectrum-map').getContext('2d'); const w=ctx.canvas.width=ctx.canvas.clientWidth; const h=ctx.canvas.height=ctx.canvas.clientHeight;
     const gs=Math.floor(w*0.1); let grd=ctx.createLinearGradient(0,0,0,h); grd.addColorStop(0,'#fff'); grd.addColorStop(1,'#000'); ctx.fillStyle=grd; ctx.fillRect(0,0,gs,h);
@@ -135,5 +129,22 @@ function handleMap(e) {
     const d=sMap.getContext('2d').getImageData(x*(sMap.width/r.width),y*(sMap.height/r.height),1,1).data;
     st.currentRgb={r:d[0],g:d[1],b:d[2]}; st.renderedUserCss = `rgb(${d[0]},${d[1]},${d[2]})`; renderBoxes();
 }
-document.getElementById('spectrum-map').addEventListener('mousedown', handleMap); 
-document.getElementById('spectrum-map').addEventListener('mousemove', e => { if(e.buttons===1) handleMap(e); });
+
+// Binders
+document.addEventListener('DOMContentLoaded', () => {
+    const sMap = document.getElementById('spectrum-map');
+    sMap.addEventListener('mousedown', handleMap); 
+    sMap.addEventListener('mousemove', e => { if(e.buttons===1) handleMap(e); });
+    window.addEventListener('keydown', (e) => { if(e.ctrlKey || e.metaKey || e.altKey) return; handleHexKey(e.key); });
+});
+
+// Explicit Global Exports
+window.initHexdle = initHexdle;
+window.renderHexdle = renderHexdle;
+window.handleHexKey = handleHexKey;
+window.initHaystack = initHaystack;
+window.generateSortGradient = generateSortGradient;
+window.handleSortClick = handleSortClick;
+window.renderSortGrid = renderSortGrid;
+window.drawSpectrum = drawSpectrum;
+window.handleMap = handleMap;
