@@ -1,244 +1,1258 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chroma | Master Edition</title>
-    
+
     <script data-goatcounter="https://skaffa.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 
     <style>
         :root {
-            --bg: #0a0a0c; --card: #141417; --accent: #ffffff;
-            --text-main: #e4e4e7; --text-muted: #71717a; --border: #27272a;
+            --bg: #0a0a0c;
+            --card: #141417;
+            --accent: #ffffff;
+            --text-main: #e4e4e7;
+            --text-muted: #71717a;
+            --border: #27272a;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
-        body { font-family: 'Inter', -apple-system, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; background-color: var(--bg); color: var(--text-main); transition: filter 0.3s; }
-        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: var(--bg);
+            color: var(--text-main);
+            transition: filter 0.3s;
+        }
+
         /* Vision Filters & Darkroom */
-        body.protanopia { filter: url(#protanopia); }
-        body.deuteranopia { filter: url(#deuteranopia); }
-        body.tritanopia { filter: url(#tritanopia); }
-        
-        @keyframes darkroomFlicker {
-            0% { opacity: 1; filter: grayscale(0) contrast(1); }
-            10% { opacity: 0.8; }
-            12% { opacity: 0.2; filter: grayscale(0.5) contrast(2); }
-            15% { opacity: 1; filter: grayscale(0) contrast(1); }
-            40% { opacity: 1; }
-            42% { opacity: 0; }
-            45% { opacity: 1; }
-            70% { opacity: 1; filter: sepia(0.8); }
-            75% { opacity: 1; filter: sepia(0); }
-            100% { opacity: 1; }
+        body.protanopia {
+            filter: url(#protanopia);
         }
-        body.darkroom-active .container { animation: darkroomFlicker 6s infinite alternate; }
 
-        .container { background: var(--card); padding: 2rem 1.5rem; border-radius: 2px; box-shadow: 0 40px 100px rgba(0,0,0,0.8); text-align: center; max-width: 480px; width: 95%; border: 1px solid var(--border); position: relative; transition: box-shadow 0.3s; }
-        
-        h1 { font-size: 0.85rem; font-weight: 400; margin-bottom: 2rem; text-transform: uppercase; letter-spacing: 0.5em; color: var(--text-muted); display: flex; justify-content: center; align-items: center; gap: 10px; }
-        
-        .icon { width: 14px; height: 14px; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; fill: none; }
-        .icon-sm { width: 12px; height: 12px; }
-        
-        .header-btns { display: flex; gap: 8px; }
-        .header-btn { flex: none; width: 26px; height: 26px; padding: 0; border: 1px solid var(--border); border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--text-muted); transition: 0.2s; background: var(--bg); }
-        .header-btn:hover { color: var(--bg); background: var(--text-muted); }
-        .pantheon-btn { color: #facc15; border-color: rgba(250, 204, 21, 0.3); }
-        .pantheon-btn:hover { background: #facc15; color: var(--bg); }
+        body.deuteranopia {
+            filter: url(#deuteranopia);
+        }
 
-        .game-setup, .daily-menu, .game-area, .results, .info-modal { display: none; }
-        .active { display: block; }
+        body.tritanopia {
+            filter: url(#tritanopia);
+        }
+
+        @keyframes darkroomFlicker {
+            0% {
+                opacity: 1;
+                filter: grayscale(0) contrast(1);
+            }
+
+            10% {
+                opacity: 0.8;
+            }
+
+            12% {
+                opacity: 0.2;
+                filter: grayscale(0.5) contrast(2);
+            }
+
+            15% {
+                opacity: 1;
+                filter: grayscale(0) contrast(1);
+            }
+
+            40% {
+                opacity: 1;
+            }
+
+            42% {
+                opacity: 0;
+            }
+
+            45% {
+                opacity: 1;
+            }
+
+            70% {
+                opacity: 1;
+                filter: sepia(0.8);
+            }
+
+            75% {
+                opacity: 1;
+                filter: sepia(0);
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        body.darkroom-active .container {
+            animation: darkroomFlicker 6s infinite alternate;
+        }
+
+        .container {
+            background: var(--card);
+            padding: 2rem 1.5rem;
+            border-radius: 2px;
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.8);
+            text-align: center;
+            max-width: 480px;
+            width: 95%;
+            border: 1px solid var(--border);
+            position: relative;
+            transition: box-shadow 0.3s;
+        }
+
+        h1 {
+            font-size: 0.85rem;
+            font-weight: 400;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5em;
+            color: var(--text-muted);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .icon {
+            width: 14px;
+            height: 14px;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            fill: none;
+        }
+
+        .icon-sm {
+            width: 12px;
+            height: 12px;
+        }
+
+        .header-btns {
+            display: flex;
+            gap: 8px;
+        }
+
+        .header-btn {
+            flex: none;
+            width: 26px;
+            height: 26px;
+            padding: 0;
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            transition: 0.2s;
+            background: var(--bg);
+        }
+
+        .header-btn:hover {
+            color: var(--bg);
+            background: var(--text-muted);
+        }
+
+        .pantheon-btn {
+            color: #facc15;
+            border-color: rgba(250, 204, 21, 0.3);
+        }
+
+        .pantheon-btn:hover {
+            background: #facc15;
+            color: var(--bg);
+        }
+
+        .game-setup,
+        .daily-menu,
+        .game-area,
+        .results,
+        .info-modal {
+            display: none;
+        }
+
+        .active {
+            display: block;
+        }
 
         /* Banners */
-        .shared-banner { position: absolute; top: calc(100% + 15px); left: 0; width: 100%; background: var(--card); border: 1px solid #3b82f6; padding: 16px; border-radius: 4px; text-align: left; box-shadow: 0 20px 50px rgba(0,0,0,0.5); z-index: 50;}
-        .duel-banner { border-color: #f97316; background: rgba(249, 115, 22, 0.05); }
-        .duel-banner .shared-banner-title { color: #f97316; display: flex; align-items: center; gap: 6px; }
-        .shared-banner-title { font-size: 0.65rem; font-weight: 700; color: #3b82f6; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
-        .shared-banner-text { font-size: 0.7rem; color: var(--text-main); margin-bottom: 12px; line-height: 1.4; }
-        .shared-banner-btns { display: flex; gap: 8px; }
-        .shared-banner-btns button { padding: 10px; font-size: 0.6rem; border-color: #3b82f6; color: #3b82f6; }
-        .shared-banner-btns button:hover { background: #3b82f6; color: var(--bg); }
-        .btn-duel { border-color: #f97316 !important; color: #f97316 !important; }
-        .btn-duel:hover { background: #f97316 !important; color: var(--bg) !important; }
+        .shared-banner {
+            position: absolute;
+            top: calc(100% + 15px);
+            left: 0;
+            width: 100%;
+            background: var(--card);
+            border: 1px solid #3b82f6;
+            padding: 16px;
+            border-radius: 4px;
+            text-align: left;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            z-index: 50;
+        }
+
+        .duel-banner {
+            border-color: #f97316;
+            background: rgba(249, 115, 22, 0.05);
+        }
+
+        .duel-banner .shared-banner-title {
+            color: #f97316;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .shared-banner-title {
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: #3b82f6;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 8px;
+        }
+
+        .shared-banner-text {
+            font-size: 0.7rem;
+            color: var(--text-main);
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
+        .shared-banner-btns {
+            display: flex;
+            gap: 8px;
+        }
+
+        .shared-banner-btns button {
+            padding: 10px;
+            font-size: 0.6rem;
+            border-color: #3b82f6;
+            color: #3b82f6;
+        }
+
+        .shared-banner-btns button:hover {
+            background: #3b82f6;
+            color: var(--bg);
+        }
+
+        .btn-duel {
+            border-color: #f97316 !important;
+            color: #f97316 !important;
+        }
+
+        .btn-duel:hover {
+            background: #f97316 !important;
+            color: var(--bg) !important;
+        }
 
         /* Modals & Pantheon */
-        .info-modal { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--card); z-index: 100; padding: 2rem; text-align: left; overflow-y: auto; border: 1px solid var(--border); scroll-behavior: smooth; }
-        .info-modal h2 { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1rem; color: var(--accent); display: flex; justify-content: space-between; align-items: center; }
-        .info-modal h3 { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-main); margin: 1.5rem 0 0.8rem 0; border-bottom: 1px solid var(--border); padding-bottom: 4px; }
-        .info-modal b { color: var(--text-main); transition: color 0.3s; }
-        
-        .info-modal p { font-size: 0.65rem; color: var(--text-muted); margin-bottom: 0.8rem; line-height: 1.5; transition: 0.3s; border-left: 2px solid transparent; padding-left: 6px; margin-left: -8px; }
-        .info-modal p.highlight { color: var(--text-main); border-left-color: var(--accent); background: rgba(255, 255, 255, 0.05); padding: 8px; border-radius: 0 4px 4px 0; }
-        .info-modal p.highlight b { color: var(--accent); }
-        
-        .pantheon-grid { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 1rem; margin-bottom: 1.5rem; max-height: 200px; overflow-y: auto; align-content: flex-start; }
-        .pantheon-swatch { width: 42px; height: 42px; border-radius: 4px; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); transition: transform 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.5); }
-        .pantheon-swatch:hover { transform: scale(1.1); z-index: 2; border-color: white; }
-        .empty-pantheon { font-size: 0.7rem; color: var(--text-muted); text-align: center; width: 100%; padding: 2rem 0; font-style: italic; }
-        
-        .pantheon-details { border-top: 1px solid var(--border); padding-top: 1rem; display: none; }
-        .pd-title { font-size: 0.65rem; font-weight: 700; color: #facc15; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; display:flex; justify-content: space-between; align-items: center; }
-        .pd-stat { font-size: 0.65rem; color: var(--text-muted); margin-bottom: 4px; display: flex; justify-content: space-between; align-items: center; }
-        .pd-stat span { color: var(--text-main); font-family: monospace; text-align: right; word-break: break-all; max-width: 60%; }
-        .btn-theme { padding: 4px 8px; font-size: 0.55rem; background: transparent; color: var(--accent); border: 1px solid var(--accent); border-radius: 2px; cursor: pointer; }
-        .btn-theme:hover { background: var(--accent); color: var(--bg); }
+        .info-modal {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--card);
+            z-index: 100;
+            padding: 2rem;
+            text-align: left;
+            overflow-y: auto;
+            border: 1px solid var(--border);
+            scroll-behavior: smooth;
+        }
+
+        .info-modal h2 {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+            color: var(--accent);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .info-modal h3 {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-main);
+            margin: 1.5rem 0 0.8rem 0;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 4px;
+        }
+
+        .info-modal b {
+            color: var(--text-main);
+            transition: color 0.3s;
+        }
+
+        .info-modal p {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            margin-bottom: 0.8rem;
+            line-height: 1.5;
+            transition: 0.3s;
+            border-left: 2px solid transparent;
+            padding-left: 6px;
+            margin-left: -8px;
+        }
+
+        .info-modal p.highlight {
+            color: var(--text-main);
+            border-left-color: var(--accent);
+            background: rgba(255, 255, 255, 0.05);
+            padding: 8px;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .info-modal p.highlight b {
+            color: var(--accent);
+        }
+
+        .pantheon-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 1rem;
+            margin-bottom: 1.5rem;
+            max-height: 200px;
+            overflow-y: auto;
+            align-content: flex-start;
+        }
+
+        .pantheon-swatch {
+            width: 42px;
+            height: 42px;
+            border-radius: 4px;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.2s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+        }
+
+        .pantheon-swatch:hover {
+            transform: scale(1.1);
+            z-index: 2;
+            border-color: white;
+        }
+
+        .empty-pantheon {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-align: center;
+            width: 100%;
+            padding: 2rem 0;
+            font-style: italic;
+        }
+
+        .pantheon-details {
+            border-top: 1px solid var(--border);
+            padding-top: 1rem;
+            display: none;
+        }
+
+        .pd-title {
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: #facc15;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .pd-stat {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .pd-stat span {
+            color: var(--text-main);
+            font-family: monospace;
+            text-align: right;
+            word-break: break-all;
+            max-width: 60%;
+        }
+
+        .btn-theme {
+            padding: 4px 8px;
+            font-size: 0.55rem;
+            background: transparent;
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            border-radius: 2px;
+            cursor: pointer;
+        }
+
+        .btn-theme:hover {
+            background: var(--accent);
+            color: var(--bg);
+        }
 
         /* Settings / Confirm Modals */
-        .btn-danger { border-color: #ef4444; color: #ef4444; width: 100%; margin-bottom: 8px; }
-        .btn-danger:hover { background: #ef4444 !important; color: var(--bg) !important; border-color: #ef4444 !important; }
-        #confirm-modal { display: none; align-items: center; justify-content: center; background: rgba(10,10,12,0.95); z-index: 200; }
-        .confirm-box { background: var(--card); padding: 2rem; border: 1px solid #ef4444; border-radius: 4px; text-align: center; max-width: 320px; width: 90%; }
-        
+        .btn-danger {
+            border-color: #ef4444;
+            color: #ef4444;
+            width: 100%;
+            margin-bottom: 8px;
+        }
+
+        .btn-danger:hover {
+            background: #ef4444 !important;
+            color: var(--bg) !important;
+            border-color: #ef4444 !important;
+        }
+
+        #confirm-modal {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: rgba(10, 10, 12, 0.95);
+            z-index: 200;
+        }
+
+        .confirm-box {
+            background: var(--card);
+            padding: 2rem;
+            border: 1px solid #ef4444;
+            border-radius: 4px;
+            text-align: center;
+            max-width: 320px;
+            width: 90%;
+        }
+
         /* Export Modal */
-        #export-modal textarea { width: 100%; height: 150px; background: var(--bg); color: #22c55e; font-family: monospace; font-size: 0.7rem; padding: 10px; border: 1px solid var(--border); outline: none; resize: none; margin-bottom: 10px; }
-        
+        #export-modal textarea {
+            width: 100%;
+            height: 150px;
+            background: var(--bg);
+            color: #22c55e;
+            font-family: monospace;
+            font-size: 0.7rem;
+            padding: 10px;
+            border: 1px solid var(--border);
+            outline: none;
+            resize: none;
+            margin-bottom: 10px;
+        }
+
         /* Daily Challenges */
-        .daily-card { border: 1px solid var(--border); padding: 16px; border-radius: 4px; cursor: pointer; text-align: left; transition: 0.2s; background: var(--bg); margin-bottom: 10px; display: flex; flex-direction: column; gap: 8px; }
-        .daily-card:hover { border-color: var(--accent); background: rgba(255,255,255, 0.05); }
-        .daily-card-title { font-size: 0.7rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.1em; display: flex; justify-content: space-between; align-items: center; }
-        .daily-card-desc { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
-        .diff-badge { padding: 3px 6px; border-radius: 3px; font-size: 0.55rem; font-weight: 800; letter-spacing: 0.15em; border: 1px solid; }
+        .daily-card {
+            border: 1px solid var(--border);
+            padding: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            text-align: left;
+            transition: 0.2s;
+            background: var(--bg);
+            margin-bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .daily-card:hover {
+            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .daily-card-title {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .daily-card-desc {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .diff-badge {
+            padding: 3px 6px;
+            border-radius: 3px;
+            font-size: 0.55rem;
+            font-weight: 800;
+            letter-spacing: 0.15em;
+            border: 1px solid;
+        }
 
         /* Game Header */
-        .game-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
-        .game-objective { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); transition: color 0.3s; }
-        .rush-badge { color: #f97316; font-weight: 800; font-size: 0.7rem; letter-spacing: 0.1em; display: none; align-items: center; gap: 4px; }
-        .timer { font-size: 0.8rem; font-weight: 600; color: var(--text-muted); letter-spacing: 0.1em; }
-        
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .game-objective {
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--accent);
+            transition: color 0.3s;
+        }
+
+        .rush-badge {
+            color: #f97316;
+            font-weight: 800;
+            font-size: 0.7rem;
+            letter-spacing: 0.1em;
+            display: none;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .timer {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            letter-spacing: 0.1em;
+        }
+
         /* Color Boxes */
-        .color-boxes { display: flex; gap: 2px; justify-content: center; margin: 0 0 1.5rem 0; }
-        .illusion-frame { flex: 1; padding: 1px; background: var(--border); border-radius: 4px; transition: padding 0.3s, background-color 0.3s; }
-        .illusion-frame.active-illusion { padding: 16px; }
-        .color-box { width: 100%; aspect-ratio: 1.2/1; display: flex; align-items: center; justify-content: center; font-family: monospace; font-size: 0.7rem; font-weight: 600; text-align: center; letter-spacing: 0.05em; color: var(--text-main); overflow: hidden; border-radius: 2px; position: relative; transition: height 0.3s; }
-        .color-box-label { display: block; padding: 10px 0; font-size: 0.65rem; font-weight: 600; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.1em; text-align: center; }
-        
+        .color-boxes {
+            display: flex;
+            gap: 2px;
+            justify-content: center;
+            margin: 0 0 1.5rem 0;
+        }
+
+        .illusion-frame {
+            flex: 1;
+            padding: 1px;
+            background: var(--border);
+            border-radius: 4px;
+            transition: padding 0.3s, background-color 0.3s;
+        }
+
+        .illusion-frame.active-illusion {
+            padding: 16px;
+        }
+
+        .color-box {
+            width: 100%;
+            aspect-ratio: 1.2/1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: monospace;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-align: center;
+            letter-spacing: 0.05em;
+            color: var(--text-main);
+            overflow: hidden;
+            border-radius: 2px;
+            position: relative;
+            transition: height 0.3s;
+        }
+
+        .color-box-label {
+            display: block;
+            padding: 10px 0;
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            letter-spacing: 0.1em;
+            text-align: center;
+        }
+
         /* Special Hexdle Frames */
-        .color-boxes.is-hexdle { flex-direction: column; gap: 10px; margin-bottom: 1rem; }
-        .color-boxes.is-hexdle .illusion-frame { flex: none; width: 100%; }
-        .color-boxes.is-hexdle #frame-target { height: 3rem; margin-bottom: 0; padding: 0; border: none; }
-        .color-boxes.is-hexdle #target-color { aspect-ratio: unset; height: 100%; }
-        
+        .color-boxes.is-hexdle {
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .color-boxes.is-hexdle .illusion-frame {
+            flex: none;
+            width: 100%;
+        }
+
+        .color-boxes.is-hexdle #frame-target {
+            height: 3rem;
+            margin-bottom: 0;
+            padding: 0;
+            border: none;
+        }
+
+        .color-boxes.is-hexdle #target-color {
+            aspect-ratio: unset;
+            height: 100%;
+        }
+
         /* Special Grid UIs */
-        .haystack-grid { display: grid; gap: 2px; width: 100%; aspect-ratio: 1/1; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; margin-bottom: 1.5rem; }
-        .haystack-cell { cursor: pointer; transition: opacity 0.1s; }
-        .haystack-cell:active { opacity: 0.7; }
-        
-        .sort-container { display: flex; width: 100%; height: 80px; gap: 2px; margin-bottom: 1.5rem; border-radius: 4px; overflow: hidden; border: 1px solid var(--border); }
-        .sort-block { flex: 1; height: 100%; cursor: pointer; transition: transform 0.2s, filter 0.2s; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.2); display: flex; align-items: flex-end; justify-content: center; }
-        .sort-block.selected { transform: scale(1.1); z-index: 10; filter: brightness(1.2); outline: 2px solid var(--accent); }
+        .haystack-grid {
+            display: grid;
+            gap: 2px;
+            width: 100%;
+            aspect-ratio: 1/1;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+
+        .haystack-cell {
+            cursor: pointer;
+            transition: opacity 0.1s;
+        }
+
+        .haystack-cell:active {
+            opacity: 0.7;
+        }
+
+        .sort-container {
+            display: flex;
+            width: 100%;
+            height: 80px;
+            gap: 2px;
+            margin-bottom: 1.5rem;
+            border-radius: 4px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .sort-block {
+            flex: 1;
+            height: 100%;
+            cursor: pointer;
+            transition: transform 0.2s, filter 0.2s;
+            box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+        }
+
+        .sort-block.selected {
+            transform: scale(1.1);
+            z-index: 10;
+            filter: brightness(1.2);
+            outline: 2px solid var(--accent);
+        }
 
         /* Hexdle Board */
-        #hexdle-controls { margin-bottom: 1.5rem; }
-        #hexdle-board { display: flex; flex-direction: column; gap: 4px; align-items: center; }
-        .hexdle-row { display: flex; gap: 4px; justify-content: center; }
-        .hexdle-cell { width: 2.5rem; height: 2.5rem; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-family: monospace; font-size: 1.1rem; font-weight: bold; text-transform: uppercase; background: var(--bg); color: var(--text-main); border-radius: 2px; transition: 0.3s; }
-        .hexdle-keyboard { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; max-width: 280px; margin: 0.5rem auto 0 auto; }
-        .hexdle-key { padding: 6px 10px; border: 1px solid var(--border); border-radius: 2px; background: var(--bg); color: var(--text-main); cursor: pointer; font-family: monospace; font-size: 0.75rem; font-weight: bold; text-transform: uppercase; flex-grow: 1; transition: 0.1s; display: flex; align-items: center; justify-content: center; }
-        .hexdle-key:active { transform: scale(0.95); }
-        .hx-green { background: #22c55e !important; color: #000 !important; border-color: #22c55e !important; }
-        .hx-yellow { background: #facc15 !important; color: #000 !important; border-color: #facc15 !important; }
-        .hx-gray { background: var(--card) !important; color: var(--text-muted) !important; border-color: var(--card) !important; }
+        #hexdle-controls {
+            margin-bottom: 1.5rem;
+        }
+
+        #hexdle-board {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            align-items: center;
+        }
+
+        .hexdle-row {
+            display: flex;
+            gap: 4px;
+            justify-content: center;
+        }
+
+        .hexdle-cell {
+            width: 2.5rem;
+            height: 2.5rem;
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: monospace;
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            background: var(--bg);
+            color: var(--text-main);
+            border-radius: 2px;
+            transition: 0.3s;
+        }
+
+        .hexdle-keyboard {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 4px;
+            max-width: 280px;
+            margin: 0.5rem auto 0 auto;
+        }
+
+        .hexdle-key {
+            padding: 6px 10px;
+            border: 1px solid var(--border);
+            border-radius: 2px;
+            background: var(--bg);
+            color: var(--text-main);
+            cursor: pointer;
+            font-family: monospace;
+            font-size: 0.75rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            flex-grow: 1;
+            transition: 0.1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hexdle-key:active {
+            transform: scale(0.95);
+        }
+
+        .hx-green {
+            background: #22c55e !important;
+            color: #000 !important;
+            border-color: #22c55e !important;
+        }
+
+        .hx-yellow {
+            background: #facc15 !important;
+            color: #000 !important;
+            border-color: #facc15 !important;
+        }
+
+        .hx-gray {
+            background: var(--card) !important;
+            color: var(--text-muted) !important;
+            border-color: var(--card) !important;
+        }
 
         /* Controls */
-        .canvas-wrapper { position: relative; width: 100%; height: 160px; margin-bottom: 1rem; touch-action: none; }
-        #spectrum-map { width: 100%; height: 100%; border: 1px solid var(--border); cursor: crosshair; display: block; touch-action: manipulation; }
-        #selector-dot { position: absolute; width: 14px; height: 14px; border: 2px solid white; border-radius: 50%; transform: translate(-50%, -50%); pointer-events: none; box-shadow: 0 0 0 1px black; display: none; z-index: 10; }
+        .canvas-wrapper {
+            position: relative;
+            width: 100%;
+            height: 160px;
+            margin-bottom: 1rem;
+            touch-action: none;
+        }
 
-        .space-selector { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-bottom: 1.5rem; transition: opacity 0.3s; }
-        .radio-label { display: inline-block; font-size: 0.55rem; text-transform: uppercase; font-weight: 600; letter-spacing: 0.1em; padding: 8px 10px; border: 1px solid var(--border); border-radius: 2px; cursor: pointer; color: var(--text-muted); transition: 0.2s; background: var(--bg); }
-        .space-selector input[type="radio"] { display: none; }
-        .space-selector input[type="radio"]:checked + .radio-label { background: var(--text-main); color: var(--bg); border-color: var(--text-main); }
-        .space-selector input[type="radio"]:disabled + .radio-label { opacity: 0.2; cursor: not-allowed; text-decoration: line-through; border-color: transparent; }
+        #spectrum-map {
+            width: 100%;
+            height: 100%;
+            border: 1px solid var(--border);
+            cursor: crosshair;
+            display: block;
+            touch-action: manipulation;
+        }
 
-        .config-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1.5rem; }
-        select { background: var(--bg); color: var(--text-main); border: 1px solid var(--border); padding: 10px; font-size: 0.7rem; appearance: none; text-align: center; outline: none; text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; transition: 0.2s;}
-        select:focus { border-color: var(--accent); }
+        #selector-dot {
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            border: 2px solid white;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            box-shadow: 0 0 0 1px black;
+            display: none;
+            z-index: 10;
+        }
 
-        .toggles-container { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 2rem; align-items: center; justify-items: start; padding: 0 5%; }
-        .mode-toggle { display: flex; align-items: center; gap: 10px; cursor: pointer; transition: 0.3s; font-size: 0.6rem; white-space: nowrap; }
-        .toggle-switch { width: 32px; height: 16px; background: var(--border); position: relative; border-radius: 2px; flex-shrink: 0; }
-        .toggle-switch::after { content: ''; position: absolute; width: 8px; height: 8px; background: var(--text-muted); top: 4px; left: 4px; transition: 0.2s; border-radius: 1px; }
-        input[type="checkbox"]:checked + .toggle-switch { background: var(--text-muted); }
-        input[type="checkbox"]:checked + .toggle-switch::after { left: 20px; background: var(--accent); }
-        input[type="checkbox"] { display: none; }
+        .space-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            transition: opacity 0.3s;
+        }
+
+        .radio-label {
+            display: inline-block;
+            font-size: 0.55rem;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            padding: 8px 10px;
+            border: 1px solid var(--border);
+            border-radius: 2px;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: 0.2s;
+            background: var(--bg);
+        }
+
+        .space-selector input[type="radio"] {
+            display: none;
+        }
+
+        .space-selector input[type="radio"]:checked+.radio-label {
+            background: var(--text-main);
+            color: var(--bg);
+            border-color: var(--text-main);
+        }
+
+        .space-selector input[type="radio"]:disabled+.radio-label {
+            opacity: 0.2;
+            cursor: not-allowed;
+            text-decoration: line-through;
+            border-color: transparent;
+        }
+
+        .config-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 1.5rem;
+        }
+
+        select {
+            background: var(--bg);
+            color: var(--text-main);
+            border: 1px solid var(--border);
+            padding: 10px;
+            font-size: 0.7rem;
+            appearance: none;
+            text-align: center;
+            outline: none;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            transition: 0.2s;
+            width: 100%;
+            max-width: 100%;
+            text-overflow: ellipsis;
+        }
+
+        select:focus {
+            border-color: var(--accent);
+        }
+
+        .toggles-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 2rem;
+            align-items: center;
+            justify-items: start;
+            padding: 0 5%;
+        }
+
+        .mode-toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 0.6rem;
+            white-space: nowrap;
+        }
+
+        .toggle-switch {
+            width: 32px;
+            height: 16px;
+            background: var(--border);
+            position: relative;
+            border-radius: 2px;
+            flex-shrink: 0;
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: var(--text-muted);
+            top: 4px;
+            left: 4px;
+            transition: 0.2s;
+            border-radius: 1px;
+        }
+
+        input[type="checkbox"]:checked+.toggle-switch {
+            background: var(--text-muted);
+        }
+
+        input[type="checkbox"]:checked+.toggle-switch::after {
+            left: 20px;
+            background: var(--accent);
+        }
+
+        input[type="checkbox"] {
+            display: none;
+        }
 
         /* Sliders & Tabs */
-        .tabs-container { display: flex; gap: 4px; margin-bottom: 1.5rem; }
-        .ui-tab { flex: 1; padding: 8px; font-size: 0.6rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; background: var(--bg); color: var(--text-muted); border: 1px solid var(--border); cursor: pointer; border-radius: 2px; }
-        .ui-tab.active { background: var(--text-main); color: var(--bg); border-color: var(--text-main); }
-        
-        .slider-group { margin-bottom: 1rem; position: relative; }
-        .slider-header { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.7rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-main); }
-        .slider-value { font-family: monospace; color: var(--text-muted); }
-        input[type="range"] { -webkit-appearance: none; width: 100%; height: 2px; background: var(--border); outline: none; touch-action: manipulation; position: relative; z-index: 2;}
-        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 6px; height: 18px; background: var(--accent); cursor: pointer; touch-action: manipulation; border-radius: 1px;}
-        
-        .ghost-thumb { position: absolute; width: 6px; height: 18px; background: var(--accent); border: 1px solid #000; pointer-events: none; top: 15px; transform: translateX(-50%); border-radius: 1px; z-index: 1; display: none; }
+        .tabs-container {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 1.5rem;
+        }
+
+        .ui-tab {
+            flex: 1;
+            padding: 8px;
+            font-size: 0.6rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            background: var(--bg);
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+            cursor: pointer;
+            border-radius: 2px;
+        }
+
+        .ui-tab.active {
+            background: var(--text-main);
+            color: var(--bg);
+            border-color: var(--text-main);
+        }
+
+        .slider-group {
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .slider-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-main);
+        }
+
+        .slider-value {
+            font-family: monospace;
+            color: var(--text-muted);
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 2px;
+            background: var(--border);
+            outline: none;
+            touch-action: manipulation;
+            position: relative;
+            z-index: 2;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 6px;
+            height: 18px;
+            background: var(--accent);
+            cursor: pointer;
+            touch-action: manipulation;
+            border-radius: 1px;
+        }
+
+        .ghost-thumb {
+            position: absolute;
+            width: 6px;
+            height: 18px;
+            background: var(--accent);
+            border: 1px solid #000;
+            pointer-events: none;
+            top: 15px;
+            transform: translateX(-50%);
+            border-radius: 1px;
+            z-index: 1;
+            display: none;
+        }
 
         /* Terminal Input */
-        .terminal-input-wrapper { display: flex; align-items: center; gap: 10px; border: 1px solid var(--border); background: var(--bg); padding: 12px; margin-bottom: 2rem; border-radius: 4px; }
-        .terminal-prompt { color: var(--accent); font-family: monospace; font-weight: bold; font-size: 1rem; }
-        #terminal-input { flex: 1; background: transparent; border: none; color: var(--accent); font-family: monospace; font-size: 0.9rem; outline: none; text-transform: uppercase; }
+        .terminal-input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            padding: 12px;
+            margin-bottom: 2rem;
+            border-radius: 4px;
+        }
+
+        .terminal-prompt {
+            color: var(--accent);
+            font-family: monospace;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        #terminal-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--accent);
+            font-family: monospace;
+            font-size: 0.9rem;
+            outline: none;
+            text-transform: uppercase;
+        }
 
         /* Buttons */
-        .btn-group { display: flex; gap: 10px; margin-bottom: 10px; }
-        button { flex: 1; padding: 14px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.2em; background: none; color: var(--text-main); border: 1px solid var(--border); cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; border-radius: 2px; }
-        button:hover { background: var(--text-main); color: var(--bg); border-color: var(--text-main); }
-        
-        .btn-rush { border-color: #f97316; color: #f97316; } .btn-rush:hover { background: #f97316; color: var(--bg); border-color: #f97316; }
-        .btn-daily { border-color: #3b82f6; color: #3b82f6; } .btn-daily:hover { background: #3b82f6; color: var(--bg); border-color: #3b82f6; }
-        .btn-share { border-color: #22c55e; color: #22c55e; } .btn-share:hover { background: #22c55e; color: var(--bg); border-color: #22c55e; }
-        .btn-lock { background: var(--text-main); color: var(--bg); margin-top: 1.5rem; } .btn-lock:hover { background: var(--text-muted); color: var(--bg); border-color: var(--text-muted); }
-        .btn-exit-studio { border-color: var(--border); color: var(--text-muted); margin-top: 1.5rem; } .btn-exit-studio:hover { background: var(--text-muted); color: var(--bg); }
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
 
-        .match-percentage { font-size: 5rem; font-weight: 200; color: var(--text-main); margin: 1rem 0; letter-spacing: -0.05em; }
-        .status-text { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--text-muted); margin-bottom: 2rem; }
-        .flag-item { display: inline-flex; align-items: center; gap: 4px; } .flag-sep { opacity: 0.3; }
+        button {
+            flex: 1;
+            padding: 14px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            background: none;
+            color: var(--text-main);
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            border-radius: 2px;
+        }
+
+        button:hover {
+            background: var(--text-main);
+            color: var(--bg);
+            border-color: var(--text-main);
+        }
+
+        .btn-rush {
+            border-color: #f97316;
+            color: #f97316;
+        }
+
+        .btn-rush:hover {
+            background: #f97316;
+            color: var(--bg);
+            border-color: #f97316;
+        }
+
+        .btn-daily {
+            border-color: #3b82f6;
+            color: #3b82f6;
+        }
+
+        .btn-daily:hover {
+            background: #3b82f6;
+            color: var(--bg);
+            border-color: #3b82f6;
+        }
+
+        .btn-share {
+            border-color: #22c55e;
+            color: #22c55e;
+        }
+
+        .btn-share:hover {
+            background: #22c55e;
+            color: var(--bg);
+            border-color: #22c55e;
+        }
+
+        .btn-lock {
+            background: var(--text-main);
+            color: var(--bg);
+            margin-top: 1.5rem;
+        }
+
+        .btn-lock:hover {
+            background: var(--text-muted);
+            color: var(--bg);
+            border-color: var(--text-muted);
+        }
+
+        .btn-exit-studio {
+            border-color: var(--border);
+            color: var(--text-muted);
+            margin-top: 1.5rem;
+        }
+
+        .btn-exit-studio:hover {
+            background: var(--text-muted);
+            color: var(--bg);
+        }
+
+        .match-percentage {
+            font-size: 5rem;
+            font-weight: 200;
+            color: var(--text-main);
+            margin: 1rem 0;
+            letter-spacing: -0.05em;
+        }
+
+        .status-text {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        .flag-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .flag-sep {
+            opacity: 0.3;
+        }
 
         /* Stats Grid */
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1rem; }
-        .stat-card { background: var(--bg); padding: 12px; border: 1px solid var(--border); text-align: center; border-radius: 4px; }
-        .stat-val { font-size: 1.2rem; font-weight: 200; color: var(--accent); margin-bottom: 4px; }
-        .stat-lbl { font-size: 0.55rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); }
-        .bias-card { grid-column: span 2; }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .stat-card {
+            background: var(--bg);
+            padding: 12px;
+            border: 1px solid var(--border);
+            text-align: center;
+            border-radius: 4px;
+        }
+
+        .stat-val {
+            font-size: 1.2rem;
+            font-weight: 200;
+            color: var(--accent);
+            margin-bottom: 4px;
+        }
+
+        .stat-lbl {
+            font-size: 0.55rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+        }
+
+        .bias-card {
+            grid-column: span 2;
+        }
 
         /* Subtle GitHub Logo */
-        .github-link { position: fixed; bottom: 20px; right: 20px; color: var(--text-muted); opacity: 0.5; transition: 0.2s; z-index: 100; display: flex; align-items: center; justify-content: center; }
-        .github-link:hover { opacity: 1; color: var(--text-main); transform: scale(1.1); }
+        .github-link {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            color: var(--text-muted);
+            opacity: 0.5;
+            transition: 0.2s;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .github-link:hover {
+            opacity: 1;
+            color: var(--text-main);
+            transform: scale(1.1);
+        }
     </style>
 </head>
+
 <body>
     <svg style="display:none;">
         <defs>
-            <filter id="protanopia"><feColorMatrix type="matrix" values="0.567, 0.433, 0, 0, 0  0.558, 0.442, 0, 0, 0  0, 0.242, 0.758, 0, 0  0, 0, 0, 1, 0"/></filter>
-            <filter id="deuteranopia"><feColorMatrix type="matrix" values="0.625, 0.375, 0, 0, 0  0.7, 0.3, 0, 0, 0  0, 0.3, 0.7, 0, 0  0, 0, 0, 1, 0"/></filter>
-            <filter id="tritanopia"><feColorMatrix type="matrix" values="0.95, 0.05, 0, 0, 0  0, 0.433, 0.567, 0, 0  0, 0.475, 0.525, 0, 0  0, 0, 0, 1, 0"/></filter>
+            <filter id="protanopia">
+                <feColorMatrix type="matrix"
+                    values="0.567, 0.433, 0, 0, 0  0.558, 0.442, 0, 0, 0  0, 0.242, 0.758, 0, 0  0, 0, 0, 1, 0" />
+            </filter>
+            <filter id="deuteranopia">
+                <feColorMatrix type="matrix"
+                    values="0.625, 0.375, 0, 0, 0  0.7, 0.3, 0, 0, 0  0, 0.3, 0.7, 0, 0  0, 0, 0, 1, 0" />
+            </filter>
+            <filter id="tritanopia">
+                <feColorMatrix type="matrix"
+                    values="0.95, 0.05, 0, 0, 0  0, 0.433, 0.567, 0, 0  0, 0.475, 0.525, 0, 0  0, 0, 0, 1, 0" />
+            </filter>
         </defs>
     </svg>
 
     <div class="container">
-        <h1>Chroma 
+        <h1>Chroma
             <div class="header-btns">
                 <button class="header-btn" onclick="goHome()" title="Home">
-                    <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                    <svg class="icon icon-sm" viewBox="0 0 24 24">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                    </svg>
                 </button>
                 <button class="header-btn pantheon-btn" onclick="togglePantheon(true)" title="The Pantheon">
-                    <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path></svg>
+                    <svg class="icon icon-sm" viewBox="0 0 24 24">
+                        <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
+                        <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
+                        <path d="M4 22h16"></path>
+                        <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path>
+                        <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path>
+                        <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path>
+                    </svg>
                 </button>
                 <button class="header-btn" onclick="toggleStats(true)" title="Analytics">
-                    <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"></path></svg>
+                    <svg class="icon icon-sm" viewBox="0 0 24 24">
+                        <path d="M18 20V10M12 20V4M6 20v-6"></path>
+                    </svg>
                 </button>
                 <button class="header-btn" onclick="toggleSettings(true)" title="Settings">
-                    <svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                    <svg class="icon icon-sm" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path
+                            d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
+                        </path>
+                    </svg>
                 </button>
                 <button class="header-btn" onclick="toggleInfo(true)" title="Info">
-                    <svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                    <svg class="icon icon-sm" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="16" x2="12" y2="12"></line>
+                        <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                    </svg>
                 </button>
             </div>
         </h1>
-        
+
         <div id="shared-banner" class="shared-banner" style="display: none;">
             <div class="shared-banner-title">Shared Configuration</div>
             <div class="shared-banner-text">Previewing a shared rule set. Save it as your default?</div>
@@ -250,29 +1264,43 @@
 
         <div id="duel-banner" class="shared-banner duel-banner" style="display: none;">
             <div class="shared-banner-title">
-                <svg class="icon" viewBox="0 0 24 24"><path d="M14.5 17.5L3 6V3h3l11.5 11.5M13 19l6-6M16 16l4 4M19 21l2-2"></path></svg> Rivalry Duel
+                <svg class="icon" viewBox="0 0 24 24">
+                    <path d="M14.5 17.5L3 6V3h3l11.5 11.5M13 19l6-6M16 16l4 4M19 21l2-2"></path>
+                </svg> Rivalry Duel
             </div>
-            <div class="shared-banner-text">You have been challenged! Your opponent scored <b id="duel-op-score" style="color:var(--text-main)"></b>. Can you beat it?</div>
+            <div class="shared-banner-text">You have been challenged! Your opponent scored <b id="duel-op-score"
+                    style="color:var(--text-main)"></b>. Can you beat it?</div>
             <div class="shared-banner-btns">
                 <button class="btn-duel" onclick="acceptDuel()">Accept Duel</button>
-                <button onclick="discardSharedConfig()">Flee</button>
+                <button class="btn-danger" onclick="discardSharedConfig()">Flee</button>
             </div>
         </div>
 
         <div class="info-modal" id="settings-modal">
-            <h2>Settings <span style="font-size: 0.6rem; color: var(--text-muted); font-weight: normal; cursor:pointer;" onclick="toggleSettings(false)">[X]</span></h2>
+            <h2>Settings <span style="font-size: 0.6rem; color: var(--text-muted); font-weight: normal; cursor:pointer;"
+                    onclick="toggleSettings(false)">[X]</span></h2>
             <div style="margin-top: 1rem;">
-                <button onclick="triggerConfirm('Reset Theme to default White?', resetTheme)" style="margin-bottom: 8px;">Reset App Theme</button>
-                <button class="btn-danger" onclick="triggerConfirm('Reset Configuration to defaults?', resetConfig)">Reset Configuration</button>
-                <button class="btn-danger" onclick="triggerConfirm('Wipe your entire Pantheon gallery?', resetPantheon)">Clear Pantheon</button>
-                <button class="btn-danger" onclick="triggerConfirm('Delete all your analytics and stats?', resetAnalytics)">Clear Analytics</button>
-                <button class="btn-danger" onclick="triggerConfirm('WARNING: This will delete EVERYTHING and hard refresh the page. Continue?', resetAll)" style="margin-top: 1rem;">Factory Reset</button>
+                <button onclick="triggerConfirm('Reset Theme to default White?', resetTheme)"
+                    style="margin-bottom: 8px;">Reset App Theme</button>
+                <button class="btn-danger"
+                    onclick="triggerConfirm('Reset Configuration to defaults?', resetConfig)">Reset
+                    Configuration</button>
+                <button class="btn-danger"
+                    onclick="triggerConfirm('Wipe your entire Pantheon gallery?', resetPantheon)">Clear
+                    Pantheon</button>
+                <button class="btn-danger"
+                    onclick="triggerConfirm('Delete all your analytics and stats?', resetAnalytics)">Clear
+                    Analytics</button>
+                <button class="btn-danger"
+                    onclick="triggerConfirm('WARNING: This will delete EVERYTHING and hard refresh the page. Continue?', resetAll)"
+                    style="margin-top: 1rem;">Factory Reset</button>
             </div>
         </div>
 
         <div class="info-modal" id="confirm-modal" style="display:none;">
             <div class="confirm-box">
-                <h3 style="color:#ef4444; margin-bottom: 1rem; font-size:0.8rem; text-transform:uppercase;">Confirm Action</h3>
+                <h3 style="color:#ef4444; margin-bottom: 1rem; font-size:0.8rem; text-transform:uppercase;">Confirm
+                    Action</h3>
                 <p id="confirm-msg" style="font-size:0.7rem; margin-bottom: 1.5rem;"></p>
                 <div style="display:flex; gap:10px;">
                     <button style="border-color:#ef4444; color:#ef4444;" onclick="executeConfirm()">Confirm</button>
@@ -282,19 +1310,25 @@
         </div>
 
         <div class="info-modal" id="export-modal" style="display:none;">
-            <h2>Export Code <span style="font-size: 0.6rem; color: var(--text-muted); font-weight: normal; cursor:pointer;" onclick="document.getElementById('export-modal').style.display='none'">[X]</span></h2>
+            <h2>Export Code <span
+                    style="font-size: 0.6rem; color: var(--text-muted); font-weight: normal; cursor:pointer;"
+                    onclick="document.getElementById('export-modal').style.display='none'">[X]</span></h2>
             <p>Your studio creation formatted as CSS Variables.</p>
             <textarea id="export-textarea" readonly></textarea>
             <button onclick="copyExport()">Copy to Clipboard</button>
         </div>
 
         <div class="info-modal" id="pantheon-modal">
-            <h2>The Pantheon <span style="font-size: 0.6rem; color: var(--text-muted); font-weight: normal; cursor:pointer;" onclick="togglePantheon(false)">[X]</span></h2>
-            <p style="text-transform: none;">Every configuration you score <b>98%+</b> on is permanently immortalized here. Click a swatch to reveal its metadata.</p>
+            <h2>The Pantheon <span
+                    style="font-size: 0.6rem; color: var(--text-muted); font-weight: normal; cursor:pointer;"
+                    onclick="togglePantheon(false)">[X]</span></h2>
+            <p style="text-transform: none;">Every configuration you score <b>98%+</b> on is permanently immortalized
+                here. Click a swatch to reveal its metadata.</p>
             <div class="pantheon-grid" id="pantheon-grid"></div>
-            
+
             <div class="pantheon-details" id="pantheon-details">
-                <div class="pd-title">Match Data <button class="btn-theme" id="btn-set-theme">Set as Theme</button></div>
+                <div class="pd-title">Match Data <button class="btn-theme" id="btn-set-theme">Set as Theme</button>
+                </div>
                 <div class="pd-stat">Target: <span id="pd-target">-</span></div>
                 <div class="pd-stat">Output: <span id="pd-user">-</span></div>
                 <div class="pd-stat">Game Type: <span id="pd-space">-</span></div>
@@ -304,59 +1338,95 @@
         </div>
 
         <div class="info-modal" id="info-modal">
-            <h2>Game Rules <span style="font-size: 0.6rem; color: var(--text-muted); font-weight: normal; cursor:pointer;" onclick="toggleInfo(false)">[X]</span></h2>
-            
+            <h2>Game Rules <span
+                    style="font-size: 0.6rem; color: var(--text-muted); font-weight: normal; cursor:pointer;"
+                    onclick="toggleInfo(false)">[X]</span></h2>
+
             <h3>Game Types</h3>
-            <p data-rule="type-solid"><b>Solid Color:</b> The classic match mode. Use sliders to match the reference.</p>
-            <p data-rule="type-luminance"><b>Luminance Match (Brightness):</b> Look past the Hue! You must output a color that matches the exact perceived mathematical brightness (grayscale value) of the target.</p>
-            <p data-rule="type-sort"><b>Color Sort (Unscramble):</b> The sliders vanish. Tap the scrambled blocks to swap them and rebuild the perfect mathematical gradient.</p>
-            <p data-rule="type-hexdle"><b>Hex-dle (Decoder):</b> 6 tries to guess the exact 6-character Hex Code (Wordle rules).</p>
+            <p data-rule="type-solid"><b>Solid Color:</b> The classic match mode. Use sliders to match the reference.
+            </p>
+            <p data-rule="type-luminance"><b>Luminance Match (Brightness):</b> Look past the Hue! You must output a
+                color that matches the exact perceived mathematical brightness (grayscale value) of the target.</p>
+            <p data-rule="type-sort"><b>Color Sort (Unscramble):</b> The sliders vanish. Tap the scrambled blocks to
+                swap them and rebuild the perfect mathematical gradient.</p>
+            <p data-rule="type-hexdle"><b>Hex-dle (Decoder):</b> 6 tries to guess the exact 6-character Hex Code (Wordle
+                rules).</p>
             <p data-rule="type-haystack"><b>Haystack Acuity:</b> Grid vision test. Find the odd one out.</p>
-            <p data-rule="type-telephone"><b>Color Telephone:</b> Genetic Drift. Your output becomes the next round's target.</p>
-            <p data-rule="type-midpoint"><b>The Mixer (Midpoint):</b> Find the exact mathematical 50% midpoint between Color A and Color B.</p>
+            <p data-rule="type-telephone"><b>Color Telephone:</b> Genetic Drift. Your output becomes the next round's
+                target.</p>
+            <p data-rule="type-midpoint"><b>The Mixer (Midpoint):</b> Find the exact mathematical 50% midpoint between
+                Color A and Color B.</p>
             <p data-rule="type-gradient"><b>Gradient Matcher:</b> 2 Colors + Angle. The next dimension of matching.</p>
-            <p data-rule="type-palette"><b>Palette Architect:</b> Base color is locked. Create exact harmonious schemes.</p>
+            <p data-rule="type-palette"><b>Palette Architect:</b> Base color is locked. Create exact harmonious schemes.
+            </p>
             <p data-rule="type-studio"><b>Studio Mode:</b> Pure utility. No timer. Lock In exports your CSS.</p>
 
             <h3>Modifiers & Objectives</h3>
-            <p data-rule="mod-darkroom"><b>Darkroom Mode:</b> Heavy interference. The app randomly flickers and dims, disrupting your perception of brightness.</p>
-            <p data-rule="mod-wcag"><b>WCAG Contrast:</b> Achieve 4.5:1 (AA) minimum text contrast against the target.</p>
+            <p data-rule="mod-darkroom"><b>Darkroom Mode:</b> Heavy interference. The app randomly flickers and dims,
+                disrupting your perception of brightness.</p>
+            <p data-rule="mod-wcag"><b>WCAG Contrast:</b> Achieve 4.5:1 (AA) minimum text contrast against the target.
+            </p>
             <p data-rule="mod-comp"><b>Complementary:</b> Find the exact mathematical opposite of the base color.</p>
             <p data-rule="mod-map"><b>Visual Map:</b> Replaces sliders with a 2D color picker spectrum.</p>
             <p data-rule="mod-hardcore"><b>Blind Hardcore:</b> No visual reference. Rely entirely on the math code.</p>
             <p data-rule="mod-terminal"><b>Terminal Mode:</b> No UI. Type raw CSS code from memory to match.</p>
-            <p data-rule="mod-memory"><b>Memory Mode:</b> Target is visible for 3 seconds, then vanishes. Recall and recreate.</p>
-            <p data-rule="mod-illusion"><b>Illusion Framing:</b> Triggers the Albers Effect using violently contrasting borders.</p>
-            <p data-rule="mod-vision"><b>Vision Simulator:</b> Apply medical colorblindness filters over the entire game.</p>
-            
+            <p data-rule="mod-memory"><b>Memory Mode:</b> Target is visible for 3 seconds, then vanishes. Recall and
+                recreate.</p>
+            <p data-rule="mod-illusion"><b>Illusion Framing:</b> Triggers the Albers Effect using violently contrasting
+                borders.</p>
+            <p data-rule="mod-vision"><b>Vision Simulator:</b> Apply medical colorblindness filters over the entire
+                game.</p>
+
             <h3>Features</h3>
-            <p data-rule="feat-rush"><b>Daily Rush:</b> 60s survival. The sequence of colors is seeded globally every day.</p>
-            <p data-rule="feat-duel"><b>Ghost Replays (Duels):</b> When sharing Duel links, your slider movements are replayed to your opponent.</p>
+            <p data-rule="feat-rush"><b>Daily Rush:</b> 60s survival. The sequence of colors is seeded globally every
+                day.</p>
+            <p data-rule="feat-duel"><b>Ghost Replays (Duels):</b> When sharing Duel links, your slider movements are
+                replayed to your opponent.</p>
             <p data-rule="space-cmyk"><b>CMYK Mode:</b> Subtractive ink mixing. Red + Green no longer makes Yellow.</p>
         </div>
 
         <div class="info-modal" id="stats-modal">
-            <h2>Your Analytics <span style="font-size: 0.6rem; color: var(--text-muted); font-weight: normal; cursor:pointer;" onclick="toggleStats(false)">[X]</span></h2>
+            <h2>Your Analytics <span
+                    style="font-size: 0.6rem; color: var(--text-muted); font-weight: normal; cursor:pointer;"
+                    onclick="toggleStats(false)">[X]</span></h2>
             <div class="stats-grid">
-                <div class="stat-card"><div class="stat-val" id="st-games">0</div><div class="stat-lbl">Total Games Played</div></div>
-                <div class="stat-card"><div class="stat-val" id="st-acc">0%</div><div class="stat-lbl">Avg Accuracy</div></div>
-                <div class="stat-card"><div class="stat-val" id="st-streak">0</div><div class="stat-lbl">Max Rush Streak</div></div>
-                <div class="stat-card"><div class="stat-val" id="st-bias-dir">-</div><div class="stat-lbl">Primary Drift</div></div>
+                <div class="stat-card">
+                    <div class="stat-val" id="st-games">0</div>
+                    <div class="stat-lbl">Total Games Played</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-val" id="st-acc">0%</div>
+                    <div class="stat-lbl">Avg Accuracy</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-val" id="st-streak">0</div>
+                    <div class="stat-lbl">Max Rush Streak</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-val" id="st-bias-dir">-</div>
+                    <div class="stat-lbl">Primary Drift</div>
+                </div>
                 <div class="stat-card bias-card">
                     <div class="stat-val" id="st-bias" style="font-size:0.9rem;">No Data</div>
                     <div class="stat-lbl">Biological Visual Bias</div>
                 </div>
             </div>
-            <p style="text-align:center; font-size:0.6rem; margin-top:10px;">(Bias calculates how your eyes naturally misinterpret RGB light over time)</p>
+            <p style="text-align:center; font-size:0.6rem; margin-top:10px;">(Bias calculates how your eyes naturally
+                misinterpret RGB light over time)</p>
         </div>
 
         <div class="game-setup active" id="setup-screen">
             <div class="space-selector" id="space-selector">
-                <label><input type="radio" name="colorSpace" value="rgb" checked onchange="changeColorSpace()"><span class="radio-label">RGB</span></label>
-                <label><input type="radio" name="colorSpace" value="hsl" onchange="changeColorSpace()"><span class="radio-label">HSL</span></label>
-                <label><input type="radio" name="colorSpace" value="oklab" onchange="changeColorSpace()"><span class="radio-label">OKLAB</span></label>
-                <label><input type="radio" name="colorSpace" value="oklch" onchange="changeColorSpace()"><span class="radio-label">OKLCH</span></label>
-                <label><input type="radio" name="colorSpace" value="cmyk" onchange="changeColorSpace()"><span class="radio-label">CMYK</span></label>
+                <label><input type="radio" name="colorSpace" value="rgb" checked onchange="changeColorSpace()"><span
+                        class="radio-label">RGB</span></label>
+                <label><input type="radio" name="colorSpace" value="hsl" onchange="changeColorSpace()"><span
+                        class="radio-label">HSL</span></label>
+                <label><input type="radio" name="colorSpace" value="oklab" onchange="changeColorSpace()"><span
+                        class="radio-label">OKLAB</span></label>
+                <label><input type="radio" name="colorSpace" value="oklch" onchange="changeColorSpace()"><span
+                        class="radio-label">OKLCH</span></label>
+                <label><input type="radio" name="colorSpace" value="cmyk" onchange="changeColorSpace()"><span
+                        class="radio-label">CMYK</span></label>
             </div>
 
             <div class="config-grid">
@@ -399,7 +1469,7 @@
                     <option value="60">60 SECONDS</option>
                 </select>
             </div>
-            
+
             <div class="toggles-container">
                 <label class="mode-toggle" id="lbl-map">
                     <input type="checkbox" id="map-checkbox" onchange="handleToggles()">
@@ -407,23 +1477,28 @@
                 </label>
                 <label class="mode-toggle" id="lbl-hardcore">
                     <input type="checkbox" id="hardcore-checkbox" onchange="handleToggles()">
-                    <div class="toggle-switch"></div> <span class="color-box-label" style="padding:0;">Blind Hardcore</span>
+                    <div class="toggle-switch"></div> <span class="color-box-label" style="padding:0;">Blind
+                        Hardcore</span>
                 </label>
                 <label class="mode-toggle" id="lbl-terminal">
                     <input type="checkbox" id="terminal-checkbox" onchange="handleToggles()">
-                    <div class="toggle-switch"></div> <span class="color-box-label" style="padding:0;">Terminal Mode</span>
+                    <div class="toggle-switch"></div> <span class="color-box-label" style="padding:0;">Terminal
+                        Mode</span>
                 </label>
                 <label class="mode-toggle" id="lbl-memory">
                     <input type="checkbox" id="memory-checkbox" onchange="handleToggles()">
-                    <div class="toggle-switch"></div> <span class="color-box-label" style="padding:0;">Memory Mode</span>
+                    <div class="toggle-switch"></div> <span class="color-box-label" style="padding:0;">Memory
+                        Mode</span>
                 </label>
                 <label class="mode-toggle" id="lbl-illusion">
                     <input type="checkbox" id="illusion-checkbox" onchange="handleToggles()">
-                    <div class="toggle-switch"></div> <span class="color-box-label" style="padding:0;">Illusion Framing</span>
+                    <div class="toggle-switch"></div> <span class="color-box-label" style="padding:0;">Illusion
+                        Framing</span>
                 </label>
                 <label class="mode-toggle" id="lbl-darkroom">
                     <input type="checkbox" id="darkroom-checkbox" onchange="handleToggles()">
-                    <div class="toggle-switch"></div> <span class="color-box-label" style="padding:0;">Darkroom Mode</span>
+                    <div class="toggle-switch"></div> <span class="color-box-label" style="padding:0;">Darkroom
+                        Mode</span>
                 </label>
             </div>
 
@@ -433,12 +1508,15 @@
             </div>
             <div class="btn-group">
                 <button class="btn-daily" onclick="toggleDailyMenu(true)">Play Daily</button>
-                <button style="border-color:var(--text-muted); color:var(--text-muted);" id="btn-copy-config" onclick="copyConfigUrl()">Copy Config</button>
+                <button style="border-color:var(--text-muted); color:var(--text-muted);" id="btn-copy-config"
+                    onclick="copyConfigUrl()">Copy Config</button>
             </div>
         </div>
 
         <div class="daily-menu" id="daily-screen">
-            <h2 style="font-size:0.7rem; text-transform:uppercase; color:var(--text-muted); margin-bottom:1.5rem; letter-spacing:0.2em;">Global Daily Challenges &mdash; Day <span id="daily-day-display"></span></h2>
+            <h2
+                style="font-size:0.7rem; text-transform:uppercase; color:var(--text-muted); margin-bottom:1.5rem; letter-spacing:0.2em;">
+                Global Daily Challenges &mdash; Day <span id="daily-day-display"></span></h2>
             <div id="daily-challenges-list" style="margin-bottom: 2rem;"></div>
             <button onclick="toggleDailyMenu(false)">Back to Menu</button>
         </div>
@@ -454,31 +1532,56 @@
             </div>
             <div class="illusion-frame" id="frame-user">
                 <div class="color-box" id="user-color" style="transition: none;"></div>
+                <div class="studio-preview-ui" id="studio-preview" style="display: none; width: 100%; height: 100%; padding: 20px; box-sizing: border-box; background: var(--sp-bg); color: var(--sp-text); font-family: sans-serif; flex-direction: column; gap: 15px; border-radius: 4px; overflow: hidden;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 10px; border-bottom: 2px solid var(--sp-surface);">
+                        <div style="font-weight: bold; font-size: 1.2rem;">App Title</div>
+                        <div style="display: flex; gap: 10px;">
+                            <div style="width: 30px; height: 10px; background: var(--sp-surface); border-radius: 2px;"></div>
+                            <div style="width: 30px; height: 10px; background: var(--sp-surface); border-radius: 2px;"></div>
+                        </div>
+                    </div>
+                    <div style="flex: 1; display: flex; flex-direction: column; gap: 10px;">
+                        <div style="font-size: 2rem; font-weight: 900; line-height: 1.1;">Build Your Aesthetic</div>
+                        <div style="font-size: 0.8rem; opacity: 0.8; max-width: 80%; line-height: 1.4;">This is a sample layout showing how your custom 5-color theme handles typography and element hierarchy.</div>
+                        <div style="background: var(--sp-surface); padding: 15px; border-radius: 8px; margin-top: 10px; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.2);">
+                            <div style="font-size: 0.9rem; font-weight: bold;">Interactive Card</div>
+                            <div style="font-size: 0.75rem; opacity: 0.8; line-height: 1.4;">Cards and elevated surfaces use the Surface color to stand out from the Background.</div>
+                            <div style="display: flex; gap: 10px; margin-top: 5px;">
+                                <div style="background: var(--sp-primary); color: var(--sp-bg); padding: 8px 16px; border-radius: 4px; font-weight: bold; font-size: 0.7rem; text-transform: uppercase;">Primary Action</div>
+                                <div style="background: transparent; color: var(--sp-secondary); border: 2px solid var(--sp-secondary); padding: 8px 16px; border-radius: 4px; font-weight: bold; font-size: 0.7rem; text-transform: uppercase;">Secondary</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <span class="color-box-label" id="user-label">Output</span>
             </div>
         </div>
-        
+
         <div class="sort-container" id="sort-grid" style="display:none;"></div>
 
         <div class="haystack-grid" id="haystack-grid" style="display: none;"></div>
+        <div class="chromakey-container" id="chromakey-container" style="display: none;"></div>
 
         <div class="game-area" id="game-area">
             <div class="game-header">
                 <div class="game-objective" id="game-objective" style="transition: color 0.3s;">Match the Color</div>
                 <div class="rush-badge" id="rush-badge">
-                    <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M12 2c0 0-4 4-4 9a4 4 0 0 0 8 0c0-5-4-9-4-9z"/><path d="M12 12s-1 1-1 2 1 2 1 2 1-1 1-2-1-2-1-2z"/></svg> 
+                    <svg class="icon icon-sm" viewBox="0 0 24 24">
+                        <path d="M12 2c0 0-4 4-4 9a4 4 0 0 0 8 0c0-5-4-9-4-9z" />
+                        <path d="M12 12s-1 1-1 2 1 2 1 2 1-1 1-2-1-2-1-2z" />
+                    </svg>
                     <span id="rush-streak">0</span>
                 </div>
                 <div class="timer" id="timer">00</div>
             </div>
-            
+
             <div class="controls" id="game-controls">
-                
+
                 <div id="hexdle-controls" style="display: none;">
                     <div id="hexdle-board"></div>
                     <div class="hexdle-keyboard" id="hexdle-keyboard">
                         <script>
-                            const keys = ['0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','DEL','ENT'];
+                            const keys = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'DEL', 'ENT'];
                             keys.forEach(k => document.write(`<div class="hexdle-key" id="hk-${k}" onclick="handleHexKey('${k}')">${k}</div>`));
                         </script>
                     </div>
@@ -487,27 +1590,52 @@
                 <div id="terminal-controls" style="display: none;">
                     <div class="terminal-input-wrapper">
                         <span class="terminal-prompt">&gt;</span>
-                        <input type="text" id="terminal-input" placeholder="e.g. #FF4500 or hsl(180, 50%, 50%)" spellcheck="false" autocomplete="off" oninput="updateTerminal()">
+                        <input type="text" id="terminal-input" placeholder="e.g. #FF4500 or hsl(180, 50%, 50%)"
+                            spellcheck="false" autocomplete="off" oninput="updateTerminal()">
                     </div>
                 </div>
 
                 <div id="cheater-controls" style="display: none;">
-                    <div class="canvas-wrapper"><canvas id="spectrum-map"></canvas><div id="selector-dot"></div></div>
+                    <div class="canvas-wrapper"><canvas id="spectrum-map"></canvas>
+                        <div id="selector-dot"></div>
+                    </div>
                 </div>
-                
+
                 <div id="standard-controls">
                     <div class="tabs-container" id="ui-tabs" style="display:none;"></div>
 
-                    <div class="slider-group" id="group-deg" style="display:none;"><div class="slider-header"><span>Rotation (Deg)</span><span class="slider-value" id="val-deg">180</span></div><input type="range" id="slider-deg" min="0" max="360" value="180" oninput="updateColor()"><div class="ghost-thumb" id="g-deg"></div></div>
-                    <div class="slider-group" id="group-s1"><div class="slider-header"><span id="lbl-s1">CH 1</span><span class="slider-value" id="val-s1">0</span></div><input type="range" id="slider-1" oninput="updateColor()"><div class="ghost-thumb" id="g-1"></div></div>
-                    <div class="slider-group" id="group-s2"><div class="slider-header"><span id="lbl-s2">CH 2</span><span class="slider-value" id="val-s2">0</span></div><input type="range" id="slider-2" oninput="updateColor()"><div class="ghost-thumb" id="g-2"></div></div>
-                    <div class="slider-group" id="group-s3"><div class="slider-header"><span id="lbl-s3">CH 3</span><span class="slider-value" id="val-s3">0</span></div><input type="range" id="slider-3" oninput="updateColor()"><div class="ghost-thumb" id="g-3"></div></div>
-                    <div class="slider-group" id="group-s4" style="display:none;"><div class="slider-header"><span id="lbl-s4">CH 4</span><span class="slider-value" id="val-s4">0</span></div><input type="range" id="slider-4" oninput="updateColor()"><div class="ghost-thumb" id="g-4"></div></div>
+                    <div class="slider-group" id="group-deg" style="display:none;">
+                        <div class="slider-header"><span>Rotation (Deg)</span><span class="slider-value"
+                                id="val-deg">180</span></div><input type="range" id="slider-deg" min="0" max="360"
+                            value="180" oninput="updateColor()">
+                        <div class="ghost-thumb" id="g-deg"></div>
+                    </div>
+                    <div class="slider-group" id="group-s1">
+                        <div class="slider-header"><span id="lbl-s1">CH 1</span><span class="slider-value"
+                                id="val-s1">0</span></div><input type="range" id="slider-1" oninput="updateColor()">
+                        <div class="ghost-thumb" id="g-1"></div>
+                    </div>
+                    <div class="slider-group" id="group-s2">
+                        <div class="slider-header"><span id="lbl-s2">CH 2</span><span class="slider-value"
+                                id="val-s2">0</span></div><input type="range" id="slider-2" oninput="updateColor()">
+                        <div class="ghost-thumb" id="g-2"></div>
+                    </div>
+                    <div class="slider-group" id="group-s3">
+                        <div class="slider-header"><span id="lbl-s3">CH 3</span><span class="slider-value"
+                                id="val-s3">0</span></div><input type="range" id="slider-3" oninput="updateColor()">
+                        <div class="ghost-thumb" id="g-3"></div>
+                    </div>
+                    <div class="slider-group" id="group-s4" style="display:none;">
+                        <div class="slider-header"><span id="lbl-s4">CH 4</span><span class="slider-value"
+                                id="val-s4">0</span></div><input type="range" id="slider-4" oninput="updateColor()">
+                        <div class="ghost-thumb" id="g-4"></div>
+                    </div>
                 </div>
-                
+
                 <div id="lock-btn-container" style="display:flex; gap:10px;">
                     <button class="btn-lock" id="btn-lock" onclick="lockIn()">Lock In</button>
-                    <button class="btn-exit-studio" id="btn-exit-studio" style="display:none;" onclick="goHome()">Exit Studio</button>
+                    <button class="btn-exit-studio" id="btn-exit-studio" style="display:none;" onclick="goHome()">Exit
+                        Studio</button>
                 </div>
             </div>
         </div>
@@ -515,18 +1643,26 @@
         <div class="results" id="results-screen">
             <div class="match-percentage" id="match-percentage">0%</div>
             <div class="status-text" id="status-text"></div>
-            
+
             <div style="display: flex; flex-direction: column; gap: 10px;">
                 <button class="btn-duel" id="btn-challenge" onclick="shareDuel()" style="display:none;">
-                    <svg class="icon" viewBox="0 0 24 24"><path d="M14.5 17.5L3 6V3h3l11.5 11.5M13 19l6-6M16 16l4 4M19 21l2-2"></path></svg>
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M14.5 17.5L3 6V3h3l11.5 11.5M13 19l6-6M16 16l4 4M19 21l2-2"></path>
+                    </svg>
                     <span>Challenge a Friend</span>
                 </button>
                 <button class="btn-share" id="btn-share" onclick="shareScore()">
-                    <svg class="icon" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
                     <span>Share Result</span>
                 </button>
                 <button onclick="playAgain()">
-                    <svg class="icon" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><polyline points="3 3 3 8 8 8"></polyline></svg>
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+                        <polyline points="3 3 3 8 8 8"></polyline>
+                    </svg>
                     <span>Play Again</span>
                 </button>
                 <button onclick="resetGame()">Menu</button>
@@ -536,7 +1672,8 @@
 
     <a href="https://github.com/skaffa/chroma/" target="_blank" class="github-link" title="View Source on GitHub">
         <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
-            <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+            <path
+                d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
         </svg>
     </a>
 
@@ -546,4 +1683,5 @@
     <script src="js/modes.js"></script>
     <script src="js/engine.js"></script>
 </body>
+
 </html>
